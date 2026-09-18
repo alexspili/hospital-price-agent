@@ -1,0 +1,20 @@
+# Data: reference downloads, price files and the local database are never committed
+data/*
+!data/.gitkeep
+*.duckdb
+*.duckdb.wal
+
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+
+# Frontend (milestone 5)
+node_modules/
+dist/
+
+.DS_Store
