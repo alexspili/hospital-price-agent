@@ -22,10 +22,9 @@ nearest 5 hospitals to the centre of 77030
 
 $ hpa hospitals 77385
 nearest 5 hospitals to the centre of 77385
-      2.1 mi  CHI ST LUKES LAKESIDE HOSPITAL  [670059, Acute Care Hospitals]
-      2.2 mi  ST LUKE'S THE WOODLANDS HOSPITAL  [450862, Acute Care Hospitals]
-   <= 2.6 mi  HOUSTON METHODIST THE WOODLANDS HOSPITAL  [670122, Acute Care Hospitals]  (ZIP centroid)
-      ...
+   ~0.0 mi  HOUSTON METHODIST THE WOODLANDS HOSPITAL  [670122, Acute Care Hospitals]  (ZIP centroid)
+     2.1 mi  CHI ST LUKES LAKESIDE HOSPITAL  [670059, Acute Care Hospitals]
+     ...
 
 $ hpa catalog "knee mri"
 selected: MRI scan of leg joint (CPT 73721)  [unreviewed]
@@ -40,14 +39,17 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
   hospital's street address is run through the free Census Geocoder at setup, which places
   a point along the street's address range (not a rooftop): 4,605 hospitals are located
   that way. A geocode that lands more than ~3 ZIP-radii from the hospital's own ZIP is
-  rejected (16 were; one Houston hospital had come back 26 miles away). Those and the 764
-  addresses the geocoder can't match sit at their ZIP centroid and show an upper-bound
-  distance (`<= 2.6 mi`), so an imprecisely placed hospital never outranks a precisely
-  placed one. 34 hospitals can't be placed at all and are excluded rather than guessed.
+  rejected as a heuristic (16 were; one Houston hospital had come back 26 miles away).
+  Those and the 764 addresses the geocoder can't match sit at their ZIP centroid and are
+  shown as approximate (`~0.0 mi (ZIP centroid)`); the ZIP's size travels with the result
+  as an uncertainty figure but is not a bound, since ZIPs aren't circles. 34 hospitals
+  can't be placed at all and are excluded rather than guessed.
 - **A procedure catalog** of the 70 CMS-specified shoppable services with plain-English
   aliases. `hpa catalog QUERY` gives a verdict, not just a list: *selected*, *ambiguous*
   (asks which), *unsupported variant* ("with contrast" when the list only has "without"),
-  or *not in catalog*. It never swaps in a different organ because of a shared word.
+  *needs clarification* ("knee MRI with biopsy": the catalog doesn't say, so it asks
+  rather than assumes), or *not in catalog*. It never swaps in a different organ because
+  of a shared word.
 - Tests run offline on small checked-in fixtures; CI runs them on Python 3.11 and 3.13.
 
 ## Roadmap
@@ -167,7 +169,9 @@ St. Luke's The Woodlands: no machine-readable file located — skipped
 ## Limitations
 
 - **Distances are from the centre of the ZIP you type**, to a street-interpolated point
-  for 85% of hospitals and to a ZIP centroid (shown as an upper bound) for the rest.
+  for 85% of hospitals and to a ZIP centroid (shown as `~`) for the rest. Hospitals in the
+  same ZIP as the query that couldn't be geocoded therefore show `~0.0 mi`; the real
+  figure could be a few miles.
 - The CMS Hospital General Information dataset **leaves out PPS-exempt cancer hospitals**
   (e.g. MD Anderson), so they won't appear until another source is added.
 - Psychiatric, children's and long-term hospitals are included in "nearest" because the

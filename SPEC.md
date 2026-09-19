@@ -19,7 +19,7 @@ Do not revisit these without asking.
 | Procedures | A catalog of the 70 CMS-specified shoppable services. A deterministic resolver picks an entry or says why it can't; Claude confirms or asks; nothing invents codes. |
 | Distribution | Public repo + hosted demo |
 | Model | Claude API with tool use + structured output, **for the fuzzy steps only**. Orchestration is plain Python. |
-| Store | DuckDB, file-backed, committed empty. One writer process; every other path opens read-only. |
+| Store | DuckDB, file-backed, committed empty. One process owns the file at a time (see Process model). |
 | Hosted demo | Cache-first: pre-scanned Houston ZIPs (77030, 77380, 77024) answer instantly; "run live" is opt-in |
 | Cadence | Built in public: repo goes public at milestone 1 and grows weekly |
 
@@ -50,7 +50,9 @@ Everything else is testable without an API key. That's what makes the eval meani
 - The **tall** CSV repeats the four summary columns on every payer × plan row, so one item
   appears hundreds of times. An item's identity is (description, all codes with types,
   setting, billing class, modifiers, drug unit and type); tall rows are deduplicated on
-  that key while streaming.
+  that key while streaming. If rows for the same item **disagree** on a summary price,
+  nothing is chosen: every distinct value is kept with its source row number, the item is
+  flagged `conflicting_summary`, and the comparison reports it as `unknown`.
 - Each hospital must serve `cms-hpt.txt` at its root domain, pointing to the file location.
   In practice the **health system** serves it and lists many locations (`location-name`,
   `source-page-url`, `mrf-url`). Matching a CMS hospital to the right entry is a real step.
@@ -65,11 +67,15 @@ Everything else is testable without an API key. That's what makes the eval meani
   default; psychiatric, children's, long-term and rural emergency hospitals are included.
 - Coordinates: geocode every street address with the Census Geocoder batch endpoint at
   setup (~85% match; points are interpolated along the street's address range, not
-  rooftops). Accept a geocode only if it lies within 3 × the ZIP's equivalent radius + 2 km
-  of the ZIP centroid; otherwise reject it with a note. Fall back to the ZIP centroid, and
-  report that distance as an upper bound (centroid distance + ZIP radius) so an imprecise
-  location never outranks a precise one. Never guess from nearby ZIP *numbers*. Hospitals
-  with neither stay unresolved and are excluded from "nearest", never silently placed.
+  rooftops). Heuristic sanity check: reject a geocode that lies more than 3 × the ZIP's
+  equivalent radius + 2 km from the ZIP centroid, with a note. Fall back to the ZIP
+  centroid: show that distance as approximate (`~2.1 mi, ZIP centroid`) and carry the
+  ZIP's equivalent radius as a separate uncertainty figure. It is **not** a bound (ZIPs
+  are not circles) and it is not folded into the ranking; ranking is by estimated distance
+  at full precision, with exact ties going to the better-located hospital. Defensible
+  bounds would need the ZCTA boundary geometry, which is not worth carrying yet. Never
+  guess from nearby ZIP *numbers*. Hospitals with neither stay unresolved and are excluded
+  from "nearest", never silently placed.
 - CPT descriptors are AMA-copyrighted. Do not commit a CPT description table. The catalog
   uses CMS's own plain-English service names; HCPCS Level II and MS-DRG data are public.
 - Files run from hundreds of MB to several GB. **Always stream-parse** (`ijson` for JSON,
@@ -114,9 +120,12 @@ One entry per CMS service, in `src/hpa/data/shoppable_services.json`:
 
 `resolve(query)` is deterministic and returns a verdict with candidates: `selected`,
 `ambiguous` (ties; ask), `unsupported variant` (the service exists but not in the variant
-asked for; never substitute a different organ), or `not in catalog` (some query word
+asked for; never substitute a different organ), `needs clarification` (the query asks for
+a qualifier the entry does not declare, e.g. "knee MRI with biopsy", or contradicts
+itself; never assume, never let pattern order pick), or `not in catalog` (some query word
 matched nothing; the closest entries are shown but nothing is selected). Regression tests
-pin "knee mri with contrast", "colonoscopy without biopsy", "mri", "chest x-ray".
+pin "knee mri with contrast", "colonoscopy without biopsy", "knee mri with biopsy",
+"knee mri with contrast without contrast", "mri", "chest x-ray".
 
 ## Steps
 
@@ -173,9 +182,20 @@ Every expensive step is cached, so a repeat search never repeats the work.
 
 ## Process model
 
-DuckDB allows one writer per file. The web server owns the single write connection and
-runs scans as tasks inside that process (asyncio + a thread pool for parsing). The CLI and
-any other reader open `read_only=True`. `hpa setup` rebuilds the file from scratch.
+DuckDB allows one writer per file, and while a writer holds the file **no other process
+can open it, even read-only** (verified: the reader fails with a lock error). So:
+
+- The web server owns the single connection and runs scans as tasks inside that process
+  (asyncio + a thread pool for parsing).
+- While the server is running, the CLI sends queries to the server's HTTP API instead of
+  opening the file. When no server is running, the CLI opens the file directly, read-only.
+- Fallback for tools that must read the file while the server is up: the server writes a
+  read-only snapshot copy on a schedule (`EXPORT`/copy after each scan), and readers open
+  that.
+- `hpa setup` builds a new database in a temporary file, validates it (row counts, spot
+  queries), and only then swaps it in with an atomic rename. A failed build leaves the
+  existing database untouched. Once price tables exist, `setup` refreshes only the
+  reference tables inside a transaction; wiping caches is a separate, explicit `--reset`.
 
 ## Behaviour rules
 

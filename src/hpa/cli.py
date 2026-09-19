@@ -4,9 +4,9 @@ import argparse
 import sys
 from pathlib import Path
 
-from hpa import catalog, reference, store
-from hpa.geo import KM_PER_MILE, load_zcta
-from hpa.hospitals import UnknownZip, find_hospitals, load_hospitals, location_counts
+from hpa import build, catalog, reference, store
+from hpa.geo import KM_PER_MILE
+from hpa.hospitals import UnknownZip, find_hospitals
 
 
 def cmd_setup(args: argparse.Namespace) -> int:
@@ -20,19 +20,18 @@ def cmd_setup(args: argparse.Namespace) -> int:
             coords_csv, matched = reference.geocode_hospitals(client, hgi_csv)
             print(f"geocoded {matched:,} addresses")
 
-    # Rebuild from scratch so tables from older versions never linger.
-    db = Path(args.db)
-    if db.exists():
-        db.unlink()
-    con = store.connect(db)
-    print(f"loaded {load_zcta(con, str(zcta_txt)):,} ZIP centroids")
-    print(f"loaded {load_hospitals(con, str(hgi_csv), coords_csv and str(coords_csv)):,} hospitals")
-    counts = location_counts(con)
-    rejected = con.execute("SELECT count(*) FROM hospitals WHERE location_note IS NOT NULL").fetchone()[0]
+    # Built in a temporary file and swapped in only if it checks out, so a bad download
+    # never costs you the database you had.
+    try:
+        r = build.build_database(Path(args.db), str(hgi_csv), str(zcta_txt), coords_csv and str(coords_csv))
+    except Exception as e:
+        print(f"setup failed, existing database left untouched: {e}", file=sys.stderr)
+        return 1
+    print(f"loaded {r['zips']:,} ZIP centroids and {r['hospitals']:,} hospitals")
     print(
-        f"located {counts['address']:,} by street address, {counts['zip']:,} by ZIP centroid "
-        f"({rejected} geocodes rejected as too far from their ZIP); "
-        f"{counts['unresolved']} unresolved (excluded from results)"
+        f"located {r['address']:,} by street address, {r['zip']:,} by ZIP centroid "
+        f"({r['rejected_geocodes']} geocodes rejected as too far from their ZIP); "
+        f"{r['unresolved']} unresolved (excluded from results)"
     )
     return 0
 
@@ -50,9 +49,9 @@ def cmd_hospitals(args: argparse.Namespace) -> int:
     print(f"nearest {len(found)} hospitals to the centre of {args.zip}")
     for h in found:
         miles = h.distance_km / KM_PER_MILE
-        shown = f"<= {miles:.1f} mi" if h.distance_is_bound else f"{miles:>7.1f} mi"
-        note = "  (ZIP centroid)" if h.distance_is_bound else ""
-        print(f"  {shown:>10}  {h.name}  [{h.ccn}, {h.hospital_type}]{note}")
+        shown = f"~{miles:.1f} mi" if h.approximate else f"{miles:.1f} mi"
+        note = "  (ZIP centroid)" if h.approximate else ""
+        print(f"  {shown:>9}  {h.name}  [{h.ccn}, {h.hospital_type}]{note}")
     return 0
 
 

@@ -13,10 +13,11 @@ FEDERAL_TYPES = ("Acute Care - Veterans Administration", "Acute Care - Departmen
 # the table (so they can be reported) but never returned as "nearest".
 LOCATION_SOURCES = ("address", "zip", "unresolved")
 
-# A geocoded point is accepted only if it lies within this distance of its own ZIP's
-# centroid: three times the ZIP's equivalent radius, plus 2 km for small or oddly shaped
-# ZIPs. The Census geocoder's Non_Exact matches occasionally land on the wrong side of a
-# city; one Houston hospital came back 42 km from its ZIP.
+# Heuristic: a geocoded point is accepted only if it lies within this distance of its
+# own ZIP's centroid, three times the ZIP's equivalent radius plus 2 km. The equivalent
+# radius is a size estimate, not a boundary, so this can wrongly reject a hospital in a
+# long, thin ZIP; it exists because Non_Exact matches occasionally land on the wrong side
+# of a city (one Houston hospital came back 42 km from its ZIP), which is worse.
 GEOCODE_TOLERANCE_SQL = "3 * z.radius_km + 2"
 
 
@@ -34,17 +35,19 @@ class Hospital:
     zip: str
     hospital_type: str
     ownership: str
-    # For "address" locations, the distance from the query ZIP's centroid to the geocoded
-    # point. For "zip" locations, an upper bound: distance between the two ZIP centroids
-    # plus the hospital ZIP's radius, so a hospital we can't place precisely never
-    # outranks one we can.
+    # From the query ZIP's centroid to the hospital's point, full precision; round only
+    # for display. For "zip" locations the point is the hospital ZIP's centroid.
     distance_km: float
+    # Rough size of the hospital's ZIP (radius of a circle with its land area), when the
+    # hospital could only be placed at the ZIP centroid; 0 when geocoded. An indication of
+    # how far off `distance_km` may be, not a bound: ZIPs are not circles.
+    uncertainty_km: float
     location_source: str  # "address" (geocoded street address) or "zip" (ZIP centroid)
     geocode_match: str | None  # Census "Exact" / "Non_Exact", when geocoded
     location_note: str | None  # why a geocode was rejected, if it was
 
     @property
-    def distance_is_bound(self) -> bool:
+    def approximate(self) -> bool:
         return self.location_source == "zip"
 
 
@@ -145,8 +148,7 @@ def find_hospitals(
     found = []
     for *fields, lat, lon, source, match, radius, note in con.execute(sql, params).fetchall():
         distance = haversine_km(origin[0], origin[1], lat, lon)
-        if source == "zip":
-            distance += radius
-        found.append(Hospital(*fields, round(distance, 1), source, match, note))
-    # Ties go to the better-located hospital, then to the name.
+        uncertainty = radius if source == "zip" else 0.0
+        found.append(Hospital(*fields, distance, uncertainty, source, match, note))
+    # Exact ties (hospitals sharing a centroid) go to the better-located one, then the name.
     return sorted(found, key=lambda h: (h.distance_km, h.location_source, h.name))[:limit]

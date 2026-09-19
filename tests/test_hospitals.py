@@ -33,6 +33,12 @@ def test_nearest_first_and_limited(con):
     assert [h.distance_km for h in found] == sorted(h.distance_km for h in found)
 
 
+def test_sorts_at_full_precision_and_rounds_only_for_display(con):
+    found = find_hospitals(con, "77030", limit=10)
+    assert any(h.distance_km != round(h.distance_km, 1) for h in found)
+    assert [h.distance_km for h in found] == sorted(h.distance_km for h in found)
+
+
 def test_limit_keeps_only_the_nearest(con):
     assert len(find_hospitals(con, "77030", limit=2)) == 2
 
@@ -65,13 +71,22 @@ def test_geocode_far_from_own_zip_is_rejected(con):
     assert all(h.ccn != "670135" for h in find_hospitals(con, "77049", limit=1))
 
 
-def test_zip_centroid_distance_is_an_upper_bound(con):
-    # 670122 has a freeway address the Census geocoder cannot match. It's in the query
-    # ZIP, so the bound is the ZIP's own radius (4.2 km), not a misleading 0.0.
+def test_zip_centroid_distance_is_approximate_with_uncertainty(con):
+    # 670122 has a freeway address the Census geocoder cannot match, so it sits at its
+    # ZIP centroid: distance 0 from the query ZIP, with the ZIP's size as the uncertainty.
     methodist = by_ccn(find_hospitals(con, "77385", limit=3), "670122")
     assert methodist.location_source == "zip"
-    assert methodist.distance_is_bound
-    assert methodist.distance_km == pytest.approx(4.2, abs=0.1)
+    assert methodist.approximate
+    assert methodist.distance_km == 0
+    assert methodist.uncertainty_km == pytest.approx(4.2, abs=0.1)
+    geocoded = by_ccn(find_hospitals(con, "77385", limit=3), "670059")
+    assert geocoded.uncertainty_km == 0
+
+
+def test_exact_ties_go_to_the_geocoded_hospital(con):
+    # Uncertainty is not folded into the ranking; only an exact tie prefers the better
+    # location. Here the ZIP-centroid hospital is at 0.0 and wins on distance alone.
+    assert find_hospitals(con, "77385", limit=1)[0].ccn == "670122"
 
 
 def test_unresolved_hospital_is_excluded_and_counted(con):

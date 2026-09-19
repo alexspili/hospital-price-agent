@@ -31,6 +31,7 @@ SELECTED = "selected"  # one entry clearly fits
 AMBIGUOUS = "ambiguous"  # several entries fit equally; ask which
 UNSUPPORTED_VARIANT = "unsupported variant"  # the service exists, but not in the variant asked for
 NOT_IN_CATALOG = "not in catalog"  # nothing covers the whole query
+NEEDS_CLARIFICATION = "needs clarification"  # a qualifier the catalog can't answer, or contradictory ones
 
 
 @dataclass(frozen=True)
@@ -77,13 +78,14 @@ def _tokens(text: str) -> set[str]:
     return set(re.findall(r"[a-z0-9]+", text)) - STOPWORDS
 
 
-def parse_query(query: str) -> tuple[set[str], dict[str, str], str]:
-    """Split a query into content tokens, requested qualifiers, and the stripped phrase."""
+def parse_query(query: str) -> tuple[set[str], dict[str, set[str]], str]:
+    """Split a query into content tokens, requested qualifiers (every value asked for,
+    so contradictions are visible), and the stripped phrase."""
     text = query.lower()
-    wanted: dict[str, str] = {}
+    wanted: dict[str, set[str]] = {}
     for pattern, key, value in QUALIFIER_PATTERNS:
         if re.search(pattern, text):
-            wanted.setdefault(key, value)
+            wanted.setdefault(key, set()).add(value)
             text = re.sub(pattern, " ", text)
     phrase = " ".join(text.split())
     return _tokens(phrase), wanted, phrase
@@ -100,12 +102,21 @@ def resolve(query: str, services: list[Service] | None = None) -> Resolution:
         if any(code == query for _, code in s.codes):
             return Resolution(SELECTED, s, (s,), f"code {query} matched exactly")
 
-    tokens, wanted, phrase = parse_query(query)
+    tokens, asked, phrase = parse_query(query)
     if not tokens:
         return Resolution(NOT_IN_CATALOG, None, (), "no searchable words in the query")
+    contradictory = {k: v for k, v in asked.items() if len(v) > 1}
+    if contradictory:
+        k, v = next(iter(contradictory.items()))
+        return Resolution(
+            NEEDS_CLARIFICATION, None, (),
+            f"the query asks for both {' and '.join(sorted(v))} {k}; which one?",
+        )
+    wanted = {k: next(iter(v)) for k, v in asked.items()}
 
     full: list[tuple[float, Service]] = []  # every content word matched, no qualifier conflict
     conflicts: list[Service] = []  # every word matched, but a different variant
+    unknown: list[tuple[Service, str]] = []  # every word matched, but a qualifier the entry doesn't declare
     partial: list[tuple[float, Service]] = []
     for s in services:
         coverage = len(tokens & _haystack(s)) / len(tokens)
@@ -115,11 +126,12 @@ def resolve(query: str, services: list[Service] | None = None) -> Resolution:
         if phrase == s.name.lower() or phrase in (a.lower() for a in s.aliases):
             score += 0.5  # the whole query is one of this entry's names
         conflict = False
+        undeclared = None
         for key, value in wanted.items():
             have = s.qualifiers.get(key)
             if have is None:
-                continue
-            if have == value:
+                undeclared = key  # never assume; the catalog must say
+            elif have == value:
                 score += 0.25
             else:
                 conflict = True
@@ -127,6 +139,8 @@ def resolve(query: str, services: list[Service] | None = None) -> Resolution:
             partial.append((score, s))
         elif conflict:
             conflicts.append(s)
+        elif undeclared:
+            unknown.append((s, undeclared))
         else:
             full.append((score, s))
 
@@ -137,6 +151,14 @@ def resolve(query: str, services: list[Service] | None = None) -> Resolution:
             return Resolution(SELECTED, ranked[0], ranked, "")
         tied = [s.name for _, s in full if _ == full[0][0]]
         return Resolution(AMBIGUOUS, None, ranked, f"{len(tied)} entries fit equally: " + "; ".join(tied))
+
+    if unknown:
+        s, key = unknown[0]
+        return Resolution(
+            NEEDS_CLARIFICATION, None, tuple(u for u, _ in unknown),
+            f"the catalog doesn't say whether {s.name} ({s.code_list}) is {wanted[key]} {key}; "
+            "ask before scanning",
+        )
 
     if conflicts:
         s = conflicts[0]

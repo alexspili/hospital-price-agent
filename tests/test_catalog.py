@@ -1,7 +1,7 @@
 import pytest
 
 from hpa import catalog
-from hpa.catalog import AMBIGUOUS, NOT_IN_CATALOG, SELECTED, UNSUPPORTED_VARIANT
+from hpa.catalog import AMBIGUOUS, NEEDS_CLARIFICATION, NOT_IN_CATALOG, SELECTED, UNSUPPORTED_VARIANT
 
 
 def test_all_seventy_cms_services_present():
@@ -48,6 +48,21 @@ def test_wrong_variant_is_unsupported_not_a_different_organ():
     assert r.service is None
     assert r.candidates[0].codes[0][1] == "73721"
     assert "with contrast is not on it" in r.reason
+
+
+@pytest.mark.parametrize(
+    "query, phrase",
+    [
+        ("knee mri with biopsy", "doesn't say whether MRI scan of leg joint (CPT 73721) is with biopsy"),
+        ("colonoscopy with contrast", "doesn't say whether Diagnostic examination of large bowel"),
+        ("knee mri with contrast without contrast", "both with and without contrast"),
+    ],
+)
+def test_undeclared_or_contradictory_qualifiers_ask_instead_of_guessing(query, phrase):
+    r = catalog.resolve(query)
+    assert r.verdict == NEEDS_CLARIFICATION
+    assert r.service is None
+    assert phrase in r.reason
 
 
 def test_ambiguous_lists_the_ties():

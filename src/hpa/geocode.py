@@ -1,12 +1,15 @@
 """Street-address coordinates from the Census Geocoder's free batch endpoint.
 
 ZIP centroids put every hospital in a ZIP at the same point and, for PO-box ZIPs, nowhere
-at all. The geocoder resolves ~85% of CMS hospital addresses to a rooftop-level point; the
-rest fall back to the ZIP centroid or stay unresolved (see hospitals.load_hospitals).
+at all. The geocoder matches ~85% of CMS hospital addresses to a point interpolated along
+the street's address range (not a rooftop; typically tens of metres off, occasionally the
+wrong side of a city, which hospitals.load_hospitals checks for). The rest fall back to
+the ZIP centroid or stay unresolved.
 """
 
 import csv
 import io
+import os
 from collections.abc import Iterable, Iterator
 
 import httpx
@@ -51,11 +54,19 @@ def hospital_address_rows(hgi_csv: str) -> list[AddressRow]:
 
 
 def write_coords_csv(coords: Iterable[Coordinate], dest: str) -> int:
-    with open(dest, "w", newline="") as f:
-        w = csv.writer(f, lineterminator="\n")
-        w.writerow(["ccn", "lat", "lon", "match"])
-        n = 0
-        for c in coords:
-            w.writerow(c)
-            n += 1
+    """Write via a temp file, so a batch that fails midway leaves no half-written CSV."""
+    tmp = f"{dest}.part"
+    try:
+        with open(tmp, "w", newline="") as f:
+            w = csv.writer(f, lineterminator="\n")
+            w.writerow(["ccn", "lat", "lon", "match"])
+            n = 0
+            for c in coords:
+                w.writerow(c)
+                n += 1
+        os.replace(tmp, dest)
+    except BaseException:
+        if os.path.exists(tmp):
+            os.remove(tmp)
+        raise
     return n
