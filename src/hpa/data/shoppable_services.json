@@ -1,9 +1,9 @@
 {
  "source": "CMS, 'Final list of 70 CMS-specified shoppable services' (45 CFR 180.60, Table 3 at 84 FR 65571). Codes are the 2020 CPT/HCPCS/MS-DRG primary codes as CMS printed them.",
- "verified_meaning": "verified = a person has checked, against real hospital files, that rows matched on these codes describe the same service with the same billing class and are fair to compare. Aliases are plain-English search terms added by this project, not CMS text.",
+ "reviewed_meaning": "reviewed = a person has confirmed that the aliases mean this service and recorded how hospital files represent it. Comparability of specific rows is a separate, per-comparison check. Aliases are plain-English search terms added by this project, not CMS text.",
  "services": [
   {
-   "id": "psychotherapy-30-min",
+   "id": "cpt-90832",
    "category": "Evaluation & Management",
    "name": "Psychotherapy, 30 min",
    "cms_code_as_listed": "90832",
@@ -13,15 +13,16 @@
      "code": "90832"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "therapy session 30 minutes",
     "counseling"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "psychotherapy-45-min",
+   "id": "cpt-90834",
    "category": "Evaluation & Management",
    "name": "Psychotherapy, 45 min",
    "cms_code_as_listed": "90834",
@@ -31,15 +32,16 @@
      "code": "90834"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "therapy session 45 minutes",
     "counseling"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "psychotherapy-60-min",
+   "id": "cpt-90837",
    "category": "Evaluation & Management",
    "name": "Psychotherapy, 60 min",
    "cms_code_as_listed": "90837",
@@ -49,15 +51,16 @@
      "code": "90837"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "therapy session 60 minutes",
     "counseling"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "family-psychotherapy-not-including-patient-50-min",
+   "id": "cpt-90846",
    "category": "Evaluation & Management",
    "name": "Family psychotherapy, not including patient, 50 min",
    "cms_code_as_listed": "90846",
@@ -67,14 +70,15 @@
      "code": "90846"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "family therapy without patient"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "family-psychotherapy-including-patient-50-min",
+   "id": "cpt-90847",
    "category": "Evaluation & Management",
    "name": "Family psychotherapy, including patient, 50 min",
    "cms_code_as_listed": "90847",
@@ -84,14 +88,15 @@
      "code": "90847"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "family therapy with patient"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "group-psychotherapy",
+   "id": "cpt-90853",
    "category": "Evaluation & Management",
    "name": "Group psychotherapy",
    "cms_code_as_listed": "90853",
@@ -101,14 +106,15 @@
      "code": "90853"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "group therapy"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "new-patient-office-or-other-outpatient-visit-typically-30-mi",
+   "id": "cpt-99203",
    "category": "Evaluation & Management",
    "name": "New patient office or other outpatient visit, typically 30 min",
    "cms_code_as_listed": "99203",
@@ -118,15 +124,16 @@
      "code": "99203"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "new patient visit",
     "doctor visit level 3"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "new-patient-office-or-other-outpatient-visit-typically-45-mi",
+   "id": "cpt-99204",
    "category": "Evaluation & Management",
    "name": "New patient office or other outpatient visit, typically 45 min",
    "cms_code_as_listed": "99204",
@@ -136,15 +143,16 @@
      "code": "99204"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "new patient visit",
     "doctor visit level 4"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "new-patient-office-or-other-outpatient-visit-typically-60-mi",
+   "id": "cpt-99205",
    "category": "Evaluation & Management",
    "name": "New patient office or other outpatient visit, typically 60 min",
    "cms_code_as_listed": "99205",
@@ -154,15 +162,16 @@
      "code": "99205"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "new patient visit",
     "doctor visit level 5"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "patient-office-consultation-typically-40-min",
+   "id": "cpt-99243",
    "category": "Evaluation & Management",
    "name": "Patient office consultation, typically 40 min",
    "cms_code_as_listed": "99243",
@@ -172,14 +181,15 @@
      "code": "99243"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "specialist consultation"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "patient-office-consultation-typically-60-min",
+   "id": "cpt-99244",
    "category": "Evaluation & Management",
    "name": "Patient office consultation, typically 60 min",
    "cms_code_as_listed": "99244",
@@ -189,14 +199,15 @@
      "code": "99244"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "specialist consultation"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "initial-new-patient-preventive-medicine-evaluation-18-39-yea",
+   "id": "cpt-99385",
    "category": "Evaluation & Management",
    "name": "Initial new patient preventive medicine evaluation (18-39 years)",
    "cms_code_as_listed": "99385",
@@ -206,16 +217,17 @@
      "code": "99385"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "annual physical",
     "wellness exam",
     "checkup 18-39"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "initial-new-patient-preventive-medicine-evaluation-40-64-yea",
+   "id": "cpt-99386",
    "category": "Evaluation & Management",
    "name": "Initial new patient preventive medicine evaluation (40-64 years)",
    "cms_code_as_listed": "99386",
@@ -225,16 +237,17 @@
      "code": "99386"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "annual physical",
     "wellness exam",
     "checkup 40-64"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "basic-metabolic-panel",
+   "id": "cpt-80048",
    "category": "Laboratory & Pathology",
    "name": "Basic metabolic panel",
    "cms_code_as_listed": "80048",
@@ -244,15 +257,16 @@
      "code": "80048"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "BMP",
     "blood chemistry basic"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "blood-test-comprehensive-group-of-blood-chemicals",
+   "id": "cpt-80053",
    "category": "Laboratory & Pathology",
    "name": "Blood test, comprehensive group of blood chemicals",
    "cms_code_as_listed": "80053",
@@ -262,15 +276,16 @@
      "code": "80053"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "CMP",
     "comprehensive metabolic panel"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "obstetric-blood-test-panel",
+   "id": "cpt-80055",
    "category": "Laboratory & Pathology",
    "name": "Obstetric blood test panel",
    "cms_code_as_listed": "80055",
@@ -280,15 +295,16 @@
      "code": "80055"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "prenatal panel",
     "pregnancy blood panel"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "blood-test-lipids-cholesterol-and-triglycerides",
+   "id": "cpt-80061",
    "category": "Laboratory & Pathology",
    "name": "Blood test, lipids (cholesterol and triglycerides)",
    "cms_code_as_listed": "80061",
@@ -298,15 +314,16 @@
      "code": "80061"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "lipid panel",
     "cholesterol test"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "kidney-function-panel-test",
+   "id": "cpt-80069",
    "category": "Laboratory & Pathology",
    "name": "Kidney function panel test",
    "cms_code_as_listed": "80069",
@@ -316,15 +333,16 @@
      "code": "80069"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "renal panel",
     "kidney panel"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "liver-function-blood-test-panel",
+   "id": "cpt-80076",
    "category": "Laboratory & Pathology",
    "name": "Liver function blood test panel",
    "cms_code_as_listed": "80076",
@@ -334,16 +352,17 @@
      "code": "80076"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "hepatic panel",
     "liver panel",
     "LFT"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "manual-urinalysis-test-with-examination-using-microscope",
+   "id": "cpt-81000-81001",
    "category": "Laboratory & Pathology",
    "name": "Manual urinalysis test with examination using microscope",
    "cms_code_as_listed": "81000 or 81001",
@@ -357,15 +376,16 @@
      "code": "81001"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "urinalysis manual",
     "urine test microscope"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "automated-urinalysis-test",
+   "id": "cpt-81002-81003",
    "category": "Laboratory & Pathology",
    "name": "Automated urinalysis test",
    "cms_code_as_listed": "81002 or 81003",
@@ -379,15 +399,16 @@
      "code": "81003"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "urinalysis automated",
     "urine test"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "psa-prostate-specific-antigen",
+   "id": "cpt-84153-84154",
    "category": "Laboratory & Pathology",
    "name": "PSA (prostate specific antigen)",
    "cms_code_as_listed": "84153-84154",
@@ -401,15 +422,16 @@
      "code": "84154"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "PSA test",
     "prostate screening blood test"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "blood-test-thyroid-stimulating-hormone-tsh",
+   "id": "cpt-84443",
    "category": "Laboratory & Pathology",
    "name": "Blood test, thyroid stimulating hormone (TSH)",
    "cms_code_as_listed": "84443",
@@ -419,15 +441,16 @@
      "code": "84443"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "TSH",
     "thyroid test"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "complete-blood-cell-count-with-differential-white-blood-cell",
+   "id": "cpt-85025",
    "category": "Laboratory & Pathology",
    "name": "Complete blood cell count, with differential white blood cells, automated",
    "cms_code_as_listed": "85025",
@@ -437,14 +460,15 @@
      "code": "85025"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "CBC with differential"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "complete-blood-count-automated",
+   "id": "cpt-85027",
    "category": "Laboratory & Pathology",
    "name": "Complete blood count, automated",
    "cms_code_as_listed": "85027",
@@ -454,15 +478,16 @@
      "code": "85027"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "CBC",
     "complete blood count"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "blood-test-clotting-time",
+   "id": "cpt-85610",
    "category": "Laboratory & Pathology",
    "name": "Blood test, clotting time",
    "cms_code_as_listed": "85610",
@@ -472,16 +497,17 @@
      "code": "85610"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "PT",
     "prothrombin time",
     "INR"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "coagulation-assessment-blood-test",
+   "id": "cpt-85730",
    "category": "Laboratory & Pathology",
    "name": "Coagulation assessment blood test",
    "cms_code_as_listed": "85730",
@@ -491,15 +517,16 @@
      "code": "85730"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "PTT",
     "partial thromboplastin time"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "ct-scan-head-or-brain-without-contrast",
+   "id": "cpt-70450",
    "category": "Radiology",
    "name": "CT scan, head or brain, without contrast",
    "cms_code_as_listed": "70450",
@@ -509,15 +536,18 @@
      "code": "70450"
     }
    ],
+   "qualifiers": {
+    "contrast": "without"
+   },
    "aliases": [
     "head CT",
     "brain CT without contrast"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "mri-scan-of-brain-before-and-after-contrast",
+   "id": "cpt-70553",
    "category": "Radiology",
    "name": "MRI scan of brain before and after contrast",
    "cms_code_as_listed": "70553",
@@ -527,15 +557,18 @@
      "code": "70553"
     }
    ],
+   "qualifiers": {
+    "contrast": "with and without"
+   },
    "aliases": [
     "brain MRI with and without contrast",
     "head MRI"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "x-ray-lower-back-minimum-four-views",
+   "id": "cpt-72110",
    "category": "Radiology",
    "name": "X-Ray, lower back, minimum four views",
    "cms_code_as_listed": "72110",
@@ -545,15 +578,16 @@
      "code": "72110"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "lumbar spine x-ray",
     "lower back x-ray"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "mri-scan-of-lower-spinal-canal",
+   "id": "cpt-72148",
    "category": "Radiology",
    "name": "MRI scan of lower spinal canal",
    "cms_code_as_listed": "72148",
@@ -563,15 +597,18 @@
      "code": "72148"
     }
    ],
+   "qualifiers": {
+    "contrast": "without"
+   },
    "aliases": [
     "lumbar MRI",
     "lower back MRI without contrast"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "ct-scan-pelvis-with-contrast",
+   "id": "cpt-72193",
    "category": "Radiology",
    "name": "CT scan, pelvis, with contrast",
    "cms_code_as_listed": "72193",
@@ -581,14 +618,17 @@
      "code": "72193"
     }
    ],
+   "qualifiers": {
+    "contrast": "with"
+   },
    "aliases": [
     "pelvic CT with contrast"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "mri-scan-of-leg-joint",
+   "id": "cpt-73721",
    "category": "Radiology",
    "name": "MRI scan of leg joint",
    "cms_code_as_listed": "73721",
@@ -598,17 +638,20 @@
      "code": "73721"
     }
    ],
+   "qualifiers": {
+    "contrast": "without"
+   },
    "aliases": [
     "knee MRI",
     "hip MRI",
     "ankle MRI",
-    "lower extremity joint MRI without contrast"
+    "lower extremity joint MRI"
    ],
-   "verified": false,
-   "notes": ""
+   "reviewed": false,
+   "notes": "Without contrast. Knee MRI with contrast (73722) or with and without (73723) is not on the CMS list."
   },
   {
-   "id": "ct-scan-of-abdomen-and-pelvis-with-contrast",
+   "id": "cpt-74177",
    "category": "Radiology",
    "name": "CT scan of abdomen and pelvis with contrast",
    "cms_code_as_listed": "74177",
@@ -618,15 +661,18 @@
      "code": "74177"
     }
    ],
+   "qualifiers": {
+    "contrast": "with"
+   },
    "aliases": [
     "abdominal CT",
     "CT abdomen pelvis with contrast"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "ultrasound-of-abdomen",
+   "id": "cpt-76700",
    "category": "Radiology",
    "name": "Ultrasound of abdomen",
    "cms_code_as_listed": "76700",
@@ -636,14 +682,15 @@
      "code": "76700"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "abdominal ultrasound complete"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "abdominal-ultrasound-of-pregnant-uterus-greater-or-equal-to-",
+   "id": "cpt-76805",
    "category": "Radiology",
    "name": "Abdominal ultrasound of pregnant uterus (greater or equal to 14 weeks 0 days) single or first fetus",
    "cms_code_as_listed": "76805",
@@ -653,16 +700,17 @@
      "code": "76805"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "pregnancy ultrasound",
     "fetal ultrasound",
     "anatomy scan"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "ultrasound-pelvis-through-vagina",
+   "id": "cpt-76830",
    "category": "Radiology",
    "name": "Ultrasound pelvis through vagina",
    "cms_code_as_listed": "76830",
@@ -672,14 +720,15 @@
      "code": "76830"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "transvaginal ultrasound"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "mammography-of-one-breast",
+   "id": "cpt-77065",
    "category": "Radiology",
    "name": "Mammography of one breast",
    "cms_code_as_listed": "77065",
@@ -689,15 +738,18 @@
      "code": "77065"
     }
    ],
+   "qualifiers": {
+    "side": "one breast"
+   },
    "aliases": [
     "diagnostic mammogram one breast",
     "unilateral mammogram"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "mammography-of-both-breasts",
+   "id": "cpt-77066",
    "category": "Radiology",
    "name": "Mammography of both breasts",
    "cms_code_as_listed": "77066",
@@ -707,15 +759,18 @@
      "code": "77066"
     }
    ],
+   "qualifiers": {
+    "side": "both breasts"
+   },
    "aliases": [
     "diagnostic mammogram both breasts",
     "bilateral mammogram"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "mammography-screening-bilateral",
+   "id": "cpt-77067",
    "category": "Radiology",
    "name": "Mammography, screening, bilateral",
    "cms_code_as_listed": "77067",
@@ -725,15 +780,16 @@
      "code": "77067"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "screening mammogram",
     "annual mammogram"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "cardiac-valve-and-other-major-cardiothoracic-procedures-with",
+   "id": "drg-216",
    "category": "Medicine & Surgery",
    "name": "Cardiac valve and other major cardiothoracic procedures with cardiac catheterization with major complications or comorbidities",
    "cms_code_as_listed": "MS-DRG 216",
@@ -743,14 +799,15 @@
      "code": "216"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "heart valve surgery"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "spinal-fusion-except-cervical-without-major-comorbid-conditi",
+   "id": "drg-460",
    "category": "Medicine & Surgery",
    "name": "Spinal fusion except cervical without major comorbid conditions or complications (MCC)",
    "cms_code_as_listed": "MS-DRG 460",
@@ -760,16 +817,17 @@
      "code": "460"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "spinal fusion",
     "lumbar fusion",
     "back fusion surgery"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "major-joint-replacement-or-reattachment-of-lower-extremity-w",
+   "id": "drg-470",
    "category": "Medicine & Surgery",
    "name": "Major joint replacement or reattachment of lower extremity without major comorbid conditions or complications (MCC)",
    "cms_code_as_listed": "MS-DRG 470",
@@ -779,16 +837,17 @@
      "code": "470"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "knee replacement",
     "hip replacement",
     "joint replacement"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "cervical-spinal-fusion-without-comorbid-conditions-cc-or-maj",
+   "id": "drg-473",
    "category": "Medicine & Surgery",
    "name": "Cervical spinal fusion without comorbid conditions (CC) or major comorbid conditions or complications (MCC)",
    "cms_code_as_listed": "MS-DRG 473",
@@ -798,15 +857,16 @@
      "code": "473"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "neck fusion",
     "cervical fusion"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "uterine-and-adnexa-procedures-for-non-malignancy-without-com",
+   "id": "drg-743",
    "category": "Medicine & Surgery",
    "name": "Uterine and adnexa procedures for non-malignancy without comorbid conditions (CC) or major comorbid conditions or complications (MCC)",
    "cms_code_as_listed": "MS-DRG 743",
@@ -816,14 +876,15 @@
      "code": "743"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "hysterectomy"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "removal-of-1-or-more-breast-growth-open-procedure",
+   "id": "cpt-19120",
    "category": "Medicine & Surgery",
    "name": "Removal of 1 or more breast growth, open procedure",
    "cms_code_as_listed": "19120",
@@ -833,16 +894,16 @@
      "code": "19120"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "breast lump removal",
-    "breast biopsy open",
-    "lumpectomy"
+    "excision of breast lesion"
    ],
-   "verified": false,
-   "notes": ""
+   "reviewed": false,
+   "notes": "Excision of a benign breast lesion. Not a lumpectomy for cancer (that is CPT 19301)."
   },
   {
-   "id": "shaving-of-shoulder-bone-using-an-endoscope",
+   "id": "cpt-29826",
    "category": "Medicine & Surgery",
    "name": "Shaving of shoulder bone using an endoscope",
    "cms_code_as_listed": "29826",
@@ -852,15 +913,16 @@
      "code": "29826"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "shoulder arthroscopy",
     "subacromial decompression"
    ],
-   "verified": false,
-   "notes": ""
+   "reviewed": false,
+   "notes": "An add-on code since CPT 2012; must accompany another shoulder arthroscopy code, so a row for it alone is not a procedure price."
   },
   {
-   "id": "removal-of-one-knee-cartilage-using-an-endoscope",
+   "id": "cpt-29881",
    "category": "Medicine & Surgery",
    "name": "Removal of one knee cartilage using an endoscope",
    "cms_code_as_listed": "29881",
@@ -870,16 +932,17 @@
      "code": "29881"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "knee arthroscopy",
     "meniscectomy",
     "meniscus surgery"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "removal-of-tonsils-and-adenoid-glands-patient-younger-than-a",
+   "id": "cpt-42820",
    "category": "Medicine & Surgery",
    "name": "Removal of tonsils and adenoid glands patient younger than age 12",
    "cms_code_as_listed": "42820",
@@ -889,15 +952,16 @@
      "code": "42820"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "tonsillectomy child",
     "tonsils and adenoids removal"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "diagnostic-examination-of-esophagus-stomach-and-or-upper-sma",
+   "id": "cpt-43235",
    "category": "Medicine & Surgery",
    "name": "Diagnostic examination of esophagus, stomach, and/or upper small bowel using an endoscope",
    "cms_code_as_listed": "43235",
@@ -907,15 +971,18 @@
      "code": "43235"
     }
    ],
+   "qualifiers": {
+    "biopsy": "without"
+   },
    "aliases": [
     "upper endoscopy",
     "EGD"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "biopsy-of-the-esophagus-stomach-and-or-upper-small-bowel-usi",
+   "id": "cpt-43239",
    "category": "Medicine & Surgery",
    "name": "Biopsy of the esophagus, stomach, and/or upper small bowel using an endoscope",
    "cms_code_as_listed": "43239",
@@ -925,15 +992,18 @@
      "code": "43239"
     }
    ],
+   "qualifiers": {
+    "biopsy": "with"
+   },
    "aliases": [
     "upper endoscopy with biopsy",
     "EGD biopsy"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "diagnostic-examination-of-large-bowel-using-an-endoscope",
+   "id": "cpt-45378",
    "category": "Medicine & Surgery",
    "name": "Diagnostic examination of large bowel using an endoscope",
    "cms_code_as_listed": "45378",
@@ -943,15 +1013,18 @@
      "code": "45378"
     }
    ],
+   "qualifiers": {
+    "biopsy": "without"
+   },
    "aliases": [
     "colonoscopy",
     "screening colonoscopy"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "biopsy-of-large-bowel-using-an-endoscope",
+   "id": "cpt-45380",
    "category": "Medicine & Surgery",
    "name": "Biopsy of large bowel using an endoscope",
    "cms_code_as_listed": "45380",
@@ -961,14 +1034,17 @@
      "code": "45380"
     }
    ],
+   "qualifiers": {
+    "biopsy": "with"
+   },
    "aliases": [
     "colonoscopy with biopsy"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "removal-of-polyps-or-growths-of-large-bowel-using-an-endosco",
+   "id": "cpt-45385",
    "category": "Medicine & Surgery",
    "name": "Removal of polyps or growths of large bowel using an endoscope",
    "cms_code_as_listed": "45385",
@@ -978,15 +1054,16 @@
      "code": "45385"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "colonoscopy with polyp removal",
     "polypectomy"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "ultrasound-examination-of-lower-large-bowel-using-an-endosco",
+   "id": "cpt-45391",
    "category": "Medicine & Surgery",
    "name": "Ultrasound examination of lower large bowel using an endoscope",
    "cms_code_as_listed": "45391",
@@ -996,15 +1073,16 @@
      "code": "45391"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "colonoscopy with ultrasound",
     "endoscopic ultrasound colon"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "removal-of-gallbladder-using-an-endoscope",
+   "id": "cpt-47562",
    "category": "Medicine & Surgery",
    "name": "Removal of gallbladder using an endoscope",
    "cms_code_as_listed": "47562",
@@ -1014,15 +1092,16 @@
      "code": "47562"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "gallbladder removal",
     "laparoscopic cholecystectomy"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "repair-of-groin-hernia-patient-age-5-years-or-older",
+   "id": "cpt-49505",
    "category": "Medicine & Surgery",
    "name": "Repair of groin hernia patient age 5 years or older",
    "cms_code_as_listed": "49505",
@@ -1032,15 +1111,16 @@
      "code": "49505"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "hernia repair",
     "inguinal hernia surgery"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "biopsy-of-prostate-gland",
+   "id": "cpt-55700",
    "category": "Medicine & Surgery",
    "name": "Biopsy of prostate gland",
    "cms_code_as_listed": "55700",
@@ -1050,14 +1130,15 @@
      "code": "55700"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "prostate biopsy"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "surgical-removal-of-prostate-and-surrounding-lymph-nodes-usi",
+   "id": "cpt-55866",
    "category": "Medicine & Surgery",
    "name": "Surgical removal of prostate and surrounding lymph nodes using an endoscope",
    "cms_code_as_listed": "55866",
@@ -1067,15 +1148,16 @@
      "code": "55866"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "prostatectomy",
     "laparoscopic prostate removal"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "routine-obstetric-care-for-vaginal-delivery-including-pre-an",
+   "id": "cpt-59400",
    "category": "Medicine & Surgery",
    "name": "Routine obstetric care for vaginal delivery, including pre-and post-delivery care",
    "cms_code_as_listed": "59400",
@@ -1085,16 +1167,17 @@
      "code": "59400"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "vaginal delivery",
     "childbirth",
     "having a baby"
    ],
-   "verified": false,
-   "notes": ""
+   "reviewed": false,
+   "notes": "Physician global obstetric package. The hospital side of a delivery is billed as an MS-DRG (e.g. 806/807), not this code."
   },
   {
-   "id": "routine-obstetric-care-for-cesarean-delivery-including-pre-a",
+   "id": "cpt-59510",
    "category": "Medicine & Surgery",
    "name": "Routine obstetric care for cesarean delivery, including pre-and post-delivery care",
    "cms_code_as_listed": "59510",
@@ -1104,15 +1187,16 @@
      "code": "59510"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "c-section",
     "cesarean delivery"
    ],
-   "verified": false,
-   "notes": ""
+   "reviewed": false,
+   "notes": "Physician global obstetric package. The hospital side of a delivery is billed as an MS-DRG (e.g. 806/807), not this code."
   },
   {
-   "id": "routine-obstetric-care-for-vaginal-delivery-after-prior-cesa",
+   "id": "cpt-59610",
    "category": "Medicine & Surgery",
    "name": "Routine obstetric care for vaginal delivery after prior cesarean delivery including pre-and post-delivery care",
    "cms_code_as_listed": "59610",
@@ -1122,15 +1206,16 @@
      "code": "59610"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "VBAC",
     "vaginal birth after cesarean"
    ],
-   "verified": false,
-   "notes": ""
+   "reviewed": false,
+   "notes": "Physician global obstetric package. The hospital side of a delivery is billed as an MS-DRG (e.g. 806/807), not this code."
   },
   {
-   "id": "injection-of-substance-into-spinal-canal-of-lower-back-or-sa",
+   "id": "cpt-62322-62323",
    "category": "Medicine & Surgery",
    "name": "Injection of substance into spinal canal of lower back or sacrum using imaging guidance",
    "cms_code_as_listed": "62322-62323",
@@ -1144,15 +1229,16 @@
      "code": "62323"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "epidural steroid injection lower back",
     "lumbar epidural"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "injections-of-anesthetic-and-or-steroid-drug-into-lower-or-s",
+   "id": "cpt-64483",
    "category": "Medicine & Surgery",
    "name": "Injections of anesthetic and/or steroid drug into lower or sacral spine nerve root using imaging guidance",
    "cms_code_as_listed": "64483",
@@ -1162,15 +1248,16 @@
      "code": "64483"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "nerve block lower back",
     "transforaminal epidural injection"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "removal-of-recurring-cataract-in-lens-capsule-using-laser",
+   "id": "cpt-66821",
    "category": "Medicine & Surgery",
    "name": "Removal of recurring cataract in lens capsule using laser",
    "cms_code_as_listed": "66821",
@@ -1180,15 +1267,16 @@
      "code": "66821"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "YAG laser capsulotomy",
     "secondary cataract laser"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "removal-of-cataract-with-insertion-of-lens",
+   "id": "cpt-66984",
    "category": "Medicine & Surgery",
    "name": "Removal of cataract with insertion of lens",
    "cms_code_as_listed": "66984",
@@ -1198,15 +1286,16 @@
      "code": "66984"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "cataract surgery",
     "lens replacement"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "electrocardiogram-routine-with-interpretation-and-report",
+   "id": "cpt-93000",
    "category": "Medicine & Surgery",
    "name": "Electrocardiogram, routine, with interpretation and report",
    "cms_code_as_listed": "93000",
@@ -1216,16 +1305,17 @@
      "code": "93000"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "EKG",
     "ECG",
     "electrocardiogram"
    ],
-   "verified": false,
-   "notes": ""
+   "reviewed": false,
+   "notes": "Global code (tracing + interpretation). Hospital files often list 93005 (tracing only) instead."
   },
   {
-   "id": "insertion-of-catheter-into-left-heart-for-diagnosis",
+   "id": "cpt-93452",
    "category": "Medicine & Surgery",
    "name": "Insertion of catheter into left heart for diagnosis",
    "cms_code_as_listed": "93452",
@@ -1235,15 +1325,16 @@
      "code": "93452"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "cardiac catheterization",
     "heart cath"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "sleep-study",
+   "id": "cpt-95810",
    "category": "Medicine & Surgery",
    "name": "Sleep study",
    "cms_code_as_listed": "95810",
@@ -1253,15 +1344,16 @@
      "code": "95810"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "polysomnography",
     "sleep apnea test"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   },
   {
-   "id": "physical-therapy-therapeutic-exercise",
+   "id": "cpt-97110",
    "category": "Medicine & Surgery",
    "name": "Physical therapy, therapeutic exercise",
    "cms_code_as_listed": "97110",
@@ -1271,11 +1363,12 @@
      "code": "97110"
     }
    ],
+   "qualifiers": {},
    "aliases": [
     "physical therapy",
     "PT session"
    ],
-   "verified": false,
+   "reviewed": false,
    "notes": ""
   }
  ]

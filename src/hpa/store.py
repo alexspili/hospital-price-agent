@@ -14,7 +14,9 @@ DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 DEFAULT_DB = DATA_DIR / "hpa.duckdb"
 
 
-def connect(path: Path | str = DEFAULT_DB) -> duckdb.DuckDBPyConnection:
+def connect(path: Path | str = DEFAULT_DB, read_only: bool = False) -> duckdb.DuckDBPyConnection:
+    """Open the store. A DuckDB file has one writer at a time, so every query path opens
+    read-only and only `hpa setup` (and, later, the scan worker) opens for writing."""
     if str(path) != ":memory:":
         Path(path).parent.mkdir(parents=True, exist_ok=True)
-    return duckdb.connect(str(path))
+    return duckdb.connect(str(path), read_only=read_only)

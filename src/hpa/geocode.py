@@ -52,7 +52,7 @@ def hospital_address_rows(hgi_csv: str) -> list[AddressRow]:
 
 def write_coords_csv(coords: Iterable[Coordinate], dest: str) -> int:
     with open(dest, "w", newline="") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["ccn", "lat", "lon", "match"])
         n = 0
         for c in coords:

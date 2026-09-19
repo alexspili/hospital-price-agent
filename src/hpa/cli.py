@@ -2,16 +2,11 @@
 
 import argparse
 import sys
+from pathlib import Path
 
 from hpa import catalog, reference, store
 from hpa.geo import KM_PER_MILE, load_zcta
-from hpa.hospitals import (
-    DEFAULT_TYPES,
-    UnknownZip,
-    find_hospitals,
-    load_hospitals,
-    location_counts,
-)
+from hpa.hospitals import UnknownZip, find_hospitals, load_hospitals, location_counts
 
 
 def cmd_setup(args: argparse.Namespace) -> int:
@@ -25,49 +20,65 @@ def cmd_setup(args: argparse.Namespace) -> int:
             coords_csv, matched = reference.geocode_hospitals(client, hgi_csv)
             print(f"geocoded {matched:,} addresses")
 
-    con = store.connect(args.db)
+    # Rebuild from scratch so tables from older versions never linger.
+    db = Path(args.db)
+    if db.exists():
+        db.unlink()
+    con = store.connect(db)
     print(f"loaded {load_zcta(con, str(zcta_txt)):,} ZIP centroids")
     print(f"loaded {load_hospitals(con, str(hgi_csv), coords_csv and str(coords_csv)):,} hospitals")
     counts = location_counts(con)
+    rejected = con.execute("SELECT count(*) FROM hospitals WHERE location_note IS NOT NULL").fetchone()[0]
     print(
-        f"located {counts['address']:,} by street address, {counts['zip']:,} by ZIP centroid; "
+        f"located {counts['address']:,} by street address, {counts['zip']:,} by ZIP centroid "
+        f"({rejected} geocodes rejected as too far from their ZIP); "
         f"{counts['unresolved']} unresolved (excluded from results)"
     )
     return 0
 
 
 def cmd_hospitals(args: argparse.Namespace) -> int:
-    con = store.connect(args.db)
-    if not con.execute("SELECT 1 FROM duckdb_tables() WHERE table_name = 'hospitals'").fetchone():
+    if not Path(args.db).exists():
         print("no hospital data yet; run `hpa setup` first", file=sys.stderr)
         return 1
+    con = store.connect(args.db, read_only=True)
     try:
-        types = None if args.all_types else DEFAULT_TYPES
-        found = find_hospitals(con, args.zip, args.limit, types=types)
+        found = find_hospitals(con, args.zip, args.limit, include_federal=args.include_federal)
     except UnknownZip as e:
         print(e, file=sys.stderr)
         return 1
-    print(f"nearest {len(found)} hospitals to {args.zip}")
+    print(f"nearest {len(found)} hospitals to the centre of {args.zip}")
     for h in found:
-        note = "  (ZIP centroid)" if h.location_source == "zip" else ""
         miles = h.distance_km / KM_PER_MILE
-        print(f"  {miles:>5.1f} mi  {h.name}  [{h.ccn}, {h.hospital_type}]{note}")
+        shown = f"<= {miles:.1f} mi" if h.distance_is_bound else f"{miles:>7.1f} mi"
+        note = "  (ZIP centroid)" if h.distance_is_bound else ""
+        print(f"  {shown:>10}  {h.name}  [{h.ccn}, {h.hospital_type}]{note}")
     return 0
 
 
 def cmd_catalog(args: argparse.Namespace) -> int:
     services = catalog.load()
-    if args.query:
-        services = catalog.search(args.query, services)
-        if not services:
-            print(f"nothing in the catalog matches {args.query!r}", file=sys.stderr)
-            return 1
-    verified = sum(s.verified for s in catalog.load())
-    print(f"{len(services)} services ({verified} of 70 hand-verified)")
-    for s in services:
-        flag = "verified" if s.verified else "unverified"
-        print(f"  {s.code_list:<18} {s.name}  [{flag}]")
-    return 0
+    reviewed = sum(s.reviewed for s in services)
+    if not args.query:
+        print(f"{len(services)} services ({reviewed} of {len(services)} mapping-reviewed)")
+        for s in services:
+            print(f"  {s.code_list:<18} {s.name}  [{'reviewed' if s.reviewed else 'unreviewed'}]")
+        return 0
+
+    r = catalog.resolve(args.query, services)
+    if r.verdict == catalog.SELECTED:
+        s = r.service
+        print(f"{r.verdict}: {s.name} ({s.code_list})  [{'reviewed' if s.reviewed else 'unreviewed'}]")
+        if s.notes:
+            print(f"  note: {s.notes}")
+        others = [c for c in r.candidates if c is not s]
+        if others:
+            print("  other candidates: " + "; ".join(f"{c.name} ({c.code_list})" for c in others))
+        return 0
+    print(f"{r.verdict}: {r.reason}")
+    for c in r.candidates:
+        print(f"  {c.code_list:<18} {c.name}")
+    return 1
 
 
 def positive_int(value: str) -> int:
@@ -88,9 +99,9 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("hospitals", help="list the hospitals nearest a ZIP code")
     p.add_argument("zip")
     p.add_argument("--limit", type=positive_int, default=5, help="how many hospitals (default 5)")
-    p.add_argument("--all-types", action="store_true", help="include psychiatric, federal, long-term")
+    p.add_argument("--include-federal", action="store_true", help="include VA and DoD hospitals, which are exempt from the rule")
 
-    p = sub.add_parser("catalog", help="list or search the 70 CMS shoppable services")
+    p = sub.add_parser("catalog", help="list the 70 CMS shoppable services, or resolve a query to one")
     p.add_argument("query", nargs="?", help='e.g. "knee mri" or a code like 45378')
 
     args = parser.parse_args(argv)

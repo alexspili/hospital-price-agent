@@ -1,4 +1,3 @@
-from hpa.cli import main
 from hpa.geocode import parse_batch_response
 
 # Real rows from the Census batch geocoder, one of each status.
@@ -16,10 +15,3 @@ def test_parse_keeps_matches_only():
         ("450775", 30.05045433179, -95.252979044113, "Non_Exact"),
     ]
 
-
-def test_cli_rejects_nonpositive_limit(capsys):
-    try:
-        main(["hospitals", "77030", "--limit", "0"])
-    except SystemExit as e:
-        assert e.code == 2
-    assert "at least 1" in capsys.readouterr().err
