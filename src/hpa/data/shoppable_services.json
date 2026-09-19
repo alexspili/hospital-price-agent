@@ -483,7 +483,90 @@
     "CBC",
     "complete blood count"
    ],
-   "reviewed": false,
+   "reviewed": {
+    "reviewer": "Alex Spiliotopoulos",
+    "date": "2026-09-19",
+    "alias_confirmed": true,
+    "hospitals": [
+     {
+      "hospital": "Texas Childrens Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Baylor St Lukes Medical Center",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 10588/charge 1"
+     },
+     {
+      "hospital": "Houston Methodist Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 10713/charge 1"
+     },
+     {
+      "hospital": "Harris Health",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 36051"
+     },
+     {
+      "hospital": "Houston Methodist The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 10719/charge 1"
+     },
+     {
+      "hospital": "CHI St Lukes Lakeside Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 10630/charge 1"
+     },
+     {
+      "hospital": "St Luke's The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 10630/charge 1"
+     },
+     {
+      "hospital": "Woodland Springs",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Elite Hospital Kingwood",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 229"
+     },
+     {
+      "hospital": "Kingwood Pines Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "HCA Houston Healthcare Kingwood",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "item 308567/charge 1"
+     }
+    ]
+   },
    "notes": ""
   },
   {
@@ -543,7 +626,90 @@
     "head CT",
     "brain CT without contrast"
    ],
-   "reviewed": false,
+   "reviewed": {
+    "reviewer": "Alex Spiliotopoulos",
+    "date": "2026-09-19",
+    "alias_confirmed": true,
+    "hospitals": [
+     {
+      "hospital": "Texas Childrens Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "row 26951"
+     },
+     {
+      "hospital": "Baylor St Lukes Medical Center",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 8783/charge 1"
+     },
+     {
+      "hospital": "Houston Methodist Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 11945/charge 1"
+     },
+     {
+      "hospital": "Harris Health",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 34428"
+     },
+     {
+      "hospital": "Houston Methodist The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 11959/charge 1"
+     },
+     {
+      "hospital": "CHI St Lukes Lakeside Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 8825/charge 1"
+     },
+     {
+      "hospital": "St Luke's The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 8825/charge 1"
+     },
+     {
+      "hospital": "Woodland Springs",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Elite Hospital Kingwood",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 508"
+     },
+     {
+      "hospital": "Kingwood Pines Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "HCA Houston Healthcare Kingwood",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     }
+    ]
+   },
    "notes": ""
   },
   {
@@ -647,7 +813,90 @@
     "ankle MRI",
     "lower extremity joint MRI"
    ],
-   "reviewed": false,
+   "reviewed": {
+    "reviewer": "Alex Spiliotopoulos",
+    "date": "2026-09-19",
+    "alias_confirmed": true,
+    "hospitals": [
+     {
+      "hospital": "Texas Childrens Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "row 28173"
+     },
+     {
+      "hospital": "Baylor St Lukes Medical Center",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9144/charge 1"
+     },
+     {
+      "hospital": "Houston Methodist Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 13569/charge 1"
+     },
+     {
+      "hospital": "Harris Health",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 33175"
+     },
+     {
+      "hospital": "Houston Methodist The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 13552/charge 1"
+     },
+     {
+      "hospital": "CHI St Lukes Lakeside Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9186/charge 1"
+     },
+     {
+      "hospital": "St Luke's The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9186/charge 1"
+     },
+     {
+      "hospital": "Woodland Springs",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Elite Hospital Kingwood",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 1570"
+     },
+     {
+      "hospital": "Kingwood Pines Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "HCA Houston Healthcare Kingwood",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     }
+    ]
+   },
    "notes": "Without contrast. Knee MRI with contrast (73722) or with and without (73723) is not on the CMS list."
   },
   {
@@ -785,7 +1034,90 @@
     "screening mammogram",
     "annual mammogram"
    ],
-   "reviewed": false,
+   "reviewed": {
+    "reviewer": "Alex Spiliotopoulos",
+    "date": "2026-09-19",
+    "alias_confirmed": true,
+    "hospitals": [
+     {
+      "hospital": "Texas Childrens Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Baylor St Lukes Medical Center",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9582/charge 1"
+     },
+     {
+      "hospital": "Houston Methodist Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 13151/charge 1"
+     },
+     {
+      "hospital": "Harris Health",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 32991"
+     },
+     {
+      "hospital": "Houston Methodist The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 13155/charge 1"
+     },
+     {
+      "hospital": "CHI St Lukes Lakeside Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9624/charge 1"
+     },
+     {
+      "hospital": "St Luke's The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9624/charge 1"
+     },
+     {
+      "hospital": "Woodland Springs",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Elite Hospital Kingwood",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 2080"
+     },
+     {
+      "hospital": "Kingwood Pines Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "HCA Houston Healthcare Kingwood",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     }
+    ]
+   },
    "notes": ""
   },
   {
@@ -1020,7 +1352,90 @@
     "colonoscopy",
     "screening colonoscopy"
    ],
-   "reviewed": false,
+   "reviewed": {
+    "reviewer": "Alex Spiliotopoulos",
+    "date": "2026-09-19",
+    "alias_confirmed": true,
+    "hospitals": [
+     {
+      "hospital": "Texas Childrens Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Baylor St Lukes Medical Center",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Houston Methodist Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 12398/charge 1"
+     },
+     {
+      "hospital": "Harris Health",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 32341"
+     },
+     {
+      "hospital": "Houston Methodist The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 12425/charge 1"
+     },
+     {
+      "hospital": "CHI St Lukes Lakeside Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "St Luke's The Woodlands Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Woodland Springs",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Elite Hospital Kingwood",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Kingwood Pines Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "HCA Houston Healthcare Kingwood",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     }
+    ]
+   },
    "notes": ""
   },
   {

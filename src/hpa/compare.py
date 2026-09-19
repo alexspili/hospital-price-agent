@@ -34,6 +34,7 @@ class Line:
     maximum: float | None
     source_ref: str
     off_template_note: str | None = None
+    class_from_review: bool = False  # billing class supplied by a human review, not the file
 
     @property
     def has_price(self) -> bool:
@@ -41,7 +42,8 @@ class Line:
 
     @property
     def context(self) -> str:
-        parts = [self.setting, self.billing_class, f"mod {self.modifiers}" if self.modifiers else None]
+        bc = f"{self.billing_class} (per review)" if self.billing_class and self.class_from_review else self.billing_class
+        parts = [self.setting, bc, f"mod {self.modifiers}" if self.modifiers else None]
         return ", ".join(p for p in parts if p) or "no context stated"
 
 
@@ -55,6 +57,20 @@ class Summary:
     @property
     def plain_lines(self) -> list[Line]:
         return [l for l in self.lines if l.modifiers is None and l.billing_class in (None, "facility", "both")]
+
+
+def apply_review(lines: list[Line], review: dict | bool, hospital: str) -> list[Line]:
+    """Fill in a billing class a reviewer confirmed for this hospital's line (matched by
+    source ref), marking it as coming from the review. The file's own value always wins."""
+    if not review or not isinstance(review, dict):
+        return lines
+    answers = {h["ref"]: h["billing_class"] for h in review.get("hospitals", [])
+               if h.get("hospital") == hospital and h.get("billing_class") and h.get("ref")}
+    if not answers:
+        return lines
+    from dataclasses import replace
+    return [replace(l, billing_class=answers[l.source_ref], class_from_review=True)
+            if l.billing_class is None and l.source_ref in answers else l for l in lines]
 
 
 def summarise(lines: list[Line]) -> Summary:

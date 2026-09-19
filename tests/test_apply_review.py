@@ -16,7 +16,10 @@ def load_script():
 
 def test_answers_become_review_evidence(tmp_path):
     catalog = tmp_path / "catalog.json"
-    shutil.copy(ROOT / "src" / "hpa" / "data" / "shoppable_services.json", catalog)
+    data = json.loads((ROOT / "src" / "hpa" / "data" / "shoppable_services.json").read_text())
+    for s in data["services"]:
+        s["reviewed"] = False  # start from an unreviewed catalog whatever the real one says
+    catalog.write_text(json.dumps(data))
     sheet = tmp_path / "review.csv"
     cols = ["query", "service_id", "service", "codes", "hospital", "ccn", "verdict", "lines", "headline_description",
             "headline_context", "cash", "gross", "min", "max", "ref", "file_date", "url",

@@ -116,8 +116,8 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
 - [x] **3. Extraction.** CSV wide, CSV tall, JSON and zip streamed into DuckDB; one HEAD per
       scan decides freshness; measured on 12 real files (table above)
 - [x] **4. One complete Houston example.** 15 hospitals, 5 services, real prices with row-level
-      evidence; `hpa demo` replays it offline from `demo/houston.json`. Hand review of the
-      catalog mappings is in progress (`docs/mapping-review.md`): 0 of 70 reviewed so far
+      evidence; `hpa demo` replays it offline from `demo/houston.json`. **5 of 70** catalog
+      mappings hand-reviewed against 11 hospitals' lines (`docs/mapping-review.csv`)
 - [x] **5. Pipeline + eval.** Claude confirms or questions unsettled service names (only
       among the resolver's candidates); `hpa eval` reports the four numbers below
 - [ ] **6. Web UI.** FastAPI + server-sent events; split pane, trace left, results right
@@ -129,11 +129,13 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
 |---|---|
 | **Hospital → file** | 12 of 15 located (9 via `cms-hpt.txt`, 1 tie-break, 1 web search, 1 site page). The only public external index overlaps 2 of them; it agrees on 1 and is stale on the other. |
 | **Extraction fidelity** | 256 of 256 sampled charges, re-read from the raw files at their recorded row / JSON path, match the stored values. |
-| **Comparison eligibility** | 66 service × hospital pairs: 12 comparable, 28 unknown (no billing class), 15 not found, 6 conflicting, 4 negotiated-only, 1 modifier-only. **18% comparable.** |
+| **Comparison eligibility** | 66 service × hospital pairs: 24 comparable, 16 unknown (no billing class), 15 not found, 6 conflicting, 4 negotiated-only, 1 modifier-only. **36% comparable**, up from 18% before the human review supplied billing classes the files omit (shown as "facility (per review)"). |
 | **Unresolved** | 4: a published URL that returns 403, a renamed hospital, a hospital missing from its system's index, an off-template file. |
 
-The 18% is the honest headline: most hospitals do not state the billing class that would make
-a cash price safely comparable, and the tool says so rather than comparing anyway.
+The comparable share is the honest headline: most hospitals do not state the billing class
+that would make a cash price safely comparable. A reviewer can supply it from the
+hospital's own description (an "HC" or "TC" prefix), and only then does the verdict change;
+the tool never assumes it.
 
 ## Try it
 
@@ -199,7 +201,8 @@ Two separate checks apply, and neither is done yet:
   mean this service and noted how hospital files actually represent it. Several CMS primary
   codes are professional or global codes (93000 EKG, the obstetric packages, an add-on
   shoulder code) that a hospital's file lists differently; the catalog carries a note for
-  each. **Today: 0 of 70 reviewed.**
+  each. **Today: 5 of 70 reviewed** (knee MRI, colonoscopy, head CT, CBC, screening
+  mammogram), each with reviewer, date and the per-hospital lines checked.
 - **Comparable** (per comparison, computed from the rows): the matched rows share billing
   class, setting, modifiers and units. Reported with every result from milestone 4.
 

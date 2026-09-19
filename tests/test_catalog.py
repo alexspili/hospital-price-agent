@@ -11,9 +11,13 @@ def test_all_seventy_cms_services_present():
     assert all(s.codes for s in services)
 
 
-def test_nothing_is_reviewed_yet():
-    # Flip entries to reviewed only after checking them against real hospital files.
-    assert sum(s.reviewed for s in catalog.load()) == 0
+def test_reviewed_entries_carry_evidence():
+    # `reviewed` is never a bare flag: it names who, when, and which hospital lines were checked.
+    reviewed = [s for s in catalog.load() if s.reviewed]
+    assert len(reviewed) == 5
+    for s in reviewed:
+        assert s.reviewed["reviewer"] and s.reviewed["date"] and s.reviewed["alias_confirmed"] is True
+        assert all(h["ref"] for h in s.reviewed["hospitals"] if h["billing_class"])
 
 
 def test_ids_are_built_from_codes():

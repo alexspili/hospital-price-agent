@@ -67,3 +67,18 @@ def test_professional_line_does_not_become_the_headline():
                    line(billing_class="professional", modifiers="26", gross=450.0, discounted_cash=225.0)])
     assert s.verdict == COMPARABLE and s.headline.billing_class == "facility"
     assert "1 other line" in s.detail
+
+
+def test_review_supplies_billing_class_without_overriding_the_file():
+    from hpa.compare import apply_review
+    review = {"hospitals": [{"hospital": "Harris Health", "billing_class": "facility", "ref": "row 33175"},
+                            {"hospital": "Harris Health", "billing_class": "professional", "ref": "row 1"}]}
+    lines = [line(source_ref="row 33175", gross=3821.0, discounted_cash=231.94),
+             line(source_ref="row 1", billing_class="facility", gross=1.0),  # the file said facility; review must not override
+             line(source_ref="row 2", gross=5.0)]
+    out = apply_review(lines, review, "Harris Health")
+    assert out[0].billing_class == "facility" and out[0].class_from_review and out[0].context == "outpatient, facility (per review)"
+    assert out[1].billing_class == "facility" and not out[1].class_from_review
+    assert out[2].billing_class is None
+    assert apply_review(lines, False, "Harris Health") == lines
+    assert apply_review(lines, review, "Someone Else") == lines

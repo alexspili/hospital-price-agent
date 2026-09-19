@@ -224,7 +224,90 @@
   "knee mri": {
    "service": "MRI scan of leg joint",
    "codes": "CPT 73721",
-   "reviewed": false,
+   "reviewed": {
+    "reviewer": "Alex Spiliotopoulos",
+    "date": "2026-09-19",
+    "alias_confirmed": true,
+    "hospitals": [
+     {
+      "hospital": "Texas Childrens Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "row 28173"
+     },
+     {
+      "hospital": "Baylor St Lukes Medical Center",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9144/charge 1"
+     },
+     {
+      "hospital": "Houston Methodist Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 13569/charge 1"
+     },
+     {
+      "hospital": "Harris Health",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 33175"
+     },
+     {
+      "hospital": "Houston Methodist The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 13552/charge 1"
+     },
+     {
+      "hospital": "CHI St Lukes Lakeside Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9186/charge 1"
+     },
+     {
+      "hospital": "St Luke's The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9186/charge 1"
+     },
+     {
+      "hospital": "Woodland Springs",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Elite Hospital Kingwood",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 1570"
+     },
+     {
+      "hospital": "Kingwood Pines Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "HCA Houston Healthcare Kingwood",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     }
+    ]
+   },
    "hospitals": [
     {
      "name": "Texas Childrens Hospital",
@@ -247,15 +330,15 @@
      "name": "Baylor St Lukes Medical Center",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 2725.8,
       "gross": 7788.0,
       "min": 174.32,
       "max": 7788.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 9144/charge 1",
       "description": "HC MR LOWER EXTREM JNT WO CONT"
      }
@@ -323,15 +406,15 @@
      "name": "CHI St Lukes Lakeside Hospital",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 2725.8,
       "gross": 7788.0,
       "min": 174.32,
       "max": 7788.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 9186/charge 1",
       "description": "HC MR LOWER EXTREM JNT WO CONT"
      }
@@ -340,15 +423,15 @@
      "name": "St Luke's The Woodlands Hospital",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 2725.8,
       "gross": 7788.0,
       "min": 174.32,
       "max": 7788.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 9186/charge 1",
       "description": "HC MR LOWER EXTREM JNT WO CONT"
      }
@@ -410,7 +493,90 @@
   "colonoscopy": {
    "service": "Diagnostic examination of large bowel using an endoscope",
    "codes": "CPT 45378",
-   "reviewed": false,
+   "reviewed": {
+    "reviewer": "Alex Spiliotopoulos",
+    "date": "2026-09-19",
+    "alias_confirmed": true,
+    "hospitals": [
+     {
+      "hospital": "Texas Childrens Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Baylor St Lukes Medical Center",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Houston Methodist Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 12398/charge 1"
+     },
+     {
+      "hospital": "Harris Health",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 32341"
+     },
+     {
+      "hospital": "Houston Methodist The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 12425/charge 1"
+     },
+     {
+      "hospital": "CHI St Lukes Lakeside Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "St Luke's The Woodlands Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Woodland Springs",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Elite Hospital Kingwood",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Kingwood Pines Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "HCA Houston Healthcare Kingwood",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     }
+    ]
+   },
    "hospitals": [
     {
      "name": "Texas Childrens Hospital",
@@ -556,7 +722,90 @@
   "head ct": {
    "service": "CT scan, head or brain, without contrast",
    "codes": "CPT 70450",
-   "reviewed": false,
+   "reviewed": {
+    "reviewer": "Alex Spiliotopoulos",
+    "date": "2026-09-19",
+    "alias_confirmed": true,
+    "hospitals": [
+     {
+      "hospital": "Texas Childrens Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "row 26951"
+     },
+     {
+      "hospital": "Baylor St Lukes Medical Center",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 8783/charge 1"
+     },
+     {
+      "hospital": "Houston Methodist Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 11945/charge 1"
+     },
+     {
+      "hospital": "Harris Health",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 34428"
+     },
+     {
+      "hospital": "Houston Methodist The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 11959/charge 1"
+     },
+     {
+      "hospital": "CHI St Lukes Lakeside Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 8825/charge 1"
+     },
+     {
+      "hospital": "St Luke's The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 8825/charge 1"
+     },
+     {
+      "hospital": "Woodland Springs",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Elite Hospital Kingwood",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 508"
+     },
+     {
+      "hospital": "Kingwood Pines Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "HCA Houston Healthcare Kingwood",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     }
+    ]
+   },
    "hospitals": [
     {
      "name": "Texas Childrens Hospital",
@@ -579,15 +828,15 @@
      "name": "Baylor St Lukes Medical Center",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 2399.25,
       "gross": 6855.0,
       "min": 76.69,
       "max": 6855.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 8783/charge 1",
       "description": "HC CT BRAIN"
      }
@@ -655,15 +904,15 @@
      "name": "CHI St Lukes Lakeside Hospital",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 2399.25,
       "gross": 6855.0,
       "min": 76.69,
       "max": 6855.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 8825/charge 1",
       "description": "HC CT BRAIN"
      }
@@ -672,15 +921,15 @@
      "name": "St Luke's The Woodlands Hospital",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 2399.25,
       "gross": 6855.0,
       "min": 76.69,
       "max": 6855.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 8825/charge 1",
       "description": "HC CT BRAIN"
      }
@@ -742,7 +991,90 @@
   "cbc": {
    "service": "Complete blood count, automated",
    "codes": "CPT 85027",
-   "reviewed": false,
+   "reviewed": {
+    "reviewer": "Alex Spiliotopoulos",
+    "date": "2026-09-19",
+    "alias_confirmed": true,
+    "hospitals": [
+     {
+      "hospital": "Texas Childrens Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Baylor St Lukes Medical Center",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 10588/charge 1"
+     },
+     {
+      "hospital": "Houston Methodist Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 10713/charge 1"
+     },
+     {
+      "hospital": "Harris Health",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 36051"
+     },
+     {
+      "hospital": "Houston Methodist The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 10719/charge 1"
+     },
+     {
+      "hospital": "CHI St Lukes Lakeside Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 10630/charge 1"
+     },
+     {
+      "hospital": "St Luke's The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 10630/charge 1"
+     },
+     {
+      "hospital": "Woodland Springs",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Elite Hospital Kingwood",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 229"
+     },
+     {
+      "hospital": "Kingwood Pines Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "HCA Houston Healthcare Kingwood",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "item 308567/charge 1"
+     }
+    ]
+   },
    "hospitals": [
     {
      "name": "Texas Childrens Hospital",
@@ -757,15 +1089,15 @@
      "name": "Baylor St Lukes Medical Center",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 174.3,
       "gross": 498.0,
       "min": 4.66,
       "max": 498.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 10588/charge 1",
       "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
      }
@@ -833,15 +1165,15 @@
      "name": "CHI St Lukes Lakeside Hospital",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 174.3,
       "gross": 498.0,
       "min": 4.66,
       "max": 498.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 10630/charge 1",
       "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
      }
@@ -850,15 +1182,15 @@
      "name": "St Luke's The Woodlands Hospital",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 174.3,
       "gross": 498.0,
       "min": 4.66,
       "max": 498.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 10630/charge 1",
       "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
      }
@@ -928,7 +1260,90 @@
   "screening mammogram": {
    "service": "Mammography, screening, bilateral",
    "codes": "CPT 77067",
-   "reviewed": false,
+   "reviewed": {
+    "reviewer": "Alex Spiliotopoulos",
+    "date": "2026-09-19",
+    "alias_confirmed": true,
+    "hospitals": [
+     {
+      "hospital": "Texas Childrens Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Baylor St Lukes Medical Center",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9582/charge 1"
+     },
+     {
+      "hospital": "Houston Methodist Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 13151/charge 1"
+     },
+     {
+      "hospital": "Harris Health",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 32991"
+     },
+     {
+      "hospital": "Houston Methodist The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 13155/charge 1"
+     },
+     {
+      "hospital": "CHI St Lukes Lakeside Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9624/charge 1"
+     },
+     {
+      "hospital": "St Luke's The Woodlands Hospital",
+      "headline_is_this_service": "yes",
+      "billing_class": "facility",
+      "note": null,
+      "ref": "item 9624/charge 1"
+     },
+     {
+      "hospital": "Woodland Springs",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "Elite Hospital Kingwood",
+      "headline_is_this_service": "yes",
+      "billing_class": null,
+      "note": null,
+      "ref": "row 2080"
+     },
+     {
+      "hospital": "Kingwood Pines Hospital",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     },
+     {
+      "hospital": "HCA Houston Healthcare Kingwood",
+      "headline_is_this_service": null,
+      "billing_class": null,
+      "note": null,
+      "ref": ""
+     }
+    ]
+   },
    "hospitals": [
     {
      "name": "Texas Childrens Hospital",
@@ -943,15 +1358,15 @@
      "name": "Baylor St Lukes Medical Center",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 297.5,
       "gross": 850.0,
       "min": 119.36,
       "max": 850.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 9582/charge 1",
       "description": "HC MAMMO SCRN BIL & CAD"
      }
@@ -1019,15 +1434,15 @@
      "name": "CHI St Lukes Lakeside Hospital",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 297.5,
       "gross": 850.0,
       "min": 140.25,
       "max": 850.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 9624/charge 1",
       "description": "HC MAMMO SCRN BIL & CAD"
      }
@@ -1036,15 +1451,15 @@
      "name": "St Luke's The Woodlands Hospital",
      "file_date": "2026-02-28",
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
-     "verdict": "unknown: no billing class stated",
-     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
      "lines": 2,
      "headline": {
       "cash": 297.5,
       "gross": 850.0,
       "min": 140.25,
       "max": 850.0,
-      "context": "outpatient",
+      "context": "outpatient, facility (per review)",
       "ref": "item 9624/charge 1",
       "description": "HC MAMMO SCRN BIL & CAD"
      }

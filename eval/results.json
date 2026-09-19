@@ -98,14 +98,14 @@
  "comparison": {
   "pairs": 66,
   "by_verdict": {
-   "comparable": 12,
-   "unknown: no billing class stated": 28,
+   "comparable": 24,
+   "unknown: no billing class stated": 16,
    "not found": 15,
    "modifier-specific lines only": 1,
    "negotiated rates only, no cash or gross price": 4,
    "conflicting": 6
   },
-  "comparable_share": 0.182,
+  "comparable_share": 0.364,
   "detail": [
    {
     "service": "knee mri",
@@ -115,7 +115,7 @@
    {
     "service": "knee mri",
     "hospital": "Baylor St Lukes Medical Center",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "knee mri",
@@ -135,12 +135,12 @@
    {
     "service": "knee mri",
     "hospital": "CHI St Lukes Lakeside Hospital",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "knee mri",
     "hospital": "St Luke's The Woodlands Hospital",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "knee mri",
@@ -225,7 +225,7 @@
    {
     "service": "head ct",
     "hospital": "Baylor St Lukes Medical Center",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "head ct",
@@ -245,12 +245,12 @@
    {
     "service": "head ct",
     "hospital": "CHI St Lukes Lakeside Hospital",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "head ct",
     "hospital": "St Luke's The Woodlands Hospital",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "head ct",
@@ -280,7 +280,7 @@
    {
     "service": "cbc",
     "hospital": "Baylor St Lukes Medical Center",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "cbc",
@@ -300,12 +300,12 @@
    {
     "service": "cbc",
     "hospital": "CHI St Lukes Lakeside Hospital",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "cbc",
     "hospital": "St Luke's The Woodlands Hospital",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "cbc",
@@ -335,7 +335,7 @@
    {
     "service": "screening mammogram",
     "hospital": "Baylor St Lukes Medical Center",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "screening mammogram",
@@ -355,12 +355,12 @@
    {
     "service": "screening mammogram",
     "hospital": "CHI St Lukes Lakeside Hospital",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "screening mammogram",
     "hospital": "St Luke's The Woodlands Hospital",
-    "verdict": "unknown: no billing class stated"
+    "verdict": "comparable"
    },
    {
     "service": "screening mammogram",

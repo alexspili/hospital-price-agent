@@ -130,7 +130,8 @@ def run(con, sample: int = 25, seed: int = 0) -> dict:
                 "JOIN item_codes ic USING (extraction_id, item_id) WHERE ch.extraction_id = ? AND ic.code_type IN ('CPT', 'HCPCS', 'MS-DRG', 'DRG') "
                 "AND list_contains(?, ic.code)", [ext["extraction_id"], codes]
             ).fetchall()
-            s = compare.summarise([compare.Line(ct, code, (), d, st, bc, m, g, cash, mn, mx, ref) for ct, code, d, st, bc, m, g, cash, mn, mx, ref in rows])
+            lines = [compare.Line(ct, code, (), d, st, bc, m, g, cash, mn, mx, ref) for ct, code, d, st, bc, m, g, cash, mn, mx, ref in rows]
+            s = compare.summarise(compare.apply_review(lines, r.service.reviewed, short_name(h)))
             verdicts[s.verdict] += 1
             pairs.append({"service": q, "hospital": short_name(h), "verdict": s.verdict})
     report["comparison"] = {"pairs": len(pairs), "by_verdict": dict(verdicts),

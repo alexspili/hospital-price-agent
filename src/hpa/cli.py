@@ -75,7 +75,7 @@ def cmd_hospitals(args: argparse.Namespace) -> int:
 
 def cmd_catalog(args: argparse.Namespace) -> int:
     services = catalog.load()
-    reviewed = sum(s.reviewed for s in services)
+    reviewed = sum(1 for s in services if s.reviewed)
     if not args.query:
         print(f"{len(services)} services ({reviewed} of {len(services)} mapping-reviewed)")
         for s in services:
@@ -255,6 +255,7 @@ def cmd_prices(args: argparse.Namespace) -> int:
         ).fetchall()
         lines = [compare.Line(ct, code, tuple(others or []), d, setting, bc, mods, g, cash, mn, mx, ref, note)
                  for ct, code, others, d, setting, bc, mods, g, cash, mn, mx, ref, note in rows]
+        lines = compare.apply_review(lines, service.reviewed, who)
         s = compare.summarise(lines)
         print(f"\n{who}  (file dated {ext.get('last_updated_on') or '?'}; {c['mrf_url'][:60]}…)")
         print(f"  verdict: {s.verdict}" + (f" — {s.detail}" if s.detail else ""))

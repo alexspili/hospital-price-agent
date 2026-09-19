@@ -60,7 +60,7 @@ def record(con, zips=DEFAULT_ZIPS, services=DEFAULT_SERVICES) -> dict:
                 [ext["extraction_id"], codes],
             ).fetchall()
             lines = [compare.Line(ct, code, (), d, st, bc, m, g, cash, mn, mx, ref) for ct, code, d, st, bc, m, g, cash, mn, mx, ref in rows]
-            s = compare.summarise(lines)
+            s = compare.summarise(compare.apply_review(lines, svc.reviewed, short_name(h)))
             hl = s.headline
             entry["hospitals"].append({
                 "name": short_name(h), "file_date": ext.get("last_updated_on"), "url": c["mrf_url"],
