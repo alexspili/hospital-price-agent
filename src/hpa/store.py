@@ -26,6 +26,30 @@ CREATE TABLE IF NOT EXISTS hospital_files (
     mrf_url VARCHAR, shape VARCHAR, size_bytes BIGINT, last_modified VARCHAR, etag VARCHAR,
     content_type VARCHAR, reason VARCHAR, steps VARCHAR, seconds DOUBLE
 );
+CREATE TABLE IF NOT EXISTS fetches (
+    url VARCHAR, fetched_at TIMESTAMP, status INTEGER, final_url VARCHAR, content_type VARCHAR,
+    etag VARCHAR, last_modified VARCHAR, size_bytes BIGINT, checksum VARCHAR, seconds DOUBLE,
+    reason VARCHAR
+);
+CREATE TABLE IF NOT EXISTS files (
+    checksum VARCHAR PRIMARY KEY, shape VARCHAR, template_version VARCHAR, hospital_name VARCHAR,
+    last_updated_on VARCHAR, location_names VARCHAR, size_bytes BIGINT, first_seen TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS extractions (
+    extraction_id VARCHAR PRIMARY KEY, checksum VARCHAR, parser_version VARCHAR, extracted_at TIMESTAMP,
+    charges BIGINT, items BIGINT, seconds DOUBLE, peak_rss_mb DOUBLE, ok BOOLEAN, reason VARCHAR
+);
+CREATE TABLE IF NOT EXISTS items (
+    extraction_id VARCHAR, item_id VARCHAR, description VARCHAR, drug_unit VARCHAR, drug_type VARCHAR
+);
+CREATE TABLE IF NOT EXISTS item_codes (
+    extraction_id VARCHAR, item_id VARCHAR, code_type VARCHAR, code VARCHAR
+);
+CREATE TABLE IF NOT EXISTS charges (
+    extraction_id VARCHAR, charge_id VARCHAR, item_id VARCHAR, setting VARCHAR, billing_class VARCHAR,
+    modifiers VARCHAR, gross DECIMAL(14, 2), discounted_cash DECIMAL(14, 2), minimum DECIMAL(14, 2),
+    maximum DECIMAL(14, 2), notes VARCHAR, source_ref VARCHAR, off_template_note VARCHAR
+);
 CREATE TABLE IF NOT EXISTS llm_cache (
     key VARCHAR PRIMARY KEY, model VARCHAR, prompt_version VARCHAR, input VARCHAR,
     output VARCHAR, created_at TIMESTAMP

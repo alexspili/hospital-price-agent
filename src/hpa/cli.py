@@ -9,7 +9,7 @@ from pathlib import Path
 
 import httpx
 
-from hpa import build, catalog, discovery, geocode, llm, reference, store
+from hpa import build, catalog, discovery, geocode, llm, reference, scan, store
 from hpa.geo import KM_PER_MILE
 from hpa.hospitals import UnknownZip, find_hospitals
 
@@ -175,6 +175,110 @@ def cmd_locate(args: argparse.Namespace) -> int:
     return 0 if ok == len(results) else 2
 
 
+def _located(con, zips, ccn, limit):
+    """Hospitals near the ZIPs (or one CCN) that have a probed price-file URL."""
+    hospitals = {}
+    for z in zips or []:
+        for h in find_hospitals(con, z, limit):
+            hospitals.setdefault(h.ccn, h)
+    if ccn:
+        z = con.execute("SELECT zip FROM hospitals WHERE ccn = ?", [ccn]).fetchone()
+        if not z:
+            raise UnknownZip(f"no hospital with CCN {ccn}")
+        hospitals[ccn] = next(h for h in find_hospitals(con, z[0], 50, include_federal=True) if h.ccn == ccn)
+    out = []
+    for h in hospitals.values():
+        cached = store.cached_discovery(con, h.ccn)
+        out.append((h, cached))
+    return out
+
+
+def cmd_scan(args: argparse.Namespace) -> int:
+    if not Path(args.db).exists():
+        print("no hospital data yet; run `hpa setup` first", file=sys.stderr)
+        return 1
+    con = store.connect(args.db)
+    try:
+        targets = _located(con, args.zip, args.ccn, args.limit)
+    except UnknownZip as e:
+        print(e, file=sys.stderr)
+        return 1
+    todo = [(h, c) for h, c in targets if c and c["ok"]]
+    skipped = [(h, c) for h, c in targets if not (c and c["ok"])]
+    for h, c in skipped:
+        print(f"{discovery.short_name(h)}: no located file ({c['reason'] if c else 'run `hpa locate` first'}) — skipped")
+    print(f"scanning {len(todo)} price files")
+    results = []
+    with httpx.Client() as client:
+        for h, c in todo:
+            who = discovery.short_name(h)
+            r = scan.scan(con, client, h.ccn, c["mrf_url"], lambda line, who=who: print(f"{who}: {line}", flush=True), force=args.force)
+            results.append((h, r))
+    print()
+    ok = [r for _, r in results if r.ok]
+    print(f"{len(ok)} of {len(results)} files extracted")
+    print(f"  {'hospital':<42} {'size':>8} {'charges':>9} {'items':>8} {'download':>9} {'total':>7} {'peak RSS':>9}")
+    for h, r in sorted(results, key=lambda x: (not x[1].ok, x[0].name)):
+        if r.ok:
+            print(f"  {h.name[:42]:<42} {scan._fmt_size(r.size_bytes):>8} {r.charges:>9,} {r.items:>8,} {r.download_seconds:>8.0f}s {r.seconds:>6.0f}s {r.peak_rss_mb:>7.0f} MB" + ("  (cached)" if r.cached else ""))
+        else:
+            print(f"  {h.name[:42]:<42} FAILED: {r.reason}")
+    return 0 if len(ok) == len(results) else 2
+
+
+def cmd_prices(args: argparse.Namespace) -> int:
+    con = store.connect(args.db, read_only=True)
+    r = catalog.resolve(args.service)
+    if r.verdict != catalog.SELECTED:
+        print(f"{r.verdict}: {r.reason}", file=sys.stderr)
+        for c in r.candidates:
+            print(f"  {c.code_list:<18} {c.name}", file=sys.stderr)
+        return 1
+    service = r.service
+    print(f"{service.name} ({service.code_list})  [{'reviewed' if service.reviewed else 'unreviewed'}]")
+    try:
+        targets = _located(con, args.zip, args.ccn, args.limit)
+    except UnknownZip as e:
+        print(e, file=sys.stderr)
+        return 1
+    codes = [code for _, code in service.codes]
+    for h, c in targets:
+        who = discovery.short_name(h)
+        if not (c and c["ok"]):
+            print(f"\n{who}: no price file located")
+            continue
+        ext = scan.latest_extraction(con, c["mrf_url"])
+        if not ext:
+            print(f"\n{who}: file located but not scanned yet (hpa scan)")
+            continue
+        rows = con.execute(
+            """
+            SELECT i.description, ic.code_type, ic.code, ch.setting, ch.billing_class, ch.modifiers,
+                   ch.gross, ch.discounted_cash, ch.minimum, ch.maximum, ch.source_ref, ch.off_template_note, f.last_updated_on
+            FROM charges ch
+            JOIN items i ON i.extraction_id = ch.extraction_id AND i.item_id = ch.item_id
+            JOIN item_codes ic ON ic.extraction_id = ch.extraction_id AND ic.item_id = ch.item_id
+            JOIN files f ON f.checksum = ?
+            WHERE ch.extraction_id = ? AND ic.code_type IN ('CPT', 'HCPCS', 'MS-DRG', 'DRG') AND list_contains(?, ic.code)
+            ORDER BY ic.code, ch.setting, ch.billing_class, ch.source_ref
+            """,
+            [ext["checksum"], ext["extraction_id"], codes],
+        ).fetchall()
+        date = rows[0][12] if rows else ext.get("last_updated_on")
+        print(f"\n{who}  (file dated {date}, {c['mrf_url'][:70]}…)")
+        if not rows:
+            print("  not found in this file")
+        for d, ct, code, setting, bc, mods, gross, cash, mn, mx, ref, note in [r[:12] for r in rows]:
+            ctx = ", ".join(x for x in [setting, bc, f"mod {mods}" if mods else None] if x) or "no context"
+            money = lambda v: f"${v:,.2f}" if v is not None else "—"
+            line = f"  {ct} {code}  cash {money(cash)}  gross {money(gross)}  negotiated {money(mn)}–{money(mx)}  [{ctx}]  {ref}"
+            if note:
+                line += f"  note: {note}"
+            print(line)
+            print(f"      {d[:100]}")
+    return 0
+
+
 def cmd_eval_discovery(args: argparse.Namespace) -> int:
     """Compare located domains with an external, dated index (see scripts/fetch_eval_index.py)."""
     from urllib.parse import urlsplit
@@ -252,9 +356,21 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("eval-discovery", help="compare located file domains with the external index in eval/")
 
+    p = sub.add_parser("scan", help="download and extract the located price files for hospitals near ZIP codes")
+    p.add_argument("zip", nargs="*")
+    p.add_argument("--ccn")
+    p.add_argument("--limit", type=positive_int, default=5)
+    p.add_argument("--force", action="store_true", help="re-download and re-extract even if unchanged")
+
+    p = sub.add_parser("prices", help="show the four summary prices for a catalog service at nearby hospitals")
+    p.add_argument("service", help='e.g. "knee mri" or 45378')
+    p.add_argument("zip", nargs="*")
+    p.add_argument("--ccn")
+    p.add_argument("--limit", type=positive_int, default=5)
+
     args = parser.parse_args(argv)
     return {"setup": cmd_setup, "hospitals": cmd_hospitals, "catalog": cmd_catalog, "locate": cmd_locate,
-            "eval-discovery": cmd_eval_discovery}[args.command](args)
+            "eval-discovery": cmd_eval_discovery, "scan": cmd_scan, "prices": cmd_prices}[args.command](args)
 
 
 if __name__ == "__main__":
