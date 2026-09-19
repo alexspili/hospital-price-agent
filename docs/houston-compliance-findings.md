@@ -37,8 +37,8 @@ domain to time out).**
 - *Tie-break with the address* (Harris Health): given the two candidates and "1504 Taub
   Loop", it chose Ben Taub, explaining that LBJ Hospital is at 5656 Kelley St. Correct.
 - *Web search for the site* (Woodland Springs): the name guess `woodlandsprings.com` is a
-  real but unrelated site (an apartment complex, judging by the HTML). The search found
-  `woodlandspringshealth.com`, which serves a proper index. Correct.
+  live site that answers every path with the same HTML page and is not the hospital's. The
+  search found `woodlandspringshealth.com`, which serves a proper index. Correct.
 - *Web search* (The Woodlands Specialty Hospital): the search returned
   `woodlandsspecialtyhospital.com`, which resolves to 0.0.0.0, and noted in passing that
   the hospital is "now branded The Woodlands Oaks Hospital". The parent site, wchh.care,
