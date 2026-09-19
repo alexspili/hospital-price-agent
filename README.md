@@ -14,11 +14,11 @@ roadmap further down is kept current.
 ```
 $ hpa hospitals 77030
 nearest 5 hospitals to the centre of 77030
-      0.2 mi  Baylor St Lukes Medical Center  [450193, Acute Care Hospitals]
-      0.2 mi  TEXAS CHILDRENS HOSPITAL  [453304, Childrens]
-      0.4 mi  HOUSTON METHODIST HOSPITAL  [450358, Acute Care Hospitals]
-      0.6 mi  TEXAS ORTHOPEDIC HOSPITAL  [450804, Acute Care Hospitals]
-      0.7 mi  HARRIS HEALTH  [450289, Acute Care Hospitals]
+     0.2 mi  TEXAS CHILDRENS HOSPITAL  [453304, Childrens]
+     0.3 mi  Baylor St Lukes Medical Center  [450193, Acute Care Hospitals]
+     0.4 mi  HOUSTON METHODIST HOSPITAL  [450358, Acute Care Hospitals]
+     0.5 mi  TEXAS ORTHOPEDIC HOSPITAL  [450804, Acute Care Hospitals]
+     0.7 mi  HARRIS HEALTH  [450289, Acute Care Hospitals]
 
 $ hpa hospitals 77385
 nearest 5 hospitals to the centre of 77385
