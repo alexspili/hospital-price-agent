@@ -9,6 +9,14 @@ source row for every number, showing each step as it happens.
 **Status: built in public, one milestone at a time.** What works today is below; the
 roadmap further down is kept current.
 
+## The page
+
+`hpa serve` puts the same pipeline behind a web page: the trace on the left as the work
+happens, the results on the right as each hospital finishes. It opens on the recorded
+Houston run, so it is never empty; **Run live** scans for real.
+
+![Trace on the left, results on the right: three Houston hospitals priced for a knee MRI, each with its billing context and source row](docs/screenshot.png)
+
 ## What works today
 
 ```
@@ -104,7 +112,14 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
   *needs clarification* ("knee MRI with biopsy": the catalog doesn't say, so it asks
   rather than assumes), or *not in catalog*. It never swaps in a different organ because
   of a shared word.
-- Tests run offline on small checked-in fixtures; CI runs them on Python 3.11 and 3.13.
+- **A web page**, `hpa serve`: a run is a background task in the process that owns the
+  database, and its trace is streamed to the page as server-sent events, each numbered so
+  a dropped connection resumes where it left off rather than starting over. Results appear
+  per hospital as each file finishes, with a moving row counter while one is being read.
+  An unclear service name asks the question before anything is scanned. Two runs at a
+  time; the third is told the server is busy.
+- Tests run offline on small checked-in fixtures; CI runs them on Python 3.11 and 3.13,
+  and builds and tests the front end on Node 24.
 
 ## Roadmap
 
@@ -120,7 +135,9 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
       mappings hand-reviewed against 11 hospitals' lines (`docs/mapping-review.csv`)
 - [x] **5. Pipeline + eval.** Claude confirms or questions unsettled service names (only
       among the resolver's candidates); `hpa eval` reports the four numbers below
-- [ ] **6. Web UI.** FastAPI + server-sent events; split pane, trace left, results right
+- [x] **6. Web UI.** FastAPI + server-sent events; split pane, trace left, results right.
+      The server owns the DuckDB file while it runs, so `hpa prices` asks it through the
+      API and the commands that write say who holds the file, rather than failing on a lock
 - [ ] **7. Hosted demo** on pre-scanned Houston ZIPs, with live scans on request
 
 ## The numbers (`hpa eval`, 2026-09-19, 15 hospitals nearest 77030 / 77380 / 77339)
@@ -156,6 +173,21 @@ hpa catalog colonoscopy
 pytest                       # offline, no API key
 ```
 
+The page, once the front end is built:
+
+```bash
+cd frontend && npm install && npm run build && cd ..
+hpa serve                    # http://127.0.0.1:8000
+
+# working on the front end instead:
+cd frontend && npm run dev   # Vite on :5173, handing /api to a running `hpa serve`
+npm test                     # the trace reducer
+```
+
+While `hpa serve` is running it owns `data/hpa.duckdb`: `hpa prices` quietly asks the
+server for the answer, and `hpa locate` / `hpa scan` tell you to stop the server or use
+the page. With no server running, every command opens the file as before.
+
 ## Planned pipeline
 
 ```mermaid
@@ -170,8 +202,8 @@ flowchart LR
     D --> C[compare<br/>provenance + comparability verdict]
 ```
 
-Milestones 1–3 are everything except the Claude-confirmed catalog step and the web UI;
-`hpa prices` is the comparison in CLI form. The rest is designed in [SPEC.md](SPEC.md). The pipeline is ordinary, testable Python; Claude is used only where the input
+Milestones 1–6 cover the whole diagram; `hpa prices` is the comparison in CLI form and
+`hpa serve` is the same thing as a page. The rest is designed in [SPEC.md](SPEC.md). The pipeline is ordinary, testable Python; Claude is used only where the input
 is fuzzy: confirming which catalog entry the user meant (or asking "with or without
 contrast?"), picking a hospital's official website, matching a hospital to its entry in a
 health system's `cms-hpt.txt`, and reading files that don't follow the CMS template.
@@ -196,7 +228,7 @@ hospitals' consumer displays, priced where the hospital offers them
 A missing service does not by itself mean a hospital is non-compliant. Every code the
 system scans for is one a person can check.
 
-Two separate checks apply, and neither is done yet:
+Two separate checks apply:
 - **Mapping reviewed** (per catalog entry): a person has confirmed that the entry's aliases
   mean this service and noted how hospital files actually represent it. Several CMS primary
   codes are professional or global codes (93000 EKG, the obstetric packages, an add-on

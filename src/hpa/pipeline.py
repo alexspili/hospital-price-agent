@@ -207,7 +207,7 @@ def _one_hospital(con, client, h: Hospital, service, emit: Emit, claude, claude_
         emit("trace", ccn=h.ccn, text=f"{who}: {line}")
 
     def progress(phase: str, done: int, total: int | None) -> None:
-        emit("progress", ccn=h.ccn, phase=phase, done=done, total=total)
+        emit("progress", ccn=h.ccn, name=who, phase=phase, done=done, total=total)
 
     disc = None if fresh else store.cached_discovery(con, h.ccn)
     if disc:

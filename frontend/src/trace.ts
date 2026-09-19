@@ -1,0 +1,88 @@
+// The page's whole state machine: events in, what to draw out.
+//
+// Events arrive in order and carry a sequence number. A dropped connection is resumed
+// with Last-Event-ID, which can replay an event the page already has, so anything not
+// newer than what has been seen is ignored. Progress for a hospital replaces that
+// hospital's counter rather than appending a line: a moving counter, not a log of one.
+
+import type { HospitalResult, RunEvent, Service } from './api'
+
+export type TraceLine = { seq: number; ccn?: string; text: string }
+export type Counter = { name: string; phase: 'download' | 'extract'; done: number; total: number | null }
+
+export type RunState = {
+  seq: number
+  status: 'idle' | 'running' | 'done' | 'failed'
+  lines: TraceLine[]
+  counters: Record<string, Counter>
+  hospitals: HospitalResult[]
+  service: Service | null
+  error: string | null
+  recordedOn: string | null
+}
+
+export const idle: RunState = {
+  seq: 0,
+  status: 'idle',
+  lines: [],
+  counters: {},
+  hospitals: [],
+  service: null,
+  error: null,
+  recordedOn: null,
+}
+
+export function starting(recordedOn: string | null = null): RunState {
+  return { ...idle, status: 'running', recordedOn }
+}
+
+export function reduce(state: RunState, event: RunEvent): RunState {
+  if (event.seq <= state.seq) return state // already seen: a replayed event after a reconnect
+  const next = { ...state, seq: event.seq }
+  switch (event.kind) {
+    case 'trace':
+      return { ...next, lines: [...state.lines, { seq: event.seq, ccn: event.ccn, text: event.text }] }
+    case 'progress':
+      return {
+        ...next,
+        counters: { ...state.counters, [event.ccn]: { name: event.name, phase: event.phase, done: event.done, total: event.total } },
+      }
+    case 'hospital': {
+      const { [event.hospital.ccn]: _done, ...counters } = state.counters
+      return { ...next, counters, hospitals: upsert(state.hospitals, event.hospital) }
+    }
+    case 'result':
+      // The run's own order is nearest first, whatever order the files finished in.
+      return { ...next, hospitals: event.hospitals, service: event.service, counters: {}, status: 'done' }
+    case 'error':
+      return { ...next, status: 'failed', error: event.message, counters: {} }
+    case 'end':
+      return { ...next, status: state.status === 'failed' ? 'failed' : 'done', counters: {} }
+  }
+}
+
+function upsert(hospitals: HospitalResult[], h: HospitalResult): HospitalResult[] {
+  const at = hospitals.findIndex((x) => x.ccn === h.ccn)
+  if (at < 0) return [...hospitals, h]
+  const copy = [...hospitals]
+  copy[at] = h
+  return copy
+}
+
+export const replay = (events: RunEvent[], from: RunState = starting()): RunState => events.reduce(reduce, from)
+
+export function money(v: number | null): string {
+  return v === null ? '—' : v.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+}
+
+export function miles(km: number, approximate: boolean): string {
+  return `${approximate ? '~' : ''}${(km / 1.609344).toFixed(1)} mi`
+}
+
+export function counterText(c: Counter): string {
+  if (c.phase === 'download') {
+    const mb = `${(c.done / 1e6).toLocaleString('en-US', { maximumFractionDigits: 0 })} MB`
+    return c.total ? `downloading ${mb} (${Math.round((c.done / c.total) * 100)}%)` : `downloading ${mb}`
+  }
+  return `${c.done.toLocaleString('en-US')} charges read`
+}

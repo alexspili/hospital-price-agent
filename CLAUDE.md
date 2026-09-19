@@ -5,19 +5,22 @@ milestone status. README.md is the public face; keep its numbers generated, not 
 
 ## State (2026-09-19)
 
-Milestones 1–5 are done and pushed: hospital lookup, live price-file discovery, streaming
-extraction, comparability verdicts, offline demo, eval harness, and the first human mapping
-review (5 of 70 services). 120 tests, all offline. Next is milestone 6: a FastAPI backend
-with an SSE trace endpoint and a small React + TypeScript (Vite) front end in `frontend/`,
-split pane with the trace on the left and results on the right. Then milestone 7, the
-hosted demo (cache-first on pre-scanned Houston ZIPs).
+Milestones 1–6 are done and pushed: hospital lookup, live price-file discovery, streaming
+extraction, comparability verdicts, offline demo, eval harness, the first human mapping
+review (5 of 70 services), and the web UI (`hpa serve` + `frontend/`). 137 Python tests
+and 10 Vitest tests, all offline. Next is milestone 7, the hosted demo (cache-first on
+pre-scanned Houston ZIPs, per-IP rate limit, daily spend cap, per-run download cap).
 
 ## Layout
 
 - `src/hpa/` — `hospitals.py` (lookup), `discovery.py` (find the file), `llm.py` (the only
   Claude calls: website search, entry tie-break, service confirmation), `mrf.py` (streaming
   parsers), `scan.py` (download + extract), `compare.py` (verdicts), `catalog.py` (the 70
-  services), `evaluate.py`, `demo.py`, `cli.py`.
+  services), `pipeline.py` (a whole run; the CLI, the demo and the server share it),
+  `server.py` (FastAPI + SSE), `client.py` (how the CLI finds a running server),
+  `evaluate.py`, `demo.py`, `cli.py`.
+- `frontend/` — React + TypeScript (Vite). `trace.ts` is the reducer and holds all the
+  page's state; `api.ts` the types and the three calls; `npm test` runs Vitest.
 - `tests/` with real-file fixtures under `tests/fixtures/` (index files, file excerpts).
 - `data/` is gitignored: `hpa.duckdb`, `raw/` reference downloads, `mrf/` price files (~2 GB).
 - `demo/houston.json` (recorded run), `eval/` (results and the external index snapshot),
@@ -31,13 +34,18 @@ hpa locate 77030 77380 77339   # discovery, cached 30 days; Claude fallbacks nee
 hpa scan 77030 77380 77339     # download + extract; files reused when validators match
 hpa prices "knee mri" 77030    # verdicts; --all for every line
 hpa eval | hpa demo | hpa catalog QUERY
+hpa serve                      # the page + API on :8000; owns the DB file while it runs
 pytest                         # no network, no key
+cd frontend && npm test        # the trace reducer; npm run dev proxies /api to :8000
 ```
 
 ## Rules that matter here
 
 - DuckDB allows one process on the file. `hpa scan`/`locate` write; `prices`/`eval` open
-  read-only; nothing else may have it open, including a running server (SPEC "Process model").
+  read-only; nothing else may have it open (SPEC "Process model"). While `hpa serve` runs
+  it owns the file: it leaves `data/hpa.server.json`, `prices` then goes through the API,
+  and other commands raise `cli.DatabaseBusy` rather than a lock error. Go through
+  `cli.open_db`, never `store.connect`, in a new command.
 - Never invent a price; every number keeps its source ref. Verdicts say "unknown" rather
   than compare across missing context. A reviewed billing class is marked "(per review)".
 - Claude is called only at the three fuzzy steps, may only choose among candidates the
@@ -47,3 +55,6 @@ pytest                         # no network, no key
 - Tests use fixtures cut from real files; when a real file breaks something, add the excerpt.
 - Commit messages: plain, what and why. Push to `main` is fine; CI runs pytest on 3.11/3.13.
 - Findings go in `docs/houston-compliance-findings.md` with the command that reproduces them.
+- The page computes nothing: verdicts and prices are `pipeline.hospital_prices` dicts, and
+  a recorded run is served in the same shape as a live one. New per-hospital fields go
+  there, not into the front end.

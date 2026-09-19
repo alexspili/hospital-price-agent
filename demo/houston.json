@@ -310,183 +310,651 @@
    },
    "hospitals": [
     {
+     "ccn": "453304",
      "name": "Texas Childrens Hospital",
-     "file_date": "2026-03-05",
+     "distance_km": 0.4,
+     "approximate": false,
      "url": "https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip",
+     "file_date": "2026-03-05",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "CPT",
+      "code": "73721",
+      "other_codes": [
+       "CDM 4221830",
+       "RC 610"
+      ],
+      "description": "TC MRI, EXTREMITY ANY JOINT, LOWER EXTREMITY W/O CONTR",
+      "context": "outpatient, facility",
       "cash": 3174.46,
       "gross": 4738.0,
       "min": 208.84,
       "max": 4501.1,
-      "context": "outpatient, facility",
       "ref": "row 28173",
-      "description": "TC MRI, EXTREMITY ANY JOINT, LOWER EXTREMITY W/O CONTR"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "CDM 4221830",
+        "RC 610"
+       ],
+       "description": "TC MRI, EXTREMITY ANY JOINT, LOWER EXTREMITY W/O CONTR",
+       "context": "inpatient, facility",
+       "cash": 3174.46,
+       "gross": 4738.0,
+       "min": 1895.2,
+       "max": 4501.1,
+       "ref": "row 335547",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "CDM 4221830",
+        "RC 610"
+       ],
+       "description": "TC MRI, EXTREMITY ANY JOINT, LOWER EXTREMITY W/O CONTR",
+       "context": "outpatient, facility",
+       "cash": 3174.46,
+       "gross": 4738.0,
+       "min": 208.84,
+       "max": 4501.1,
+       "ref": "row 28173",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450193",
      "name": "Baylor St Lukes Medical Center",
-     "file_date": "2026-02-28",
+     "distance_km": 0.4,
+     "approximate": false,
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
+     "file_date": "2026-02-28",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "CPT",
+      "code": "73721",
+      "other_codes": [
+       "RC 0610"
+      ],
+      "description": "HC MR LOWER EXTREM JNT WO CONT",
+      "context": "outpatient, facility (per review)",
       "cash": 2725.8,
       "gross": 7788.0,
       "min": 174.32,
       "max": 7788.0,
-      "context": "outpatient, facility (per review)",
       "ref": "item 9144/charge 1",
-      "description": "HC MR LOWER EXTREM JNT WO CONT"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 0610"
+       ],
+       "description": "HC MR LOWER EXTREM JNT WO CONT",
+       "context": "inpatient",
+       "cash": 2725.8,
+       "gross": 7788.0,
+       "min": 3504.6,
+       "max": 7788.0,
+       "ref": "item 9143/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 0610"
+       ],
+       "description": "HC MR LOWER EXTREM JNT WO CONT",
+       "context": "outpatient, facility (per review)",
+       "cash": 2725.8,
+       "gross": 7788.0,
+       "min": 174.32,
+       "max": 7788.0,
+       "ref": "item 9144/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450358",
      "name": "Houston Methodist Hospital",
-     "file_date": "2026-04-01",
+     "distance_km": 0.7,
+     "approximate": false,
      "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx",
+     "file_date": "2026-04-01",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "HCPCS",
+      "code": "73721",
+      "other_codes": [
+       "CDM 61000020",
+       "RC 0614"
+      ],
+      "description": "HC MRI LOWER EXT JOINT W/O CONTRA",
+      "context": "both, facility",
       "cash": 1230.0,
       "gross": 2460.0,
       "min": null,
       "max": null,
-      "context": "both, facility",
       "ref": "item 13569/charge 1",
-      "description": "HC MRI LOWER EXT JOINT W/O CONTRA"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "HCPCS",
+       "code": "73721",
+       "other_codes": [
+        "CDM 61000020",
+        "RC 0614"
+       ],
+       "description": "HC MRI LOWER EXT JOINT W/O CONTRA",
+       "context": "both, facility",
+       "cash": 1230.0,
+       "gross": 2460.0,
+       "min": null,
+       "max": null,
+       "ref": "item 13569/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "HCPCS",
+       "code": "73721",
+       "other_codes": [],
+       "description": "Mri jnt of lwr extre w/o dye",
+       "context": "outpatient, facility",
+       "cash": null,
+       "gross": null,
+       "min": 239.69,
+       "max": 1691.87,
+       "ref": "item 15496/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450804",
      "name": "Texas Orthopedic Hospital",
-     "verdict": "no price file located"
+     "distance_km": 0.9,
+     "approximate": false,
+     "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/76-0418502_TEXAS-ORTHOPEDIC-HOSPITAL_standardcharges.json?si=pt-json-access-policy&spr=https&sv=2024-11-04&sr=c&sig=o5IofreS/7ETlsnhPakPWCwHVVUZRobywQ5wUKGjVuQ=",
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "file URL failed: HTTP 403",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450289",
      "name": "Harris Health",
-     "file_date": "3/24/2026",
+     "distance_km": 1.1,
+     "approximate": false,
      "url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip",
+     "file_date": "3/24/2026",
      "verdict": "unknown: no billing class stated",
      "detail": "the file does not say whether this is a facility or professional charge",
-     "lines": 1,
+     "line_count": 1,
      "headline": {
+      "code_type": "CPT",
+      "code": "73721",
+      "other_codes": [
+       "CDM 32912117",
+       "RC 610"
+      ],
+      "description": "MRI LOWER EXTREMITY JOINT W/O CONTRAST",
+      "context": "both",
       "cash": 231.944843,
       "gross": 3821.0,
       "min": 208.84,
       "max": 2483.65,
-      "context": "both",
       "ref": "row 33175",
-      "description": "MRI LOWER EXTREMITY JOINT W/O CONTRAST"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "CDM 32912117",
+        "RC 610"
+       ],
+       "description": "MRI LOWER EXTREMITY JOINT W/O CONTRAST",
+       "context": "both",
+       "cash": 231.944843,
+       "gross": 3821.0,
+       "min": 208.84,
+       "max": 2483.65,
+       "ref": "row 33175",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670267",
      "name": "The Woodlands Specialty Hospital",
-     "verdict": "no price file located"
+     "distance_km": 2.5,
+     "approximate": false,
+     "url": null,
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "no cms-hpt.txt or linked file located: woodlandsspecialty.com: ConnectError; www.woodlandsspecialty.com: ConnectError; woodlandsspecialty.org: ConnectError; www.woodlandsspecialty.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError; woodlandsspecialtyhospital.org: ConnectError; www.woodlandsspecialtyhospital.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670122",
      "name": "Houston Methodist The Woodlands Hospital",
-     "file_date": "2026-04-01",
+     "distance_km": 6.7,
+     "approximate": true,
      "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx",
+     "file_date": "2026-04-01",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "HCPCS",
+      "code": "73721",
+      "other_codes": [
+       "CDM 61000020",
+       "RC 0614"
+      ],
+      "description": "HC MRI LOWER EXT JOINT W/O CONTRA",
+      "context": "both, facility",
       "cash": 1243.5,
       "gross": 2487.0,
       "min": null,
       "max": null,
-      "context": "both, facility",
       "ref": "item 13552/charge 1",
-      "description": "HC MRI LOWER EXT JOINT W/O CONTRA"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "HCPCS",
+       "code": "73721",
+       "other_codes": [
+        "CDM 61000020",
+        "RC 0614"
+       ],
+       "description": "HC MRI LOWER EXT JOINT W/O CONTRA",
+       "context": "both, facility",
+       "cash": 1243.5,
+       "gross": 2487.0,
+       "min": null,
+       "max": null,
+       "ref": "item 13552/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "HCPCS",
+       "code": "73721",
+       "other_codes": [],
+       "description": "Mri jnt of lwr extre w/o dye",
+       "context": "outpatient, facility",
+       "cash": null,
+       "gross": null,
+       "min": 239.69,
+       "max": 1691.87,
+       "ref": "item 15381/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670059",
      "name": "CHI St Lukes Lakeside Hospital",
-     "file_date": "2026-02-28",
+     "distance_km": 7.3,
+     "approximate": false,
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
-     "verdict": "comparable",
-     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
-     "headline": {
-      "cash": 2725.8,
-      "gross": 7788.0,
-      "min": 174.32,
-      "max": 7788.0,
-      "context": "outpatient, facility (per review)",
-      "ref": "item 9186/charge 1",
-      "description": "HC MR LOWER EXTREM JNT WO CONT"
-     }
-    },
-    {
-     "name": "St Luke's The Woodlands Hospital",
      "file_date": "2026-02-28",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "CPT",
+      "code": "73721",
+      "other_codes": [
+       "RC 0610"
+      ],
+      "description": "HC MR LOWER EXTREM JNT WO CONT",
+      "context": "outpatient, facility (per review)",
       "cash": 2725.8,
       "gross": 7788.0,
       "min": 174.32,
       "max": 7788.0,
-      "context": "outpatient, facility (per review)",
       "ref": "item 9186/charge 1",
-      "description": "HC MR LOWER EXTREM JNT WO CONT"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 0610"
+       ],
+       "description": "HC MR LOWER EXTREM JNT WO CONT",
+       "context": "inpatient",
+       "cash": 2725.8,
+       "gross": 7788.0,
+       "min": 3426.72,
+       "max": 7788.0,
+       "ref": "item 9185/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 0610"
+       ],
+       "description": "HC MR LOWER EXTREM JNT WO CONT",
+       "context": "outpatient, facility (per review)",
+       "cash": 2725.8,
+       "gross": 7788.0,
+       "min": 174.32,
+       "max": 7788.0,
+       "ref": "item 9186/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450862",
+     "name": "St Luke's The Woodlands Hospital",
+     "distance_km": 7.6,
+     "approximate": false,
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
+     "file_date": "2026-02-28",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "line_count": 2,
+     "headline": {
+      "code_type": "CPT",
+      "code": "73721",
+      "other_codes": [
+       "RC 0610"
+      ],
+      "description": "HC MR LOWER EXTREM JNT WO CONT",
+      "context": "outpatient, facility (per review)",
+      "cash": 2725.8,
+      "gross": 7788.0,
+      "min": 174.32,
+      "max": 7788.0,
+      "ref": "item 9186/charge 1",
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 0610"
+       ],
+       "description": "HC MR LOWER EXTREM JNT WO CONT",
+       "context": "inpatient",
+       "cash": 2725.8,
+       "gross": 7788.0,
+       "min": 3348.84,
+       "max": 7788.0,
+       "ref": "item 9185/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 0610"
+       ],
+       "description": "HC MR LOWER EXTREM JNT WO CONT",
+       "context": "outpatient, facility (per review)",
+       "cash": 2725.8,
+       "gross": 7788.0,
+       "min": 174.32,
+       "max": 7788.0,
+       "ref": "item 9186/charge 1",
+       "note": null
+      }
+     ]
+    },
+    {
+     "ccn": "454144",
      "name": "Woodland Springs",
-     "file_date": "7/31/2026",
+     "distance_km": 12.3,
+     "approximate": false,
      "url": "https://www.woodlandspringshealth.com/docs/bhwoodlandspringslibraries/3q26/352565165_woodland-springs_standardcharges.csv",
+     "file_date": "7/31/2026",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670285",
      "name": "Elite Hospital Kingwood",
-     "file_date": "6/1/2026",
+     "distance_km": 0.0,
+     "approximate": true,
      "url": "https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv",
+     "file_date": "6/1/2026",
      "verdict": "unknown: no billing class stated",
      "detail": "the file does not say whether this is a facility or professional charge",
-     "lines": 1,
+     "line_count": 1,
      "headline": {
+      "code_type": "CPT",
+      "code": "73721",
+      "other_codes": [],
+      "description": "Magnetic resonance (eg proton) imaging any joint of lower extremity; without contrast material",
+      "context": "both",
       "cash": 2735.8,
       "gross": 5471.59,
       "min": 431.06,
       "max": 574.74,
-      "context": "both",
       "ref": "row 1570",
-      "description": "Magnetic resonance (eg proton) imaging any joint of lower extremity; without contrast material"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [],
+       "description": "Magnetic resonance (eg proton) imaging any joint of lower extremity; without contrast material",
+       "context": "both",
+       "cash": 2735.8,
+       "gross": 5471.59,
+       "min": 431.06,
+       "max": 574.74,
+       "ref": "row 1570",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "454103",
      "name": "Kingwood Pines Hospital",
-     "file_date": "2026-08-31",
+     "distance_km": 0.8,
+     "approximate": false,
      "url": "https://uhsfilecdn.eskycity.net/bh/731726290_kingwood-pines_standardcharges.csv",
+     "file_date": "2026-08-31",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450775",
      "name": "HCA Houston Healthcare Kingwood",
-     "file_date": "2026-05-14",
+     "distance_km": 3.1,
+     "approximate": false,
      "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_HCA-HOUSTON-HEALTHCARE-KINGWOOD_standardcharges.json?si=dpx-pt-json-access-policy&spr=https&sv=2026-02-06&sr=c&sig=ks%2BgfAjyEHlZmeP2PYJ%2f9NpMuCoRStjTb2bhIy9Y6LM%3D",
+     "file_date": "2026-05-14",
      "verdict": "modifier-specific lines only",
      "detail": "priced lines carry modifiers 50, LT, RT; no unmodified line to compare",
-     "lines": 48,
-     "headline": null
+     "line_count": 48,
+     "headline": null,
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 321"
+       ],
+       "description": "Magnetic resonance (eg, proton) imaging, any joint of lower extremity; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 215.06,
+       "max": 2974.36,
+       "ref": "item 101622/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 920"
+       ],
+       "description": "Magnetic resonance (eg, proton) imaging, any joint of lower extremity; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 215.06,
+       "max": 215.06,
+       "ref": "item 103502/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 350"
+       ],
+       "description": "Magnetic resonance (eg, proton) imaging, any joint of lower extremity; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 215.06,
+       "max": 215.06,
+       "ref": "item 103570/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 612"
+       ],
+       "description": "Magnetic resonance (eg, proton) imaging, any joint of lower extremity; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 215.06,
+       "max": 2241.0,
+       "ref": "item 110021/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 340"
+       ],
+       "description": "Magnetic resonance (eg, proton) imaging, any joint of lower extremity; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 215.06,
+       "max": 215.06,
+       "ref": "item 116006/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 351"
+       ],
+       "description": "Magnetic resonance (eg, proton) imaging, any joint of lower extremity; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 215.06,
+       "max": 215.06,
+       "ref": "item 116729/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 929"
+       ],
+       "description": "Magnetic resonance (eg, proton) imaging, any joint of lower extremity; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 215.06,
+       "max": 215.06,
+       "ref": "item 120769/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "73721",
+       "other_codes": [
+        "RC 404"
+       ],
+       "description": "Magnetic resonance (eg, proton) imaging, any joint of lower extremity; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 215.06,
+       "max": 215.06,
+       "ref": "item 125484/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670005",
      "name": "Memorial Hermann Surgical Hospital Kingwood",
-     "verdict": "no price file located"
+     "distance_km": 3.6,
+     "approximate": false,
+     "url": null,
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "index found but no entry for this hospital (none)",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670266",
      "name": "Townsen Memorial Hospital",
-     "verdict": "not scanned"
+     "distance_km": 5.7,
+     "approximate": false,
+     "url": "https://www.townsenmemorial.com/images/Files/364867804_TownsenMemorialHospital_StandardCharges.csv",
+     "file_date": null,
+     "verdict": "not scanned",
+     "detail": "",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     }
    ]
   },
@@ -579,143 +1047,549 @@
    },
    "hospitals": [
     {
+     "ccn": "453304",
      "name": "Texas Childrens Hospital",
-     "file_date": "2026-03-05",
+     "distance_km": 0.4,
+     "approximate": false,
      "url": "https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip",
+     "file_date": "2026-03-05",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450193",
      "name": "Baylor St Lukes Medical Center",
-     "file_date": "2026-02-28",
+     "distance_km": 0.4,
+     "approximate": false,
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
+     "file_date": "2026-02-28",
      "verdict": "negotiated rates only, no cash or gross price",
      "detail": "1 line, each with negotiated min/max only",
-     "lines": 1,
-     "headline": null
+     "line_count": 1,
+     "headline": null,
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [],
+       "description": "DIAGNOSTIC COLONOSCOPY",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 345.58,
+       "max": 7221.0,
+       "ref": "item 5870/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450358",
      "name": "Houston Methodist Hospital",
-     "file_date": "2026-04-01",
+     "distance_km": 0.7,
+     "approximate": false,
      "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx",
+     "file_date": "2026-04-01",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "HCPCS",
+      "code": "45378",
+      "other_codes": [
+       "CDM 36100443",
+       "RC 0361"
+      ],
+      "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD",
+      "context": "both, facility",
       "cash": 519.0,
       "gross": 1038.0,
       "min": null,
       "max": null,
-      "context": "both, facility",
       "ref": "item 12398/charge 1",
-      "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "HCPCS",
+       "code": "45378",
+       "other_codes": [
+        "CDM 36100443",
+        "RC 0361"
+       ],
+       "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD",
+       "context": "both, facility",
+       "cash": 519.0,
+       "gross": 1038.0,
+       "min": null,
+       "max": null,
+       "ref": "item 12398/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "HCPCS",
+       "code": "45378",
+       "other_codes": [],
+       "description": "Diagnostic colonoscopy",
+       "context": "outpatient, facility",
+       "cash": null,
+       "gross": null,
+       "min": 934.2,
+       "max": 5545.0,
+       "ref": "item 21586/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450804",
      "name": "Texas Orthopedic Hospital",
-     "verdict": "no price file located"
+     "distance_km": 0.9,
+     "approximate": false,
+     "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/76-0418502_TEXAS-ORTHOPEDIC-HOSPITAL_standardcharges.json?si=pt-json-access-policy&spr=https&sv=2024-11-04&sr=c&sig=o5IofreS/7ETlsnhPakPWCwHVVUZRobywQ5wUKGjVuQ=",
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "file URL failed: HTTP 403",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450289",
      "name": "Harris Health",
-     "file_date": "3/24/2026",
+     "distance_km": 1.1,
+     "approximate": false,
      "url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip",
+     "file_date": "3/24/2026",
      "verdict": "unknown: no billing class stated",
      "detail": "the file does not say whether this is a facility or professional charge; 5 other lines for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 6,
+     "line_count": 6,
      "headline": {
+      "code_type": "CPT",
+      "code": "45378",
+      "other_codes": [
+       "CDM 12645378",
+       "RC 750"
+      ],
+      "description": "ECHG GI PROC COLONOSCOPY, FLEX ; DX",
+      "context": "both",
       "cash": 1835.24,
       "gross": 3880.0,
       "min": 1940.0,
       "max": 1940.0,
-      "context": "both",
       "ref": "row 32341",
-      "description": "ECHG GI PROC COLONOSCOPY, FLEX ; DX"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [
+        "CDM 12645378",
+        "RC 750"
+       ],
+       "description": "ECHG GI PROC COLONOSCOPY, FLEX ; DX",
+       "context": "both",
+       "cash": 1835.24,
+       "gross": 3880.0,
+       "min": 1940.0,
+       "max": 1940.0,
+       "ref": "row 32341",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [],
+       "description": "Unspecified",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 859.0758,
+       "max": 951.3732,
+       "ref": "row 14264",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [],
+       "description": "Diagnostic colonoscopy",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 1662.0,
+       "max": 1662.0,
+       "ref": "row 22154",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [],
+       "description": "Diagnostic colonoscopy",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 660.0,
+       "max": 660.0,
+       "ref": "row 27709",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [],
+       "description": "AMBULATORY SURGICAL CENTER",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 328.5,
+       "max": 338.355,
+       "ref": "row 6045",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [],
+       "description": "Diagnostic colonoscopy",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 726.0,
+       "max": 726.0,
+       "ref": "row 9990",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670267",
      "name": "The Woodlands Specialty Hospital",
-     "verdict": "no price file located"
+     "distance_km": 2.5,
+     "approximate": false,
+     "url": null,
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "no cms-hpt.txt or linked file located: woodlandsspecialty.com: ConnectError; www.woodlandsspecialty.com: ConnectError; woodlandsspecialty.org: ConnectError; www.woodlandsspecialty.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError; woodlandsspecialtyhospital.org: ConnectError; www.woodlandsspecialtyhospital.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670122",
      "name": "Houston Methodist The Woodlands Hospital",
-     "file_date": "2026-04-01",
+     "distance_km": 6.7,
+     "approximate": true,
      "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx",
+     "file_date": "2026-04-01",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "HCPCS",
+      "code": "45378",
+      "other_codes": [
+       "CDM 36100443",
+       "RC 0361"
+      ],
+      "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD",
+      "context": "both, facility",
       "cash": 866.0,
       "gross": 1732.0,
       "min": null,
       "max": null,
-      "context": "both, facility",
       "ref": "item 12425/charge 1",
-      "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "HCPCS",
+       "code": "45378",
+       "other_codes": [
+        "CDM 36100443",
+        "RC 0361"
+       ],
+       "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD",
+       "context": "both, facility",
+       "cash": 866.0,
+       "gross": 1732.0,
+       "min": null,
+       "max": null,
+       "ref": "item 12425/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "HCPCS",
+       "code": "45378",
+       "other_codes": [],
+       "description": "Diagnostic colonoscopy",
+       "context": "outpatient, facility",
+       "cash": null,
+       "gross": null,
+       "min": 934.2,
+       "max": 5545.0,
+       "ref": "item 21356/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670059",
      "name": "CHI St Lukes Lakeside Hospital",
-     "file_date": "2026-02-28",
+     "distance_km": 7.3,
+     "approximate": false,
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
-     "verdict": "negotiated rates only, no cash or gross price",
-     "detail": "1 line, each with negotiated min/max only",
-     "lines": 1,
-     "headline": null
-    },
-    {
-     "name": "St Luke's The Woodlands Hospital",
      "file_date": "2026-02-28",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
      "verdict": "negotiated rates only, no cash or gross price",
      "detail": "1 line, each with negotiated min/max only",
-     "lines": 1,
-     "headline": null
+     "line_count": 1,
+     "headline": null,
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [],
+       "description": "DIAGNOSTIC COLONOSCOPY",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 328.5,
+       "max": 7221.0,
+       "ref": "item 5908/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450862",
+     "name": "St Luke's The Woodlands Hospital",
+     "distance_km": 7.6,
+     "approximate": false,
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
+     "file_date": "2026-02-28",
+     "verdict": "negotiated rates only, no cash or gross price",
+     "detail": "1 line, each with negotiated min/max only",
+     "line_count": 1,
+     "headline": null,
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [],
+       "description": "DIAGNOSTIC COLONOSCOPY",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 345.58,
+       "max": 7221.0,
+       "ref": "item 5908/charge 1",
+       "note": null
+      }
+     ]
+    },
+    {
+     "ccn": "454144",
      "name": "Woodland Springs",
-     "file_date": "7/31/2026",
+     "distance_km": 12.3,
+     "approximate": false,
      "url": "https://www.woodlandspringshealth.com/docs/bhwoodlandspringslibraries/3q26/352565165_woodland-springs_standardcharges.csv",
+     "file_date": "7/31/2026",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670285",
      "name": "Elite Hospital Kingwood",
-     "file_date": "6/1/2026",
+     "distance_km": 0.0,
+     "approximate": true,
      "url": "https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv",
+     "file_date": "6/1/2026",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "454103",
      "name": "Kingwood Pines Hospital",
-     "file_date": "2026-08-31",
+     "distance_km": 0.8,
+     "approximate": false,
      "url": "https://uhsfilecdn.eskycity.net/bh/731726290_kingwood-pines_standardcharges.csv",
+     "file_date": "2026-08-31",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450775",
      "name": "HCA Houston Healthcare Kingwood",
-     "file_date": "2026-05-14",
+     "distance_km": 3.1,
+     "approximate": false,
      "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_HCA-HOUSTON-HEALTHCARE-KINGWOOD_standardcharges.json?si=dpx-pt-json-access-policy&spr=https&sv=2026-02-06&sr=c&sig=ks%2BgfAjyEHlZmeP2PYJ%2f9NpMuCoRStjTb2bhIy9Y6LM%3D",
+     "file_date": "2026-05-14",
      "verdict": "negotiated rates only, no cash or gross price",
      "detail": "20 lines, each with negotiated min/max only",
-     "lines": 20,
-     "headline": null
+     "line_count": 20,
+     "headline": null,
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [
+        "RC 369"
+       ],
+       "description": "Colonoscopy, flexible; diagnostic, including collection of specimen(s) by brushing or washing, when performed (separate procedure)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 344.93,
+       "max": 4690.0,
+       "ref": "item 103612/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [
+        "RC 362"
+       ],
+       "description": "Colonoscopy, flexible; diagnostic, including collection of specimen(s) by brushing or washing, when performed (separate procedure)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 344.93,
+       "max": 4690.0,
+       "ref": "item 114999/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [
+        "RC 360"
+       ],
+       "description": "Colonoscopy, flexible; diagnostic, including collection of specimen(s) by brushing or washing, when performed (separate procedure)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 4255.0,
+       "max": 4255.0,
+       "ref": "item 115626/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [
+        "RC 367"
+       ],
+       "description": "Colonoscopy, flexible; diagnostic, including collection of specimen(s) by brushing or washing, when performed (separate procedure)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 4690.0,
+       "max": 4690.0,
+       "ref": "item 122978/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [
+        "RC 490"
+       ],
+       "description": "Colonoscopy, flexible; diagnostic, including collection of specimen(s) by brushing or washing, when performed (separate procedure)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 4255.0,
+       "max": 4255.0,
+       "ref": "item 153105/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [
+        "RC 369"
+       ],
+       "description": "Colonoscopy, flexible; diagnostic, including collection of specimen(s) by brushing or washing, when performed (separate procedure)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 4255.0,
+       "max": 4255.0,
+       "ref": "item 157318/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [
+        "RC 481"
+       ],
+       "description": "Colonoscopy, flexible; diagnostic, including collection of specimen(s) by brushing or washing, when performed (separate procedure)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 352.49,
+       "max": 4690.0,
+       "ref": "item 167209/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "45378",
+       "other_codes": [
+        "RC 750"
+       ],
+       "description": "Colonoscopy, flexible; diagnostic, including collection of specimen(s) by brushing or washing, when performed (separate procedure)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 352.49,
+       "max": 4690.0,
+       "ref": "item 175576/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670005",
      "name": "Memorial Hermann Surgical Hospital Kingwood",
-     "verdict": "no price file located"
+     "distance_km": 3.6,
+     "approximate": false,
+     "url": null,
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "index found but no entry for this hospital (none)",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670266",
      "name": "Townsen Memorial Hospital",
-     "verdict": "not scanned"
+     "distance_km": 5.7,
+     "approximate": false,
+     "url": "https://www.townsenmemorial.com/images/Files/364867804_TownsenMemorialHospital_StandardCharges.csv",
+     "file_date": null,
+     "verdict": "not scanned",
+     "detail": "",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     }
    ]
   },
@@ -808,183 +1682,667 @@
    },
    "hospitals": [
     {
+     "ccn": "453304",
      "name": "Texas Childrens Hospital",
-     "file_date": "2026-03-05",
+     "distance_km": 0.4,
+     "approximate": false,
      "url": "https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip",
+     "file_date": "2026-03-05",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "CPT",
+      "code": "70450",
+      "other_codes": [
+       "CDM 4240000",
+       "RC 351"
+      ],
+      "description": "TC CT, BRAIN WITHOUT CONTRAST",
+      "context": "outpatient, facility",
       "cash": 2278.67,
       "gross": 3401.0,
       "min": 104.75,
       "max": 3230.95,
-      "context": "outpatient, facility",
       "ref": "row 26951",
-      "description": "TC CT, BRAIN WITHOUT CONTRAST"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "CDM 4240000",
+        "RC 351"
+       ],
+       "description": "TC CT, BRAIN WITHOUT CONTRAST",
+       "context": "inpatient, facility",
+       "cash": 2278.67,
+       "gross": 3401.0,
+       "min": 1360.4,
+       "max": 3230.95,
+       "ref": "row 333039",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "CDM 4240000",
+        "RC 351"
+       ],
+       "description": "TC CT, BRAIN WITHOUT CONTRAST",
+       "context": "outpatient, facility",
+       "cash": 2278.67,
+       "gross": 3401.0,
+       "min": 104.75,
+       "max": 3230.95,
+       "ref": "row 26951",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450193",
      "name": "Baylor St Lukes Medical Center",
-     "file_date": "2026-02-28",
+     "distance_km": 0.4,
+     "approximate": false,
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
+     "file_date": "2026-02-28",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "CPT",
+      "code": "70450",
+      "other_codes": [
+       "RC 0350"
+      ],
+      "description": "HC CT BRAIN",
+      "context": "outpatient, facility (per review)",
       "cash": 2399.25,
       "gross": 6855.0,
       "min": 76.69,
       "max": 6855.0,
-      "context": "outpatient, facility (per review)",
       "ref": "item 8783/charge 1",
-      "description": "HC CT BRAIN"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 0350"
+       ],
+       "description": "HC CT BRAIN",
+       "context": "inpatient",
+       "cash": 2399.25,
+       "gross": 6855.0,
+       "min": 3084.75,
+       "max": 6855.0,
+       "ref": "item 8782/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 0350"
+       ],
+       "description": "HC CT BRAIN",
+       "context": "outpatient, facility (per review)",
+       "cash": 2399.25,
+       "gross": 6855.0,
+       "min": 76.69,
+       "max": 6855.0,
+       "ref": "item 8783/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450358",
      "name": "Houston Methodist Hospital",
-     "file_date": "2026-04-01",
+     "distance_km": 0.7,
+     "approximate": false,
      "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx",
+     "file_date": "2026-04-01",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "HCPCS",
+      "code": "70450",
+      "other_codes": [
+       "CDM 35100002",
+       "RC 0351"
+      ],
+      "description": "HC CT HEAD/BRAIN SCAN WO CONTRA",
+      "context": "both, facility",
       "cash": 1120.0,
       "gross": 2240.0,
       "min": null,
       "max": null,
-      "context": "both, facility",
       "ref": "item 11945/charge 1",
-      "description": "HC CT HEAD/BRAIN SCAN WO CONTRA"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "HCPCS",
+       "code": "70450",
+       "other_codes": [
+        "CDM 35100002",
+        "RC 0351"
+       ],
+       "description": "HC CT HEAD/BRAIN SCAN WO CONTRA",
+       "context": "both, facility",
+       "cash": 1120.0,
+       "gross": 2240.0,
+       "min": null,
+       "max": null,
+       "ref": "item 11945/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "HCPCS",
+       "code": "70450",
+       "other_codes": [],
+       "description": "Ct head/brain w/o dye",
+       "context": "outpatient, facility",
+       "cash": null,
+       "gross": null,
+       "min": 105.02,
+       "max": 813.7,
+       "ref": "item 14510/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450804",
      "name": "Texas Orthopedic Hospital",
-     "verdict": "no price file located"
+     "distance_km": 0.9,
+     "approximate": false,
+     "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/76-0418502_TEXAS-ORTHOPEDIC-HOSPITAL_standardcharges.json?si=pt-json-access-policy&spr=https&sv=2024-11-04&sr=c&sig=o5IofreS/7ETlsnhPakPWCwHVVUZRobywQ5wUKGjVuQ=",
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "file URL failed: HTTP 403",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450289",
      "name": "Harris Health",
-     "file_date": "3/24/2026",
+     "distance_km": 1.1,
+     "approximate": false,
      "url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip",
+     "file_date": "3/24/2026",
      "verdict": "unknown: no billing class stated",
      "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "CPT",
+      "code": "70450",
+      "other_codes": [
+       "CDM 33300001",
+       "RC 351"
+      ],
+      "description": "CT HEAD W/O CONTRAST (MOD CT \ufffd MCARE ONLY)",
+      "context": "both",
       "cash": 102.03961,
       "gross": 2320.0,
       "min": 104.75,
       "max": 1508.0,
-      "context": "both",
       "ref": "row 34428",
-      "description": "CT HEAD W/O CONTRAST (MOD CT \ufffd MCARE ONLY)"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "CDM 33300001",
+        "RC 351"
+       ],
+       "description": "CT HEAD W/O CONTRAST (MOD CT \ufffd MCARE ONLY)",
+       "context": "both",
+       "cash": 102.03961,
+       "gross": 2320.0,
+       "min": 104.75,
+       "max": 1508.0,
+       "ref": "row 34428",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "CDM 33329351",
+        "RC 351"
+       ],
+       "description": "CT HEAD W/O CONTRAST",
+       "context": "both",
+       "cash": 102.03961,
+       "gross": 2320.0,
+       "min": 104.75,
+       "max": 1508.0,
+       "ref": "row 34635",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670267",
      "name": "The Woodlands Specialty Hospital",
-     "verdict": "no price file located"
+     "distance_km": 2.5,
+     "approximate": false,
+     "url": null,
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "no cms-hpt.txt or linked file located: woodlandsspecialty.com: ConnectError; www.woodlandsspecialty.com: ConnectError; woodlandsspecialty.org: ConnectError; www.woodlandsspecialty.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError; woodlandsspecialtyhospital.org: ConnectError; www.woodlandsspecialtyhospital.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670122",
      "name": "Houston Methodist The Woodlands Hospital",
-     "file_date": "2026-04-01",
+     "distance_km": 6.7,
+     "approximate": true,
      "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx",
+     "file_date": "2026-04-01",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "HCPCS",
+      "code": "70450",
+      "other_codes": [
+       "CDM 35100002",
+       "RC 0351"
+      ],
+      "description": "HC CT HEAD/BRAIN SCAN WO CONTRA",
+      "context": "both, facility",
       "cash": 1120.0,
       "gross": 2240.0,
       "min": null,
       "max": null,
-      "context": "both, facility",
       "ref": "item 11959/charge 1",
-      "description": "HC CT HEAD/BRAIN SCAN WO CONTRA"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "HCPCS",
+       "code": "70450",
+       "other_codes": [
+        "CDM 35100002",
+        "RC 0351"
+       ],
+       "description": "HC CT HEAD/BRAIN SCAN WO CONTRA",
+       "context": "both, facility",
+       "cash": 1120.0,
+       "gross": 2240.0,
+       "min": null,
+       "max": null,
+       "ref": "item 11959/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "HCPCS",
+       "code": "70450",
+       "other_codes": [],
+       "description": "Ct head/brain w/o dye",
+       "context": "outpatient, facility",
+       "cash": null,
+       "gross": null,
+       "min": 105.02,
+       "max": 813.7,
+       "ref": "item 14357/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670059",
      "name": "CHI St Lukes Lakeside Hospital",
-     "file_date": "2026-02-28",
+     "distance_km": 7.3,
+     "approximate": false,
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
-     "verdict": "comparable",
-     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
-     "headline": {
-      "cash": 2399.25,
-      "gross": 6855.0,
-      "min": 76.69,
-      "max": 6855.0,
-      "context": "outpatient, facility (per review)",
-      "ref": "item 8825/charge 1",
-      "description": "HC CT BRAIN"
-     }
-    },
-    {
-     "name": "St Luke's The Woodlands Hospital",
      "file_date": "2026-02-28",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "CPT",
+      "code": "70450",
+      "other_codes": [
+       "RC 0350"
+      ],
+      "description": "HC CT BRAIN",
+      "context": "outpatient, facility (per review)",
       "cash": 2399.25,
       "gross": 6855.0,
       "min": 76.69,
       "max": 6855.0,
-      "context": "outpatient, facility (per review)",
       "ref": "item 8825/charge 1",
-      "description": "HC CT BRAIN"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 0350"
+       ],
+       "description": "HC CT BRAIN",
+       "context": "inpatient",
+       "cash": 2399.25,
+       "gross": 6855.0,
+       "min": 3016.2,
+       "max": 6855.0,
+       "ref": "item 8824/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 0350"
+       ],
+       "description": "HC CT BRAIN",
+       "context": "outpatient, facility (per review)",
+       "cash": 2399.25,
+       "gross": 6855.0,
+       "min": 76.69,
+       "max": 6855.0,
+       "ref": "item 8825/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450862",
+     "name": "St Luke's The Woodlands Hospital",
+     "distance_km": 7.6,
+     "approximate": false,
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
+     "file_date": "2026-02-28",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "line_count": 2,
+     "headline": {
+      "code_type": "CPT",
+      "code": "70450",
+      "other_codes": [
+       "RC 0350"
+      ],
+      "description": "HC CT BRAIN",
+      "context": "outpatient, facility (per review)",
+      "cash": 2399.25,
+      "gross": 6855.0,
+      "min": 76.69,
+      "max": 6855.0,
+      "ref": "item 8825/charge 1",
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 0350"
+       ],
+       "description": "HC CT BRAIN",
+       "context": "inpatient",
+       "cash": 2399.25,
+       "gross": 6855.0,
+       "min": 2947.65,
+       "max": 6855.0,
+       "ref": "item 8824/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 0350"
+       ],
+       "description": "HC CT BRAIN",
+       "context": "outpatient, facility (per review)",
+       "cash": 2399.25,
+       "gross": 6855.0,
+       "min": 76.69,
+       "max": 6855.0,
+       "ref": "item 8825/charge 1",
+       "note": null
+      }
+     ]
+    },
+    {
+     "ccn": "454144",
      "name": "Woodland Springs",
-     "file_date": "7/31/2026",
+     "distance_km": 12.3,
+     "approximate": false,
      "url": "https://www.woodlandspringshealth.com/docs/bhwoodlandspringslibraries/3q26/352565165_woodland-springs_standardcharges.csv",
+     "file_date": "7/31/2026",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670285",
      "name": "Elite Hospital Kingwood",
-     "file_date": "6/1/2026",
+     "distance_km": 0.0,
+     "approximate": true,
      "url": "https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv",
+     "file_date": "6/1/2026",
      "verdict": "unknown: no billing class stated",
      "detail": "the file does not say whether this is a facility or professional charge",
-     "lines": 1,
+     "line_count": 1,
      "headline": {
+      "code_type": "CPT",
+      "code": "70450",
+      "other_codes": [],
+      "description": "Computed tomography head or brain; without contrast material",
+      "context": "both",
       "cash": 2612.15,
       "gross": 5224.29,
       "min": 226.89,
       "max": 302.52,
-      "context": "both",
       "ref": "row 508",
-      "description": "Computed tomography head or brain; without contrast material"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [],
+       "description": "Computed tomography head or brain; without contrast material",
+       "context": "both",
+       "cash": 2612.15,
+       "gross": 5224.29,
+       "min": 226.89,
+       "max": 302.52,
+       "ref": "row 508",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "454103",
      "name": "Kingwood Pines Hospital",
-     "file_date": "2026-08-31",
+     "distance_km": 0.8,
+     "approximate": false,
      "url": "https://uhsfilecdn.eskycity.net/bh/731726290_kingwood-pines_standardcharges.csv",
+     "file_date": "2026-08-31",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450775",
      "name": "HCA Houston Healthcare Kingwood",
-     "file_date": "2026-05-14",
+     "distance_km": 3.1,
+     "approximate": false,
      "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_HCA-HOUSTON-HEALTHCARE-KINGWOOD_standardcharges.json?si=dpx-pt-json-access-policy&spr=https&sv=2026-02-06&sr=c&sig=ks%2BgfAjyEHlZmeP2PYJ%2f9NpMuCoRStjTb2bhIy9Y6LM%3D",
+     "file_date": "2026-05-14",
      "verdict": "conflicting",
      "detail": "5 unmodified lines disagree (cash $10,294.00, $10,294.23)",
-     "lines": 48,
-     "headline": null
+     "line_count": 48,
+     "headline": null,
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 619"
+       ],
+       "description": "Computed tomography, head or brain; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 109.02,
+       "max": 109.02,
+       "ref": "item 107302/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 322"
+       ],
+       "description": "Computed tomography, head or brain; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 109.02,
+       "max": 1285.24,
+       "ref": "item 118927/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 610"
+       ],
+       "description": "Computed tomography, head or brain; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 109.02,
+       "max": 109.02,
+       "ref": "item 129112/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 401"
+       ],
+       "description": "Computed tomography, head or brain; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 109.02,
+       "max": 109.02,
+       "ref": "item 130139/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 403"
+       ],
+       "description": "Computed tomography, head or brain; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 109.02,
+       "max": 109.02,
+       "ref": "item 135001/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 732"
+       ],
+       "description": "Computed tomography, head or brain; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 109.02,
+       "max": 109.02,
+       "ref": "item 149762/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 349"
+       ],
+       "description": "Computed tomography, head or brain; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 109.02,
+       "max": 109.02,
+       "ref": "item 155389/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "70450",
+       "other_codes": [
+        "RC 614"
+       ],
+       "description": "Computed tomography, head or brain; without contrast material",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 109.02,
+       "max": 109.02,
+       "ref": "item 157363/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670005",
      "name": "Memorial Hermann Surgical Hospital Kingwood",
-     "verdict": "no price file located"
+     "distance_km": 3.6,
+     "approximate": false,
+     "url": null,
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "index found but no entry for this hospital (none)",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670266",
      "name": "Townsen Memorial Hospital",
-     "verdict": "not scanned"
+     "distance_km": 5.7,
+     "approximate": false,
+     "url": "https://www.townsenmemorial.com/images/Files/364867804_TownsenMemorialHospital_StandardCharges.csv",
+     "file_date": null,
+     "verdict": "not scanned",
+     "detail": "",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     }
    ]
   },
@@ -1077,183 +2435,746 @@
    },
    "hospitals": [
     {
+     "ccn": "453304",
      "name": "Texas Childrens Hospital",
-     "file_date": "2026-03-05",
+     "distance_km": 0.4,
+     "approximate": false,
      "url": "https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip",
+     "file_date": "2026-03-05",
      "verdict": "conflicting",
      "detail": "4 unmodified lines disagree (cash $75.71, $78.39, $80.40, $85.76)",
-     "lines": 8,
-     "headline": null
+     "line_count": 8,
+     "headline": null,
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "CDM 3410400",
+        "RC 305"
+       ],
+       "description": "TC FETAL CBC,AUTOMATED",
+       "context": "inpatient, facility",
+       "cash": 78.39,
+       "gross": 117.0,
+       "min": 46.8,
+       "max": 111.15,
+       "ref": "row 345067",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "CDM 3410500",
+        "RC 300"
+       ],
+       "description": "TC CBC, AUTO HGB HCT RBC WBC & PLT NO DIFF",
+       "context": "inpatient, facility",
+       "cash": 75.71,
+       "gross": 113.0,
+       "min": 45.2,
+       "max": 107.35,
+       "ref": "row 345069",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "CDM 2730010",
+        "RC 305"
+       ],
+       "description": "TC CBC, AUTO HGB HCT RBC WBC & PLT NO DIF",
+       "context": "inpatient, facility",
+       "cash": 85.76,
+       "gross": 128.0,
+       "min": 51.2,
+       "max": 121.6,
+       "ref": "row 345661",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "CDM 3320010",
+        "RC 300"
+       ],
+       "description": "TC CBC, AUTO HGB HCT RBC WBC & PLT NO DIFF",
+       "context": "inpatient, facility",
+       "cash": 80.4,
+       "gross": 120.0,
+       "min": 48.0,
+       "max": 114.0,
+       "ref": "row 347119",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "CDM 3410400",
+        "RC 305"
+       ],
+       "description": "TC FETAL CBC,AUTOMATED",
+       "context": "outpatient, facility",
+       "cash": 78.39,
+       "gross": 117.0,
+       "min": 6.47,
+       "max": 111.15,
+       "ref": "row 31807",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "CDM 3410500",
+        "RC 300"
+       ],
+       "description": "TC CBC, AUTO HGB HCT RBC WBC & PLT NO DIFF",
+       "context": "outpatient, facility",
+       "cash": 75.71,
+       "gross": 113.0,
+       "min": 6.47,
+       "max": 107.35,
+       "ref": "row 31808",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "CDM 2730010",
+        "RC 305"
+       ],
+       "description": "TC CBC, AUTO HGB HCT RBC WBC & PLT NO DIF",
+       "context": "outpatient, facility",
+       "cash": 85.76,
+       "gross": 128.0,
+       "min": 6.47,
+       "max": 121.6,
+       "ref": "row 31857",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "CDM 3320010",
+        "RC 300"
+       ],
+       "description": "TC CBC, AUTO HGB HCT RBC WBC & PLT NO DIFF",
+       "context": "outpatient, facility",
+       "cash": 80.4,
+       "gross": 120.0,
+       "min": 6.47,
+       "max": 114.0,
+       "ref": "row 32530",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450193",
      "name": "Baylor St Lukes Medical Center",
-     "file_date": "2026-02-28",
+     "distance_km": 0.4,
+     "approximate": false,
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
+     "file_date": "2026-02-28",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "CPT",
+      "code": "85027",
+      "other_codes": [
+       "RC 0300"
+      ],
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)",
+      "context": "outpatient, facility (per review)",
       "cash": 174.3,
       "gross": 498.0,
       "min": 4.66,
       "max": 498.0,
-      "context": "outpatient, facility (per review)",
       "ref": "item 10588/charge 1",
-      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 0300"
+       ],
+       "description": "HC LAB CBC (W/PLT&HEMOGRAM)",
+       "context": "inpatient",
+       "cash": 174.3,
+       "gross": 498.0,
+       "min": 224.1,
+       "max": 498.0,
+       "ref": "item 10587/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 0300"
+       ],
+       "description": "HC LAB CBC (W/PLT&HEMOGRAM)",
+       "context": "outpatient, facility (per review)",
+       "cash": 174.3,
+       "gross": 498.0,
+       "min": 4.66,
+       "max": 498.0,
+       "ref": "item 10588/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450358",
      "name": "Houston Methodist Hospital",
-     "file_date": "2026-04-01",
+     "distance_km": 0.7,
+     "approximate": false,
      "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx",
+     "file_date": "2026-04-01",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "HCPCS",
+      "code": "85027",
+      "other_codes": [
+       "CDM 30500007",
+       "RC 0305"
+      ],
+      "description": "HC COMPLETE BLOOD COUNT CBC",
+      "context": "both, facility",
       "cash": 133.0,
       "gross": 266.0,
       "min": null,
       "max": null,
-      "context": "both, facility",
       "ref": "item 10713/charge 1",
-      "description": "HC COMPLETE BLOOD COUNT CBC"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "HCPCS",
+       "code": "85027",
+       "other_codes": [
+        "CDM 30500007",
+        "RC 0305"
+       ],
+       "description": "HC COMPLETE BLOOD COUNT CBC",
+       "context": "both, facility",
+       "cash": 133.0,
+       "gross": 266.0,
+       "min": null,
+       "max": null,
+       "ref": "item 10713/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "HCPCS",
+       "code": "85027",
+       "other_codes": [],
+       "description": "Complete cbc automated",
+       "context": "outpatient, facility",
+       "cash": null,
+       "gross": null,
+       "min": 6.47,
+       "max": 79.98,
+       "ref": "item 23714/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450804",
      "name": "Texas Orthopedic Hospital",
-     "verdict": "no price file located"
+     "distance_km": 0.9,
+     "approximate": false,
+     "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/76-0418502_TEXAS-ORTHOPEDIC-HOSPITAL_standardcharges.json?si=pt-json-access-policy&spr=https&sv=2024-11-04&sr=c&sig=o5IofreS/7ETlsnhPakPWCwHVVUZRobywQ5wUKGjVuQ=",
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "file URL failed: HTTP 403",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450289",
      "name": "Harris Health",
-     "file_date": "3/24/2026",
+     "distance_km": 1.1,
+     "approximate": false,
      "url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip",
+     "file_date": "3/24/2026",
      "verdict": "unknown: no billing class stated",
      "detail": "the file does not say whether this is a facility or professional charge",
-     "lines": 1,
+     "line_count": 1,
      "headline": {
+      "code_type": "CPT",
+      "code": "85027",
+      "other_codes": [
+       "CDM 34439958",
+       "RC 300"
+      ],
+      "description": "CBC/PLATELET",
+      "context": "both",
       "cash": 6.47,
       "gross": 166.0,
       "min": 5.43,
       "max": 107.9,
-      "context": "both",
       "ref": "row 36051",
-      "description": "CBC/PLATELET"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "CDM 34439958",
+        "RC 300"
+       ],
+       "description": "CBC/PLATELET",
+       "context": "both",
+       "cash": 6.47,
+       "gross": 166.0,
+       "min": 5.43,
+       "max": 107.9,
+       "ref": "row 36051",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670267",
      "name": "The Woodlands Specialty Hospital",
-     "verdict": "no price file located"
+     "distance_km": 2.5,
+     "approximate": false,
+     "url": null,
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "no cms-hpt.txt or linked file located: woodlandsspecialty.com: ConnectError; www.woodlandsspecialty.com: ConnectError; woodlandsspecialty.org: ConnectError; www.woodlandsspecialty.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError; woodlandsspecialtyhospital.org: ConnectError; www.woodlandsspecialtyhospital.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670122",
      "name": "Houston Methodist The Woodlands Hospital",
-     "file_date": "2026-04-01",
+     "distance_km": 6.7,
+     "approximate": true,
      "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx",
+     "file_date": "2026-04-01",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "HCPCS",
+      "code": "85027",
+      "other_codes": [
+       "CDM 30500007",
+       "RC 0305"
+      ],
+      "description": "HC COMPLETE BLOOD COUNT CBC",
+      "context": "both, facility",
       "cash": 95.5,
       "gross": 191.0,
       "min": null,
       "max": null,
-      "context": "both, facility",
       "ref": "item 10719/charge 1",
-      "description": "HC COMPLETE BLOOD COUNT CBC"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "HCPCS",
+       "code": "85027",
+       "other_codes": [
+        "CDM 30500007",
+        "RC 0305"
+       ],
+       "description": "HC COMPLETE BLOOD COUNT CBC",
+       "context": "both, facility",
+       "cash": 95.5,
+       "gross": 191.0,
+       "min": null,
+       "max": null,
+       "ref": "item 10719/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "HCPCS",
+       "code": "85027",
+       "other_codes": [],
+       "description": "Complete cbc automated",
+       "context": "outpatient, facility",
+       "cash": null,
+       "gross": null,
+       "min": 6.47,
+       "max": 79.98,
+       "ref": "item 24182/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670059",
      "name": "CHI St Lukes Lakeside Hospital",
-     "file_date": "2026-02-28",
+     "distance_km": 7.3,
+     "approximate": false,
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
-     "verdict": "comparable",
-     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
-     "headline": {
-      "cash": 174.3,
-      "gross": 498.0,
-      "min": 4.66,
-      "max": 498.0,
-      "context": "outpatient, facility (per review)",
-      "ref": "item 10630/charge 1",
-      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
-     }
-    },
-    {
-     "name": "St Luke's The Woodlands Hospital",
      "file_date": "2026-02-28",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "CPT",
+      "code": "85027",
+      "other_codes": [
+       "RC 0300"
+      ],
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)",
+      "context": "outpatient, facility (per review)",
       "cash": 174.3,
       "gross": 498.0,
       "min": 4.66,
       "max": 498.0,
-      "context": "outpatient, facility (per review)",
       "ref": "item 10630/charge 1",
-      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 0300"
+       ],
+       "description": "HC LAB CBC (W/PLT&HEMOGRAM)",
+       "context": "inpatient",
+       "cash": 174.3,
+       "gross": 498.0,
+       "min": 219.12,
+       "max": 498.0,
+       "ref": "item 10629/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 0300"
+       ],
+       "description": "HC LAB CBC (W/PLT&HEMOGRAM)",
+       "context": "outpatient, facility (per review)",
+       "cash": 174.3,
+       "gross": 498.0,
+       "min": 4.66,
+       "max": 498.0,
+       "ref": "item 10630/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450862",
+     "name": "St Luke's The Woodlands Hospital",
+     "distance_km": 7.6,
+     "approximate": false,
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
+     "file_date": "2026-02-28",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "line_count": 2,
+     "headline": {
+      "code_type": "CPT",
+      "code": "85027",
+      "other_codes": [
+       "RC 0300"
+      ],
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)",
+      "context": "outpatient, facility (per review)",
+      "cash": 174.3,
+      "gross": 498.0,
+      "min": 4.66,
+      "max": 498.0,
+      "ref": "item 10630/charge 1",
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 0300"
+       ],
+       "description": "HC LAB CBC (W/PLT&HEMOGRAM)",
+       "context": "inpatient",
+       "cash": 174.3,
+       "gross": 498.0,
+       "min": 214.14,
+       "max": 498.0,
+       "ref": "item 10629/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 0300"
+       ],
+       "description": "HC LAB CBC (W/PLT&HEMOGRAM)",
+       "context": "outpatient, facility (per review)",
+       "cash": 174.3,
+       "gross": 498.0,
+       "min": 4.66,
+       "max": 498.0,
+       "ref": "item 10630/charge 1",
+       "note": null
+      }
+     ]
+    },
+    {
+     "ccn": "454144",
      "name": "Woodland Springs",
-     "file_date": "7/31/2026",
+     "distance_km": 12.3,
+     "approximate": false,
      "url": "https://www.woodlandspringshealth.com/docs/bhwoodlandspringslibraries/3q26/352565165_woodland-springs_standardcharges.csv",
+     "file_date": "7/31/2026",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670285",
      "name": "Elite Hospital Kingwood",
-     "file_date": "6/1/2026",
+     "distance_km": 0.0,
+     "approximate": true,
      "url": "https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv",
+     "file_date": "6/1/2026",
      "verdict": "unknown: no billing class stated",
      "detail": "the file does not say whether this is a facility or professional charge",
-     "lines": 1,
+     "line_count": 1,
      "headline": {
+      "code_type": "CPT",
+      "code": "85027",
+      "other_codes": [],
+      "description": "Blood count; complete (CBC) automated (Hgb Hct RBC WBC and platelet count)",
+      "context": "both",
       "cash": 97.2,
       "gross": 194.4,
       "min": 145.8,
       "max": 145.8,
-      "context": "both",
       "ref": "row 229",
-      "description": "Blood count; complete (CBC) automated (Hgb Hct RBC WBC and platelet count)"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [],
+       "description": "Blood count; complete (CBC) automated (Hgb Hct RBC WBC and platelet count)",
+       "context": "both",
+       "cash": 97.2,
+       "gross": 194.4,
+       "min": 145.8,
+       "max": 145.8,
+       "ref": "row 229",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "454103",
      "name": "Kingwood Pines Hospital",
-     "file_date": "2026-08-31",
+     "distance_km": 0.8,
+     "approximate": false,
      "url": "https://uhsfilecdn.eskycity.net/bh/731726290_kingwood-pines_standardcharges.csv",
+     "file_date": "2026-08-31",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450775",
      "name": "HCA Houston Healthcare Kingwood",
-     "file_date": "2026-05-14",
+     "distance_km": 3.1,
+     "approximate": false,
      "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_HCA-HOUSTON-HEALTHCARE-KINGWOOD_standardcharges.json?si=dpx-pt-json-access-policy&spr=https&sv=2026-02-06&sr=c&sig=ks%2BgfAjyEHlZmeP2PYJ%2f9NpMuCoRStjTb2bhIy9Y6LM%3D",
+     "file_date": "2026-05-14",
      "verdict": "unknown: no billing class stated",
      "detail": "the file does not say whether this is a facility or professional charge; 33 other lines for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 34,
+     "line_count": 34,
      "headline": {
+      "code_type": "CPT",
+      "code": "85027",
+      "other_codes": [
+       "CDM 117210"
+      ],
+      "description": "CBC AUTOMATED",
+      "context": "outpatient",
       "cash": 1299.26,
       "gross": 1299.26,
       "min": 77.96,
       "max": 1169.33,
-      "context": "outpatient",
       "ref": "item 308567/charge 1",
-      "description": "CBC AUTOMATED"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 324"
+       ],
+       "description": "Blood count; complete (CBC), automated (Hgb, Hct, RBC, WBC and platelet count)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 26.5,
+       "max": 34.15,
+       "ref": "item 12662/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 303"
+       ],
+       "description": "Blood count; complete (CBC), automated (Hgb, Hct, RBC, WBC and platelet count)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 5.54,
+       "max": 86.34,
+       "ref": "item 126684/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 925"
+       ],
+       "description": "Blood count; complete (CBC), automated (Hgb, Hct, RBC, WBC and platelet count)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 5.54,
+       "max": 6.47,
+       "ref": "item 1293/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 341"
+       ],
+       "description": "Blood count; complete (CBC), automated (Hgb, Hct, RBC, WBC and platelet count)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 26.5,
+       "max": 34.15,
+       "ref": "item 132638/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 319"
+       ],
+       "description": "Blood count; complete (CBC), automated (Hgb, Hct, RBC, WBC and platelet count)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 5.54,
+       "max": 86.34,
+       "ref": "item 149274/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 342"
+       ],
+       "description": "Blood count; complete (CBC), automated (Hgb, Hct, RBC, WBC and platelet count)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 26.5,
+       "max": 34.15,
+       "ref": "item 15245/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 306"
+       ],
+       "description": "Blood count; complete (CBC), automated (Hgb, Hct, RBC, WBC and platelet count)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 5.54,
+       "max": 86.34,
+       "ref": "item 161467/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "85027",
+       "other_codes": [
+        "RC 302"
+       ],
+       "description": "Blood count; complete (CBC), automated (Hgb, Hct, RBC, WBC and platelet count)",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 5.54,
+       "max": 86.34,
+       "ref": "item 165339/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670005",
      "name": "Memorial Hermann Surgical Hospital Kingwood",
-     "verdict": "no price file located"
+     "distance_km": 3.6,
+     "approximate": false,
+     "url": null,
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "index found but no entry for this hospital (none)",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670266",
      "name": "Townsen Memorial Hospital",
-     "verdict": "not scanned"
+     "distance_km": 5.7,
+     "approximate": false,
+     "url": "https://www.townsenmemorial.com/images/Files/364867804_TownsenMemorialHospital_StandardCharges.csv",
+     "file_date": null,
+     "verdict": "not scanned",
+     "detail": "",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     }
    ]
   },
@@ -1346,175 +3267,601 @@
    },
    "hospitals": [
     {
+     "ccn": "453304",
      "name": "Texas Childrens Hospital",
-     "file_date": "2026-03-05",
+     "distance_km": 0.4,
+     "approximate": false,
      "url": "https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip",
+     "file_date": "2026-03-05",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450193",
      "name": "Baylor St Lukes Medical Center",
-     "file_date": "2026-02-28",
+     "distance_km": 0.4,
+     "approximate": false,
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
+     "file_date": "2026-02-28",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "CPT",
+      "code": "77067",
+      "other_codes": [
+       "RC 0403"
+      ],
+      "description": "HC MAMMO SCRN BIL & CAD",
+      "context": "outpatient, facility (per review)",
       "cash": 297.5,
       "gross": 850.0,
       "min": 119.36,
       "max": 850.0,
-      "context": "outpatient, facility (per review)",
       "ref": "item 9582/charge 1",
-      "description": "HC MAMMO SCRN BIL & CAD"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 0403"
+       ],
+       "description": "HC MAMMO SCRN BIL & CAD",
+       "context": "inpatient",
+       "cash": 297.5,
+       "gross": 850.0,
+       "min": 382.5,
+       "max": 850.0,
+       "ref": "item 9581/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 0403"
+       ],
+       "description": "HC MAMMO SCRN BIL & CAD",
+       "context": "outpatient, facility (per review)",
+       "cash": 297.5,
+       "gross": 850.0,
+       "min": 119.36,
+       "max": 850.0,
+       "ref": "item 9582/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450358",
      "name": "Houston Methodist Hospital",
-     "file_date": "2026-04-01",
+     "distance_km": 0.7,
+     "approximate": false,
      "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx",
+     "file_date": "2026-04-01",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "HCPCS",
+      "code": "77067",
+      "other_codes": [
+       "CDM 40300002",
+       "RC 0403"
+      ],
+      "description": "HC MAMMOGRAM SCREENING INCL CAD BIL",
+      "context": "both, facility",
       "cash": 332.5,
       "gross": 665.0,
       "min": null,
       "max": null,
-      "context": "both, facility",
       "ref": "item 13151/charge 1",
-      "description": "HC MAMMOGRAM SCREENING INCL CAD BIL"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "HCPCS",
+       "code": "77067",
+       "other_codes": [
+        "CDM 40300002",
+        "RC 0403"
+       ],
+       "description": "HC MAMMOGRAM SCREENING INCL CAD BIL",
+       "context": "both, facility",
+       "cash": 332.5,
+       "gross": 665.0,
+       "min": null,
+       "max": null,
+       "ref": "item 13151/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "HCPCS",
+       "code": "77067",
+       "other_codes": [],
+       "description": "Scr mammo bi incl cad",
+       "context": "outpatient, facility",
+       "cash": null,
+       "gross": null,
+       "min": 82.98,
+       "max": 393.9,
+       "ref": "item 15937/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450804",
      "name": "Texas Orthopedic Hospital",
-     "verdict": "no price file located"
+     "distance_km": 0.9,
+     "approximate": false,
+     "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/76-0418502_TEXAS-ORTHOPEDIC-HOSPITAL_standardcharges.json?si=pt-json-access-policy&spr=https&sv=2024-11-04&sr=c&sig=o5IofreS/7ETlsnhPakPWCwHVVUZRobywQ5wUKGjVuQ=",
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "file URL failed: HTTP 403",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450289",
      "name": "Harris Health",
-     "file_date": "3/24/2026",
+     "distance_km": 1.1,
+     "approximate": false,
      "url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip",
+     "file_date": "3/24/2026",
      "verdict": "unknown: no billing class stated",
      "detail": "the file does not say whether this is a facility or professional charge",
-     "lines": 1,
+     "line_count": 1,
      "headline": {
+      "code_type": "CPT",
+      "code": "77067",
+      "other_codes": [
+       "CDM 32803890",
+       "RC 403"
+      ],
+      "description": "SCREENING MAMMOGRAPHY BILATERAL INCL CAD WHEN PEFORMED",
+      "context": "both",
       "cash": 82.302,
       "gross": 174.0,
       "min": 43.848,
       "max": 199.3837,
-      "context": "both",
       "ref": "row 32991",
-      "description": "SCREENING MAMMOGRAPHY BILATERAL INCL CAD WHEN PEFORMED"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "CDM 32803890",
+        "RC 403"
+       ],
+       "description": "SCREENING MAMMOGRAPHY BILATERAL INCL CAD WHEN PEFORMED",
+       "context": "both",
+       "cash": 82.302,
+       "gross": 174.0,
+       "min": 43.848,
+       "max": 199.3837,
+       "ref": "row 32991",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670267",
      "name": "The Woodlands Specialty Hospital",
-     "verdict": "no price file located"
+     "distance_km": 2.5,
+     "approximate": false,
+     "url": null,
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "no cms-hpt.txt or linked file located: woodlandsspecialty.com: ConnectError; www.woodlandsspecialty.com: ConnectError; woodlandsspecialty.org: ConnectError; www.woodlandsspecialty.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError; woodlandsspecialtyhospital.org: ConnectError; www.woodlandsspecialtyhospital.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670122",
      "name": "Houston Methodist The Woodlands Hospital",
-     "file_date": "2026-04-01",
+     "distance_km": 6.7,
+     "approximate": true,
      "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx",
+     "file_date": "2026-04-01",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "HCPCS",
+      "code": "77067",
+      "other_codes": [
+       "CDM 40300002",
+       "RC 0403"
+      ],
+      "description": "HC MAMMOGRAM SCREENING INCL CAD BIL",
+      "context": "both, facility",
       "cash": 715.5,
       "gross": 1431.0,
       "min": null,
       "max": null,
-      "context": "both, facility",
       "ref": "item 13155/charge 1",
-      "description": "HC MAMMOGRAM SCREENING INCL CAD BIL"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "HCPCS",
+       "code": "77067",
+       "other_codes": [
+        "CDM 40300002",
+        "RC 0403"
+       ],
+       "description": "HC MAMMOGRAM SCREENING INCL CAD BIL",
+       "context": "both, facility",
+       "cash": 715.5,
+       "gross": 1431.0,
+       "min": null,
+       "max": null,
+       "ref": "item 13155/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "HCPCS",
+       "code": "77067",
+       "other_codes": [],
+       "description": "Scr mammo bi incl cad",
+       "context": "outpatient, facility",
+       "cash": null,
+       "gross": null,
+       "min": 82.98,
+       "max": 393.9,
+       "ref": "item 16068/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670059",
      "name": "CHI St Lukes Lakeside Hospital",
-     "file_date": "2026-02-28",
+     "distance_km": 7.3,
+     "approximate": false,
      "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
-     "verdict": "comparable",
-     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
-     "headline": {
-      "cash": 297.5,
-      "gross": 850.0,
-      "min": 140.25,
-      "max": 850.0,
-      "context": "outpatient, facility (per review)",
-      "ref": "item 9624/charge 1",
-      "description": "HC MAMMO SCRN BIL & CAD"
-     }
-    },
-    {
-     "name": "St Luke's The Woodlands Hospital",
      "file_date": "2026-02-28",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
      "verdict": "comparable",
      "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
-     "lines": 2,
+     "line_count": 2,
      "headline": {
+      "code_type": "CPT",
+      "code": "77067",
+      "other_codes": [
+       "RC 0403"
+      ],
+      "description": "HC MAMMO SCRN BIL & CAD",
+      "context": "outpatient, facility (per review)",
       "cash": 297.5,
       "gross": 850.0,
       "min": 140.25,
       "max": 850.0,
-      "context": "outpatient, facility (per review)",
       "ref": "item 9624/charge 1",
-      "description": "HC MAMMO SCRN BIL & CAD"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 0403"
+       ],
+       "description": "HC MAMMO SCRN BIL & CAD",
+       "context": "inpatient",
+       "cash": 297.5,
+       "gross": 850.0,
+       "min": 374.0,
+       "max": 850.0,
+       "ref": "item 9623/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 0403"
+       ],
+       "description": "HC MAMMO SCRN BIL & CAD",
+       "context": "outpatient, facility (per review)",
+       "cash": 297.5,
+       "gross": 850.0,
+       "min": 140.25,
+       "max": 850.0,
+       "ref": "item 9624/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "450862",
+     "name": "St Luke's The Woodlands Hospital",
+     "distance_km": 7.6,
+     "approximate": false,
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
+     "file_date": "2026-02-28",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "line_count": 2,
+     "headline": {
+      "code_type": "CPT",
+      "code": "77067",
+      "other_codes": [
+       "RC 0403"
+      ],
+      "description": "HC MAMMO SCRN BIL & CAD",
+      "context": "outpatient, facility (per review)",
+      "cash": 297.5,
+      "gross": 850.0,
+      "min": 140.25,
+      "max": 850.0,
+      "ref": "item 9624/charge 1",
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 0403"
+       ],
+       "description": "HC MAMMO SCRN BIL & CAD",
+       "context": "inpatient",
+       "cash": 297.5,
+       "gross": 850.0,
+       "min": 365.5,
+       "max": 850.0,
+       "ref": "item 9623/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 0403"
+       ],
+       "description": "HC MAMMO SCRN BIL & CAD",
+       "context": "outpatient, facility (per review)",
+       "cash": 297.5,
+       "gross": 850.0,
+       "min": 140.25,
+       "max": 850.0,
+       "ref": "item 9624/charge 1",
+       "note": null
+      }
+     ]
+    },
+    {
+     "ccn": "454144",
      "name": "Woodland Springs",
-     "file_date": "7/31/2026",
+     "distance_km": 12.3,
+     "approximate": false,
      "url": "https://www.woodlandspringshealth.com/docs/bhwoodlandspringslibraries/3q26/352565165_woodland-springs_standardcharges.csv",
+     "file_date": "7/31/2026",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670285",
      "name": "Elite Hospital Kingwood",
-     "file_date": "6/1/2026",
+     "distance_km": 0.0,
+     "approximate": true,
      "url": "https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv",
+     "file_date": "6/1/2026",
      "verdict": "unknown: no billing class stated",
      "detail": "the file does not say whether this is a facility or professional charge",
-     "lines": 1,
+     "line_count": 1,
      "headline": {
+      "code_type": "CPT",
+      "code": "77067",
+      "other_codes": [],
+      "description": "Screening mammography bilateral (2-view study of each breast) including computer-aided detection (CAD) when performed",
+      "context": "both",
       "cash": 449.04,
       "gross": 898.08,
       "min": 267.8,
       "max": 357.06,
-      "context": "both",
       "ref": "row 2080",
-      "description": "Screening mammography bilateral (2-view study of each breast) including computer-aided detection (CAD) when performed"
-     }
+      "note": null
+     },
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [],
+       "description": "Screening mammography bilateral (2-view study of each breast) including computer-aided detection (CAD) when performed",
+       "context": "both",
+       "cash": 449.04,
+       "gross": 898.08,
+       "min": 267.8,
+       "max": 357.06,
+       "ref": "row 2080",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "454103",
      "name": "Kingwood Pines Hospital",
-     "file_date": "2026-08-31",
+     "distance_km": 0.8,
+     "approximate": false,
      "url": "https://uhsfilecdn.eskycity.net/bh/731726290_kingwood-pines_standardcharges.csv",
+     "file_date": "2026-08-31",
      "verdict": "not found",
      "detail": "",
-     "lines": 0,
-     "headline": null
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "450775",
      "name": "HCA Houston Healthcare Kingwood",
-     "file_date": "2026-05-14",
+     "distance_km": 3.1,
+     "approximate": false,
      "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_HCA-HOUSTON-HEALTHCARE-KINGWOOD_standardcharges.json?si=dpx-pt-json-access-policy&spr=https&sv=2026-02-06&sr=c&sig=ks%2BgfAjyEHlZmeP2PYJ%2f9NpMuCoRStjTb2bhIy9Y6LM%3D",
+     "file_date": "2026-05-14",
      "verdict": "conflicting",
      "detail": "4 unmodified lines disagree (cash $818.95, $912.90)",
-     "lines": 14,
-     "headline": null
+     "line_count": 14,
+     "headline": null,
+     "lines": [
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [],
+       "description": "Screening mammography, bilateral (2-view study of each breast), including computer-aided detection (CAD) when performed",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 88.86,
+       "max": 363.07,
+       "ref": "item 129983/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 324"
+       ],
+       "description": "Screening mammography, bilateral (2-view study of each breast), including computer-aided detection (CAD) when performed",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 1751.13,
+       "max": 1751.13,
+       "ref": "item 174767/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 320"
+       ],
+       "description": "Screening mammography, bilateral (2-view study of each breast), including computer-aided detection (CAD) when performed",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 1751.13,
+       "max": 1751.13,
+       "ref": "item 210539/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 323"
+       ],
+       "description": "Screening mammography, bilateral (2-view study of each breast), including computer-aided detection (CAD) when performed",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 1751.13,
+       "max": 1751.13,
+       "ref": "item 224486/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 403"
+       ],
+       "description": "Screening mammography, bilateral (2-view study of each breast), including computer-aided detection (CAD) when performed",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 183.64,
+       "max": 665.0,
+       "ref": "item 226749/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 321"
+       ],
+       "description": "Screening mammography, bilateral (2-view study of each breast), including computer-aided detection (CAD) when performed",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 1751.13,
+       "max": 1751.13,
+       "ref": "item 279972/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "RC 322"
+       ],
+       "description": "Screening mammography, bilateral (2-view study of each breast), including computer-aided detection (CAD) when performed",
+       "context": "outpatient",
+       "cash": null,
+       "gross": null,
+       "min": 1751.13,
+       "max": 1751.13,
+       "ref": "item 295928/charge 1",
+       "note": null
+      },
+      {
+       "code_type": "CPT",
+       "code": "77067",
+       "other_codes": [
+        "CDM 425035"
+       ],
+       "description": "MAMMO SCR CAD BI",
+       "context": "outpatient",
+       "cash": 912.9,
+       "gross": 912.9,
+       "min": 54.77,
+       "max": 821.61,
+       "ref": "item 314944/charge 1",
+       "note": null
+      }
+     ]
     },
     {
+     "ccn": "670005",
      "name": "Memorial Hermann Surgical Hospital Kingwood",
-     "verdict": "no price file located"
+     "distance_km": 3.6,
+     "approximate": false,
+     "url": null,
+     "file_date": null,
+     "verdict": "no price file located",
+     "detail": "index found but no entry for this hospital (none)",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     },
     {
+     "ccn": "670266",
      "name": "Townsen Memorial Hospital",
-     "verdict": "not scanned"
+     "distance_km": 5.7,
+     "approximate": false,
+     "url": "https://www.townsenmemorial.com/images/Files/364867804_TownsenMemorialHospital_StandardCharges.csv",
+     "file_date": null,
+     "verdict": "not scanned",
+     "detail": "",
+     "line_count": 0,
+     "headline": null,
+     "lines": []
     }
    ]
   }

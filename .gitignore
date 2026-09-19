@@ -13,7 +13,7 @@ __pycache__/
 .venv/
 .pytest_cache/
 
-# Frontend (milestone 5)
+# Frontend: dependencies and the build; package-lock.json is committed
 node_modules/
 dist/
 

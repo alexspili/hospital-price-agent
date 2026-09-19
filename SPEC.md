@@ -252,8 +252,14 @@ compare: Methodist vs Baylor: unknown (Baylor row has no billing class)
 5. Eval (done 2026-09-19): `hpa eval` reports the four numbers; extraction fidelity re-reads
    sampled charges from the raw files at their source ref (256/256). Claude's third use:
    `confirm_service`, which may only choose among the resolver's candidates or ask.
-6. FastAPI + server-sent events, React split-pane UI. Simpler than first planned; the
-   trace is the feature.
+6. Web UI (done 2026-09-19): `hpa serve` — FastAPI, a run as a background task in the
+   process that owns the database, its trace streamed as numbered server-sent events and
+   replayable from any sequence number after a dropped connection, results emitted per
+   hospital as each file finishes. React + TypeScript split pane in `frontend/`; the
+   landing state is `demo/houston.json` served in the same shape as a live run. The
+   pipeline itself moved to `hpa/pipeline.py`, which the CLI, the recorded demo and the
+   server share. While the server runs, `hpa prices` reads through its API and writing
+   commands say who holds the file.
 7. Deploy.
 
 ## Hosted demo constraints
