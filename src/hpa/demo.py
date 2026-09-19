@@ -10,7 +10,7 @@ import json
 import time
 from pathlib import Path
 
-from hpa import catalog, compare, scan, store
+from hpa import catalog, pipeline, store
 from hpa.discovery import short_name
 from hpa.hospitals import find_hospitals
 
@@ -38,38 +38,11 @@ def record(con, zips=DEFAULT_ZIPS, services=DEFAULT_SERVICES) -> dict:
         if r.verdict != catalog.SELECTED:
             continue
         svc = r.service
-        entry = {"service": svc.name, "codes": svc.code_list, "reviewed": svc.reviewed, "hospitals": []}
-        codes = [c for _, c in svc.codes]
-        for h in hospitals.values():
-            c = store.cached_discovery(con, h.ccn)
-            if not (c and c["ok"]):
-                entry["hospitals"].append({"name": short_name(h), "verdict": "no price file located"})
-                continue
-            ext = scan.latest_extraction(con, c["mrf_url"])
-            if not ext:
-                entry["hospitals"].append({"name": short_name(h), "verdict": "not scanned"})
-                continue
-            rows = con.execute(
-                """
-                SELECT ic.code_type, ic.code, i.description, ch.setting, ch.billing_class, ch.modifiers,
-                       ch.gross, ch.discounted_cash, ch.minimum, ch.maximum, ch.source_ref
-                FROM charges ch JOIN items i USING (extraction_id, item_id) JOIN item_codes ic USING (extraction_id, item_id)
-                WHERE ch.extraction_id = ? AND ic.code_type IN ('CPT', 'HCPCS', 'MS-DRG', 'DRG') AND list_contains(?, ic.code)
-                ORDER BY ic.code, ch.modifiers NULLS FIRST, ch.setting, ch.billing_class, ch.source_ref
-                """,
-                [ext["extraction_id"], codes],
-            ).fetchall()
-            lines = [compare.Line(ct, code, (), d, st, bc, m, g, cash, mn, mx, ref) for ct, code, d, st, bc, m, g, cash, mn, mx, ref in rows]
-            s = compare.summarise(compare.apply_review(lines, svc.reviewed, short_name(h)))
-            hl = s.headline
-            entry["hospitals"].append({
-                "name": short_name(h), "file_date": ext.get("last_updated_on"), "url": c["mrf_url"],
-                "verdict": s.verdict, "detail": s.detail, "lines": len(lines),
-                "headline": None if hl is None else {
-                    "cash": hl.discounted_cash, "gross": hl.gross, "min": hl.minimum, "max": hl.maximum,
-                    "context": hl.context, "ref": hl.source_ref, "description": hl.description,
-                },
-            })
+        # The same function the live page and `hpa prices` use, so a recorded run and a
+        # live one are the same shape and say the same things.
+        entry = {"service": svc.name, "codes": svc.code_list, "reviewed": svc.reviewed,
+                 "hospitals": [pipeline.hospital_prices(con, svc, h, store.cached_discovery(con, h.ccn))
+                               for h in hospitals.values()]}
         out["services"][q] = entry
     return out
 

@@ -7,11 +7,32 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
+import duckdb
 import httpx
 
-from hpa import build, catalog, compare, demo, discovery, evaluate, geocode, llm, reference, scan, store, targets
+from hpa import build, catalog, client, demo, discovery, evaluate, geocode, llm, pipeline, reference, scan, store, targets
 from hpa.geo import KM_PER_MILE
 from hpa.hospitals import UnknownZip, find_hospitals, hospital_by_ccn
+
+
+class DatabaseBusy(RuntimeError):
+    """Someone else holds the database file. Says who, and what to do about it."""
+
+
+def open_db(args: argparse.Namespace, read_only: bool = False):
+    """The store, or a clear reason why not.
+
+    While `hpa serve` runs it owns the file and no other process can open it, even
+    read-only (SPEC "Process model"), so commands that need the file say so plainly
+    instead of failing with a DuckDB lock error.
+    """
+    url = client.running_server()
+    if url:
+        raise DatabaseBusy(f"the server at {url} owns the database; stop it, or use the web page")
+    try:
+        return store.connect(args.db, read_only=read_only)
+    except duckdb.IOException as e:
+        raise DatabaseBusy(f"{args.db} is open in another process; stop it and try again ({e})") from None
 
 
 def cmd_setup(args: argparse.Namespace) -> int:
@@ -58,7 +79,7 @@ def cmd_hospitals(args: argparse.Namespace) -> int:
     if not Path(args.db).exists():
         print("no hospital data yet; run `hpa setup` first", file=sys.stderr)
         return 1
-    con = store.connect(args.db, read_only=True)
+    con = open_db(args, read_only=True)
     try:
         found = find_hospitals(con, args.zip, args.limit, include_federal=args.include_federal)
     except UnknownZip as e:
@@ -102,7 +123,7 @@ def cmd_locate(args: argparse.Namespace) -> int:
     if not Path(args.db).exists():
         print("no hospital data yet; run `hpa setup` first", file=sys.stderr)
         return 1
-    con = store.connect(args.db)
+    con = open_db(args)
     hospitals: dict[str, object] = {}
     for z in args.zip:
         try:
@@ -178,7 +199,7 @@ def cmd_scan(args: argparse.Namespace) -> int:
     if not Path(args.db).exists():
         print("no hospital data yet; run `hpa setup` first", file=sys.stderr)
         return 1
-    con = store.connect(args.db)
+    con = open_db(args)
     try:
         pairs = targets.located(con, args.zip, args.ccn, args.limit)
     except UnknownZip as e:
@@ -208,69 +229,82 @@ def cmd_scan(args: argparse.Namespace) -> int:
 
 
 def cmd_prices(args: argparse.Namespace) -> int:
-    con = store.connect(args.db, read_only=True)
-    r = catalog.resolve(args.service)
-    service = r.service
-    if r.verdict != catalog.SELECTED:
-        print(f"resolver: {r.verdict}: {r.reason}")
-        if llm.have_api_key() and not args.no_llm and r.candidates:
-            # Claude may only choose among the resolver's candidates, or ask.
-            service, why = llm.Claude(llm.make_client(), None).confirm_service(args.service, r)
-            print(f"claude: {'picked ' + service.name if service else 'asks: ' + why}" + (f" ({why})" if service else ""))
-        if service is None:
-            for c in r.candidates:
-                print(f"  {c.code_list:<18} {c.name}")
+    """Read-only, so it keeps working while the server holds the database: the answer
+    then comes from the server's API instead of the file (SPEC "Process model")."""
+    shown = None if args.all else pipeline.SHOWN_LINES
+    url = client.running_server()
+    if url:
+        try:
+            payload = client.get_prices(url, args.service, args.zip, args.ccn, args.limit, args.all, args.no_llm)
+        except (httpx.HTTPError, RuntimeError) as e:
+            print(e, file=sys.stderr)
             return 1
-    print(f"{service.name} ({service.code_list})  [{'reviewed' if service.reviewed else 'unreviewed'}]")
-    try:
-        pairs = targets.located(con, args.zip, args.ccn, args.limit)
-    except UnknownZip as e:
-        print(e, file=sys.stderr)
+    else:
+        con = open_db(args, read_only=True)
+        try:
+            payload = pipeline.prices_payload(con, args.service, args.zip, args.ccn, args.limit,
+                                              shown_lines=shown, use_llm=not args.no_llm)
+        except UnknownZip as e:
+            print(e, file=sys.stderr)
+            return 1
+    return print_prices(payload, args.all)
+
+
+def money(v) -> str:
+    return f"${v:,.2f}" if v is not None else "—"
+
+
+def print_prices(payload: dict, show_all: bool) -> int:
+    if payload.get("resolver"):
+        print(f"resolver: {payload['resolver']['verdict']}: {payload['resolver']['reason']}")
+    note = payload.get("note")
+    if payload["status"] != "ok":
+        if note is not None:
+            print(f"claude: asks: {note}")
+        for c in payload["candidates"]:
+            print(f"  {c['codes']:<18} {c['name']}")
         return 1
-    codes = [code for _, code in service.codes]
-    money = lambda v: f"${v:,.2f}" if v is not None else "—"
-    for h, c in pairs:
-        who = discovery.short_name(h)
-        if not (c and c["ok"]):
-            print(f"\n{who}: no price file located")
-            continue
-        ext = scan.latest_extraction(con, c["mrf_url"])
-        if not ext:
-            print(f"\n{who}: file located but not scanned yet (hpa scan)")
-            continue
-        rows = con.execute(
-            """
-            SELECT ic.code_type, ic.code,
-                   (SELECT list(o.code_type || ' ' || o.code ORDER BY o.code_type, o.code) FROM item_codes o
-                     WHERE o.extraction_id = ic.extraction_id AND o.item_id = ic.item_id AND NOT (o.code_type = ic.code_type AND o.code = ic.code)),
-                   i.description, ch.setting, ch.billing_class, ch.modifiers,
-                   ch.gross, ch.discounted_cash, ch.minimum, ch.maximum, ch.source_ref, ch.off_template_note
-            FROM charges ch
-            JOIN items i ON i.extraction_id = ch.extraction_id AND i.item_id = ch.item_id
-            JOIN item_codes ic ON ic.extraction_id = ch.extraction_id AND ic.item_id = ch.item_id
-            WHERE ch.extraction_id = ? AND ic.code_type IN ('CPT', 'HCPCS', 'MS-DRG', 'DRG') AND list_contains(?, ic.code)
-            ORDER BY ic.code, ch.modifiers NULLS FIRST, ch.setting, ch.billing_class, ch.source_ref
-            """,
-            [ext["extraction_id"], codes],
-        ).fetchall()
-        lines = [compare.Line(ct, code, tuple(others or []), d, setting, bc, mods, g, cash, mn, mx, ref, note)
-                 for ct, code, others, d, setting, bc, mods, g, cash, mn, mx, ref, note in rows]
-        lines = compare.apply_review(lines, service.reviewed, who)
-        s = compare.summarise(lines)
-        print(f"\n{who}  (file dated {ext.get('last_updated_on') or '?'}; {c['mrf_url'][:60]}…)")
-        print(f"  verdict: {s.verdict}" + (f" — {s.detail}" if s.detail else ""))
-        if s.headline:
-            l = s.headline
-            print(f"  cash {money(l.discounted_cash)}  gross {money(l.gross)}  negotiated {money(l.minimum)}–{money(l.maximum)}  [{l.context}]  {l.source_ref}")
-            print(f"      {l.description[:100]}")
-        if args.all or not s.headline:
-            for l in (lines if args.all else lines[:8]):
-                extra = f" + {', '.join(l.other_codes)}" if l.other_codes else ""
-                print(f"    {l.code_type} {l.code}{extra}  cash {money(l.discounted_cash)}  gross {money(l.gross)}  negotiated {money(l.minimum)}–{money(l.maximum)}  [{l.context}]  {l.source_ref}"
-                      + (f"  note: {l.off_template_note}" if l.off_template_note else ""))
-            if not args.all and len(lines) > 8:
-                print(f"    … {len(lines) - 8} more lines (--all)")
+    s = payload["service"]
+    if note is not None:
+        print(f"claude: picked {s['name']} ({note})")
+    print(f"{s['name']} ({s['codes']})  [{'reviewed' if s['reviewed'] else 'unreviewed'}]")
+    for h in payload["hospitals"]:
+        print_hospital(h, show_all)
     return 0
+
+
+def print_hospital(h: dict, show_all: bool) -> None:
+    if h["verdict"] == pipeline.NO_FILE:
+        print(f"\n{h['name']}: no price file located")
+        return
+    if h["verdict"] == pipeline.NOT_SCANNED:
+        print(f"\n{h['name']}: file located but not scanned yet (hpa scan)")
+        return
+    print(f"\n{h['name']}  (file dated {h['file_date'] or '?'}; {(h['url'] or '')[:60]}…)")
+    print(f"  verdict: {h['verdict']}" + (f" — {h['detail']}" if h["detail"] else ""))
+    hl = h["headline"]
+    if hl:
+        print(f"  cash {money(hl['cash'])}  gross {money(hl['gross'])}  negotiated {money(hl['min'])}–{money(hl['max'])}  [{hl['context']}]  {hl['ref']}")
+        print(f"      {hl['description'][:100]}")
+    if show_all or not hl:
+        for l in h["lines"]:
+            extra = f" + {', '.join(l['other_codes'])}" if l["other_codes"] else ""
+            print(f"    {l['code_type']} {l['code']}{extra}  cash {money(l['cash'])}  gross {money(l['gross'])}  negotiated {money(l['min'])}–{money(l['max'])}  [{l['context']}]  {l['ref']}"
+                  + (f"  note: {l['note']}" if l["note"] else ""))
+        hidden = h["line_count"] - len(h["lines"])
+        if hidden > 0:
+            print(f"    … {hidden} more lines (--all)")
+
+
+def cmd_serve(args: argparse.Namespace) -> int:
+    """The web page and the API. This process then owns the database file."""
+    url = client.running_server()
+    if url:
+        print(f"a server is already running at {url}", file=sys.stderr)
+        return 1
+    from hpa import server  # imported here so the rest of the CLI does not need FastAPI
+
+    return server.serve(args.db, args.host, args.port)
 
 
 def cmd_eval_discovery(args: argparse.Namespace) -> int:
@@ -281,7 +315,7 @@ def cmd_eval_discovery(args: argparse.Namespace) -> int:
 
     index_path = Path(__file__).resolve().parents[2] / "eval" / "dolthub_hospitals_tx.json"
     index = json.loads(index_path.read_text())
-    con = store.connect(args.db, read_only=True)
+    con = open_db(args, read_only=True)
     ours = con.execute("""
         SELECT ccn, name, ok, domain, mrf_url FROM hospital_files
         QUALIFY row_number() OVER (PARTITION BY ccn ORDER BY discovered_at DESC) = 1
@@ -311,7 +345,7 @@ def cmd_eval_discovery(args: argparse.Namespace) -> int:
 
 def cmd_demo(args: argparse.Namespace) -> int:
     if args.record:
-        con = store.connect(args.db, read_only=True)
+        con = open_db(args, read_only=True)
         data = demo.record(con)
         demo.DEMO_FILE.parent.mkdir(exist_ok=True)
         demo.DEMO_FILE.write_text(json.dumps(data, indent=1, default=float))
@@ -325,7 +359,7 @@ def cmd_demo(args: argparse.Namespace) -> int:
 
 
 def cmd_eval(args: argparse.Namespace) -> int:
-    con = store.connect(args.db, read_only=True)
+    con = open_db(args, read_only=True)
     report = evaluate.run(con, sample=args.sample)
     evaluate.print_report(report)
     evaluate.RESULTS.write_text(json.dumps(report, indent=1, default=str))
@@ -395,10 +429,19 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("eval", help="the four accuracy numbers, computed from the local database and the raw files")
     p.add_argument("--sample", type=int, default=25, help="charges re-read from each raw file")
 
+    p = sub.add_parser("serve", help="the web page and its API; this process then owns the database")
+    p.add_argument("--host", default="127.0.0.1")
+    p.add_argument("--port", type=int, default=8000)
+
     args = parser.parse_args(argv)
-    return {"setup": cmd_setup, "hospitals": cmd_hospitals, "catalog": cmd_catalog, "locate": cmd_locate,
-            "eval-discovery": cmd_eval_discovery, "scan": cmd_scan, "prices": cmd_prices,
-            "demo": cmd_demo, "eval": cmd_eval}[args.command](args)
+    commands = {"setup": cmd_setup, "hospitals": cmd_hospitals, "catalog": cmd_catalog, "locate": cmd_locate,
+                "eval-discovery": cmd_eval_discovery, "scan": cmd_scan, "prices": cmd_prices,
+                "demo": cmd_demo, "eval": cmd_eval, "serve": cmd_serve}
+    try:
+        return commands[args.command](args)
+    except DatabaseBusy as e:
+        print(e, file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":

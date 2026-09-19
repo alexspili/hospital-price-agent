@@ -26,6 +26,9 @@ MRF_DIR = DATA_DIR / "mrf"
 BATCH = 5000
 MAX_AGE = timedelta(days=30)
 Trace = Callable[[str], None]
+# progress(phase, done, total): "download" counts bytes, "extract" counts charges. The
+# page turns these into a moving counter; the CLI just prints the trace lines.
+Progress = Callable[[str, int, int | None], None]
 
 
 @dataclass
@@ -126,7 +129,7 @@ def reusable_download(con, url: str, head: dict | None):
     return candidates[0], checksum, size, {"content-type": ctype, "etag": etag, "last-modified": lm}, 0.0
 
 
-def download(client: httpx.Client, url: str, trace: Trace) -> tuple[Path, str, int, dict, float]:
+def download(client: httpx.Client, url: str, trace: Trace, progress: Progress | None = None) -> tuple[Path, str, int, dict, float]:
     """Stream to data/mrf/<sha256>.<ext>, hashing as it goes. Returns path, checksum, size,
     response headers and seconds."""
     MRF_DIR.mkdir(parents=True, exist_ok=True)
@@ -148,6 +151,8 @@ def download(client: httpx.Client, url: str, trace: Trace) -> tuple[Path, str, i
                 if now - last_report >= 2:
                     pct = f" ({size / total:.0%})" if total else ""
                     trace(f"downloading {_fmt_size(size)}{pct}")
+                    if progress:
+                        progress("download", size, total or None)
                     last_report = now
     checksum = sha.hexdigest()
     ext = mrf_ext(headers.get("content-type"), str(r.url), tmp)
@@ -168,7 +173,7 @@ def mrf_ext(content_type: str | None, url: str, path: Path) -> str:
 
 # --- extraction -------------------------------------------------------------------------
 
-def extract(con, path: Path, checksum: str, size: int, trace: Trace) -> tuple[str, int, int, float, float]:
+def extract(con, path: Path, checksum: str, size: int, trace: Trace, progress: Progress | None = None) -> tuple[str, int, int, float, float]:
     """Stream the file into items / item_codes / charges. Returns extraction id, charge
     count, item count, seconds and peak RSS in MB.
 
@@ -207,6 +212,8 @@ def extract(con, path: Path, checksum: str, size: int, trace: Trace) -> tuple[st
                 now = time.monotonic()
                 if now - last_report >= 2:
                     trace(f"{n_charges:,} charges, {len(seen_items):,} items so far")
+                    if progress:
+                        progress("extract", n_charges, None)
                     last_report = now
         finally:
             for f in files.values():
@@ -234,7 +241,8 @@ def extract(con, path: Path, checksum: str, size: int, trace: Trace) -> tuple[st
 
 # --- orchestration ------------------------------------------------------------------------
 
-def scan(con, client: httpx.Client, ccn: str, url: str, trace: Trace, force: bool = False) -> ScanResult:
+def scan(con, client: httpx.Client, ccn: str, url: str, trace: Trace, force: bool = False,
+         progress: Progress | None = None) -> ScanResult:
     started = time.monotonic()
     result = ScanResult(ccn, url, ok=False)
     prev = latest_extraction(con, url)
@@ -256,7 +264,7 @@ def scan(con, client: httpx.Client, ccn: str, url: str, trace: Trace, force: boo
                     [url, url, headers.get("content-type"), headers.get("etag"), headers.get("last-modified"), size, checksum])
         result.checksum, result.size_bytes = checksum, size
         try:
-            result.extraction_id, result.charges, result.items, secs, result.peak_rss_mb = extract(con, path, checksum, size, trace)
+            result.extraction_id, result.charges, result.items, secs, result.peak_rss_mb = extract(con, path, checksum, size, trace, progress)
         except mrf.OffTemplate as e:
             result.reason = f"off-template: {e}"
             trace(result.reason)
@@ -266,7 +274,7 @@ def scan(con, client: httpx.Client, ccn: str, url: str, trace: Trace, force: boo
         return result
 
     try:
-        path, checksum, size, headers, dl_seconds = download(client, url, trace)
+        path, checksum, size, headers, dl_seconds = download(client, url, trace, progress)
     except httpx.HTTPError as e:
         reason = f"download failed: {getattr(e, 'response', None) and e.response.status_code or type(e).__name__}"
         con.execute("INSERT INTO fetches VALUES (?, now(), ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -291,7 +299,7 @@ def scan(con, client: httpx.Client, ccn: str, url: str, trace: Trace, force: boo
         return result
 
     try:
-        result.extraction_id, result.charges, result.items, secs, result.peak_rss_mb = extract(con, path, checksum, size, trace)
+        result.extraction_id, result.charges, result.items, secs, result.peak_rss_mb = extract(con, path, checksum, size, trace, progress)
     except mrf.OffTemplate as e:
         reason = f"off-template: {e}"
         con.execute("INSERT INTO extractions VALUES (?, ?, ?, now(), 0, 0, 0, 0, false, ?)",
