@@ -9,7 +9,7 @@ from pathlib import Path
 
 import httpx
 
-from hpa import build, catalog, compare, discovery, geocode, llm, reference, scan, store
+from hpa import build, catalog, compare, demo, discovery, evaluate, geocode, llm, reference, scan, store, targets
 from hpa.geo import KM_PER_MILE
 from hpa.hospitals import UnknownZip, find_hospitals, hospital_by_ccn
 
@@ -174,36 +174,18 @@ def cmd_locate(args: argparse.Namespace) -> int:
     return 0 if ok == len(results) else 2
 
 
-def _located(con, zips, ccn, limit):
-    """Hospitals near the ZIPs (or one CCN) that have a probed price-file URL."""
-    hospitals = {}
-    for z in zips or []:
-        for h in find_hospitals(con, z, limit):
-            hospitals.setdefault(h.ccn, h)
-    if ccn:
-        h = hospital_by_ccn(con, ccn)
-        if h is None:
-            raise UnknownZip(f"no hospital with CCN {ccn}")
-        hospitals[ccn] = h
-    out = []
-    for h in hospitals.values():
-        cached = store.cached_discovery(con, h.ccn)
-        out.append((h, cached))
-    return out
-
-
 def cmd_scan(args: argparse.Namespace) -> int:
     if not Path(args.db).exists():
         print("no hospital data yet; run `hpa setup` first", file=sys.stderr)
         return 1
     con = store.connect(args.db)
     try:
-        targets = _located(con, args.zip, args.ccn, args.limit)
+        pairs = targets.located(con, args.zip, args.ccn, args.limit)
     except UnknownZip as e:
         print(e, file=sys.stderr)
         return 1
-    todo = [(h, c) for h, c in targets if c and c["ok"]]
-    skipped = [(h, c) for h, c in targets if not (c and c["ok"])]
+    todo = [(h, c) for h, c in pairs if c and c["ok"]]
+    skipped = [(h, c) for h, c in pairs if not (c and c["ok"])]
     for h, c in skipped:
         print(f"{discovery.short_name(h)}: no located file ({c['reason'] if c else 'run `hpa locate` first'}) — skipped")
     print(f"scanning {len(todo)} price files")
@@ -228,21 +210,26 @@ def cmd_scan(args: argparse.Namespace) -> int:
 def cmd_prices(args: argparse.Namespace) -> int:
     con = store.connect(args.db, read_only=True)
     r = catalog.resolve(args.service)
-    if r.verdict != catalog.SELECTED:
-        print(f"{r.verdict}: {r.reason}", file=sys.stderr)
-        for c in r.candidates:
-            print(f"  {c.code_list:<18} {c.name}", file=sys.stderr)
-        return 1
     service = r.service
+    if r.verdict != catalog.SELECTED:
+        print(f"resolver: {r.verdict}: {r.reason}")
+        if llm.have_api_key() and not args.no_llm and r.candidates:
+            # Claude may only choose among the resolver's candidates, or ask.
+            service, why = llm.Claude(llm.make_client(), None).confirm_service(args.service, r)
+            print(f"claude: {'picked ' + service.name if service else 'asks: ' + why}" + (f" ({why})" if service else ""))
+        if service is None:
+            for c in r.candidates:
+                print(f"  {c.code_list:<18} {c.name}")
+            return 1
     print(f"{service.name} ({service.code_list})  [{'reviewed' if service.reviewed else 'unreviewed'}]")
     try:
-        targets = _located(con, args.zip, args.ccn, args.limit)
+        pairs = targets.located(con, args.zip, args.ccn, args.limit)
     except UnknownZip as e:
         print(e, file=sys.stderr)
         return 1
     codes = [code for _, code in service.codes]
     money = lambda v: f"${v:,.2f}" if v is not None else "—"
-    for h, c in targets:
+    for h, c in pairs:
         who = discovery.short_name(h)
         if not (c and c["ok"]):
             print(f"\n{who}: no price file located")
@@ -321,6 +308,30 @@ def cmd_eval_discovery(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_demo(args: argparse.Namespace) -> int:
+    if args.record:
+        con = store.connect(args.db, read_only=True)
+        data = demo.record(con)
+        demo.DEMO_FILE.parent.mkdir(exist_ok=True)
+        demo.DEMO_FILE.write_text(json.dumps(data, indent=1, default=float))
+        print(f"recorded {sum(len(v) for v in data['zips'].values())} hospitals and {len(data['services'])} services to {demo.DEMO_FILE}")
+        return 0
+    if not demo.DEMO_FILE.exists():
+        print("no recorded run; use `hpa demo --record` with a scanned database", file=sys.stderr)
+        return 1
+    demo.replay(json.loads(demo.DEMO_FILE.read_text()), delay=args.delay)
+    return 0
+
+
+def cmd_eval(args: argparse.Namespace) -> int:
+    con = store.connect(args.db, read_only=True)
+    report = evaluate.run(con, sample=args.sample)
+    evaluate.print_report(report)
+    evaluate.RESULTS.write_text(json.dumps(report, indent=1, default=str))
+    print(f"\nwrote {evaluate.RESULTS}")
+    return 0
+
+
 def human_size(n: int | None) -> str:
     if n is None:
         return "size unknown"
@@ -374,10 +385,19 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--ccn")
     p.add_argument("--limit", type=positive_int, default=5)
     p.add_argument("--all", action="store_true", help="list every matching line, not just the headline")
+    p.add_argument("--no-llm", action="store_true", help="never ask Claude to settle an unclear service name")
+
+    p = sub.add_parser("demo", help="replay the recorded Houston run offline (or --record it from the local database)")
+    p.add_argument("--record", action="store_true")
+    p.add_argument("--delay", type=float, default=0.0, help="seconds between trace lines when replaying")
+
+    p = sub.add_parser("eval", help="the four accuracy numbers, computed from the local database and the raw files")
+    p.add_argument("--sample", type=int, default=25, help="charges re-read from each raw file")
 
     args = parser.parse_args(argv)
     return {"setup": cmd_setup, "hospitals": cmd_hospitals, "catalog": cmd_catalog, "locate": cmd_locate,
-            "eval-discovery": cmd_eval_discovery, "scan": cmd_scan, "prices": cmd_prices}[args.command](args)
+            "eval-discovery": cmd_eval_discovery, "scan": cmd_scan, "prices": cmd_prices,
+            "demo": cmd_demo, "eval": cmd_eval}[args.command](args)
 
 
 if __name__ == "__main__":

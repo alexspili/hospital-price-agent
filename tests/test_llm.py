@@ -52,3 +52,14 @@ def test_find_website_uses_web_search_and_normalises_domain():
     assert why.startswith("high confidence")
     tools = fake.calls[0]["tools"]
     assert tools[0]["type"] == "web_search_20260209" and tools[0]["name"] == "web_search"
+
+
+def test_confirm_service_picks_only_among_candidates():
+    from hpa import catalog
+    res = catalog.resolve("mri")  # ambiguous: brain, leg joint, lumbar
+    fake = FakeClient({"id": "cpt-73721", "question": None, "why": "user context says knee"})
+    svc, why = Claude(fake).confirm_service("mri", res)
+    assert svc.id == "cpt-73721" and why == "user context says knee"
+    fake = FakeClient({"id": "cpt-99999", "question": "Which MRI: brain, knee or lower back?", "why": "several fit"})
+    svc, why = Claude(fake).confirm_service("mri", res)
+    assert svc is None and why.startswith("Which MRI")

@@ -32,6 +32,17 @@ WEBSITE_SCHEMA = {
     "additionalProperties": False,
 }
 
+CONFIRM_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "id": {"type": ["string", "null"], "description": "the catalog id that the user's words mean, or null"},
+        "question": {"type": ["string", "null"], "description": "a short question to ask the user when no single entry fits"},
+        "why": {"type": "string"},
+    },
+    "required": ["id", "question", "why"],
+    "additionalProperties": False,
+}
+
 PICK_SCHEMA = {
     "type": "object",
     "properties": {
@@ -103,6 +114,32 @@ class Claude:
         why = f"{out['confidence']} confidence, {out['why']}" + (" [cached]" if cached else "")
         domain = (out.get("domain") or "").lower().removeprefix("https://").removeprefix("http://").strip("/ ")
         return (domain or None), why
+
+    def confirm_service(self, query: str, resolution) -> tuple[object | None, str]:
+        """The resolver could not settle the query. Ask Claude to pick among its candidates
+        (never outside them) or to phrase the clarifying question. Returns (service, why or
+        question)."""
+        cands = list(resolution.candidates)
+        if not cands:
+            return None, resolution.reason
+        payload = {
+            "query": query,
+            "resolver": {"verdict": resolution.verdict, "reason": resolution.reason},
+            "candidates": [{"id": c.id, "name": c.name, "codes": c.code_list, "qualifiers": c.qualifiers, "aliases": list(c.aliases)} for c in cands],
+        }
+        prompt = (
+            "A user typed a procedure name. A deterministic matcher narrowed it to these entries of "
+            "CMS's list of 70 shoppable services but could not settle it. If exactly one entry is what "
+            "the user plainly means, return its id. If the user asked for a variant the list does not "
+            "have, or the words fit several entries, return null and a one-sentence question to ask "
+            "the user. Never pick an entry that is not in the candidates.\n\n" + json.dumps(payload, indent=1)
+        )
+        out, cached = self._cached("confirm", payload, lambda: self._json_call(prompt, CONFIRM_SCHEMA))
+        suffix = " [cached]" if cached else ""
+        chosen = next((c for c in cands if c.id == out.get("id")), None)
+        if chosen is None:
+            return None, (out.get("question") or out["why"]) + suffix
+        return chosen, out["why"] + suffix
 
     def pick_entry(self, h: Hospital, candidates: list[HptEntry]) -> tuple[HptEntry | None, str]:
         payload = {

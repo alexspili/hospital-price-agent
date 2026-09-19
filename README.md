@@ -115,12 +115,25 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
       (`hpa eval-discovery`), honest about how little current ground truth exists
 - [x] **3. Extraction.** CSV wide, CSV tall, JSON and zip streamed into DuckDB; one HEAD per
       scan decides freshness; measured on 12 real files (table above)
-- [ ] **4. One complete Houston example.** Five hospitals, one service category, real prices,
-      clickable evidence; first hand-reviewed catalog entries; `hpa demo` runs it offline
-- [ ] **5. Pipeline + eval.** Claude at the fuzzy steps, CLI trace; accuracy reported here in
-      four separate numbers: hospital match, extraction, comparison eligibility, unresolved
+- [x] **4. One complete Houston example.** 15 hospitals, 5 services, real prices with row-level
+      evidence; `hpa demo` replays it offline from `demo/houston.json`. Hand review of the
+      catalog mappings is in progress (`docs/mapping-review.md`): 0 of 70 reviewed so far
+- [x] **5. Pipeline + eval.** Claude confirms or questions unsettled service names (only
+      among the resolver's candidates); `hpa eval` reports the four numbers below
 - [ ] **6. Web UI.** FastAPI + server-sent events; split pane, trace left, results right
 - [ ] **7. Hosted demo** on pre-scanned Houston ZIPs, with live scans on request
+
+## The numbers (`hpa eval`, 2026-09-19, 15 hospitals nearest 77030 / 77380 / 77339)
+
+| | |
+|---|---|
+| **Hospital → file** | 12 of 15 located (9 via `cms-hpt.txt`, 1 tie-break, 1 web search, 1 site page). The only public external index overlaps 2 of them; it agrees on 1 and is stale on the other. |
+| **Extraction fidelity** | 256 of 256 sampled charges, re-read from the raw files at their recorded row / JSON path, match the stored values. |
+| **Comparison eligibility** | 66 service × hospital pairs: 12 comparable, 28 unknown (no billing class), 15 not found, 6 conflicting, 4 negotiated-only, 1 modifier-only. **18% comparable.** |
+| **Unresolved** | 4: a published URL that returns 403, a renamed hospital, a hospital missing from its system's index, an off-template file. |
+
+The 18% is the honest headline: most hospitals do not state the billing class that would make
+a cash price safely comparable, and the tool says so rather than comparing anyway.
 
 ## Try it
 
@@ -134,6 +147,8 @@ hpa hospitals 77494 --limit 8
 hpa locate 77339             # find each hospital's price file, live (Claude fallbacks need ANTHROPIC_API_KEY in .env)
 hpa scan 77339               # download + extract them (860 MB for HCA; files stay in data/mrf/)
 hpa prices "knee mri" 77339  # the four summary prices per hospital, with a comparability verdict
+hpa demo                     # replay the recorded Houston run: no network, no database, no key
+hpa eval                     # the four accuracy numbers, from the database and the raw files
 hpa catalog                  # all 70 services
 hpa catalog colonoscopy
 pytest                       # offline, no API key

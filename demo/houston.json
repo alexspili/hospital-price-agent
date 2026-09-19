@@ -1,0 +1,1107 @@
+{
+ "recorded_on": "2026-09-19",
+ "zips": {
+  "77030": [
+   {
+    "ccn": "453304",
+    "name": "Texas Childrens Hospital",
+    "distance_km": 0.4,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt found at https://www.texaschildrens.org/cms-hpt.txt",
+     "4 entries, matched Texas Children's Hospital (100)",
+     "price file zip, 40 MB, modified Wed, 18 Mar 2026 17:24:07 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip"
+   },
+   {
+    "ccn": "450193",
+    "name": "Baylor St Lukes Medical Center",
+    "distance_km": 0.4,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt found at https://www.commonspirit.org/cms-hpt.txt",
+     "72 entries, matched Baylor St Luke's Medical Center (100)",
+     "price file json, 256 MB, modified Wed, 10 Jun 2026 17:53:11 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json"
+   },
+   {
+    "ccn": "450358",
+    "name": "Houston Methodist Hospital",
+    "distance_km": 0.7,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt found at https://www.houstonmethodist.org/cms-hpt.txt",
+     "20 entries, matched Houston Methodist Hospital (100)",
+     "price file json, 72 MB, modified Wed, 25 Mar 2026 02:22:26 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx"
+   },
+   {
+    "ccn": "450804",
+    "name": "Texas Orthopedic Hospital",
+    "distance_km": 0.9,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt found at https://www.texasorthopedic.com/cms-hpt.txt",
+     "1 entries, matched TEXAS ORTHOPEDIC HOSPITAL (100)",
+     "file URL failed: HTTP 403"
+    ],
+    "ok": false,
+    "reason": "file URL failed: HTTP 403",
+    "mrf_url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/76-0418502_TEXAS-ORTHOPEDIC-HOSPITAL_standardcharges.json?si=pt-json-access-policy&spr=https&sv=2024-11-04&sr=c&sig=o5IofreS/7ETlsnhPakPWCwHVVUZRobywQ5wUKGjVuQ="
+   },
+   {
+    "ccn": "450289",
+    "name": "Harris Health",
+    "distance_km": 1.1,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt found at https://www.harrishealth.org/cms-hpt.txt",
+     "2 entries, ambiguous match: Harris Health Ben Taub Hospital (57); Harris Health Lyndon B Johnson Hospital (41)",
+     "tie-break picked Harris Health Ben Taub Hospital (1504 Taub Loop is the address of Ben Taub Hospital in Houston's Texas Medical Center; LBJ Hospital is at 5656 Kelley St. [cached])",
+     "price file zip, 2 MB, modified Fri, 27 Mar 2026 16:40:41 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip"
+   }
+  ],
+  "77380": [
+   {
+    "ccn": "670267",
+    "name": "The Woodlands Specialty Hospital",
+    "distance_km": 2.5,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt missing on guessed domains, searching the web for the site",
+     "web search says woodlandsspecialtyhospital.com (medium confidence, Search results show woodlandsspecialtyhospital.com as the hospital's own site (now branded The Woodlands Oaks Hospital) at the Spring/Woodlands I-45 location. [cached])",
+     "no machine-readable index located \u2014 skipped"
+    ],
+    "ok": false,
+    "reason": "no cms-hpt.txt or linked file located: woodlandsspecialty.com: ConnectError; www.woodlandsspecialty.com: ConnectError; woodlandsspecialty.org: ConnectError; www.woodlandsspecialty.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError; woodlandsspecialtyhospital.org: ConnectError; www.woodlandsspecialtyhospital.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError",
+    "mrf_url": null
+   },
+   {
+    "ccn": "670122",
+    "name": "Houston Methodist The Woodlands Hospital",
+    "distance_km": 6.7,
+    "approximate": true,
+    "steps": [
+     "cms-hpt.txt found at https://www.houstonmethodist.org/cms-hpt.txt",
+     "20 entries, matched Houston Methodist The Woodlands Hospital (100)",
+     "price file json, 63 MB, modified Wed, 25 Mar 2026 02:15:13 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx"
+   },
+   {
+    "ccn": "670059",
+    "name": "CHI St Lukes Lakeside Hospital",
+    "distance_km": 7.3,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt found at https://www.commonspirit.org/cms-hpt.txt",
+     "72 entries, matched St. Luke's Health - Lakeside Hospital (100)",
+     "price file json, 240 MB, modified Wed, 10 Jun 2026 17:41:27 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json"
+   },
+   {
+    "ccn": "450862",
+    "name": "St Luke's The Woodlands Hospital",
+    "distance_km": 7.6,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt found at https://www.commonspirit.org/cms-hpt.txt",
+     "72 entries, matched St. Luke's Health - The Woodlands Hospital (100)",
+     "price file json, 239 MB, modified Wed, 10 Jun 2026 17:37:24 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json"
+   },
+   {
+    "ccn": "454144",
+    "name": "Woodland Springs",
+    "distance_km": 12.3,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt missing on guessed domains, searching the web for the site",
+     "web search says woodlandspringshealth.com (high confidence, Woodland Springs is a behavioral health hospital in Conroe, TX; its own site woodlandspringshealth.com lists the Conroe location. [cached])",
+     "cms-hpt.txt found at https://www.woodlandspringshealth.com/cms-hpt.txt",
+     "1 entries, matched Woodland Springs (100)",
+     "price file csv, size unknown, modified Wed, 12 Aug 2026 15:10:54 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://www.woodlandspringshealth.com/docs/bhwoodlandspringslibraries/3q26/352565165_woodland-springs_standardcharges.csv"
+   }
+  ],
+  "77339": [
+   {
+    "ccn": "670285",
+    "name": "Elite Hospital Kingwood",
+    "distance_km": 0.0,
+    "approximate": true,
+    "steps": [
+     "cms-hpt.txt found at https://elitekingwood.com/cms-hpt.txt",
+     "1 entries, matched 23330 Emergency Center, LLC d/b/a/ Elite Hospital Kingwood (100)",
+     "price file csv, 415 KB, modified Thu, 04 Jun 2026 12:21:27 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv"
+   },
+   {
+    "ccn": "454103",
+    "name": "Kingwood Pines Hospital",
+    "distance_km": 0.8,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt found at https://kingwoodpines.com/wp-content/uploads/2025/08/cms-hpt.txt",
+     "1 entries, matched Kingwood Pines Hospital (100)",
+     "price file csv, 129 KB, modified Tue, 01 Sep 2026 22:35:00 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://uhsfilecdn.eskycity.net/bh/731726290_kingwood-pines_standardcharges.csv"
+   },
+   {
+    "ccn": "450775",
+    "name": "HCA Houston Healthcare Kingwood",
+    "distance_km": 3.1,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt found at https://www.hcahoustonhealthcare.com/cms-hpt.txt",
+     "36 entries, matched HCA HOUSTON KINGWOOD (100)",
+     "price file json, 860 MB, modified Wed, 27 May 2026 21:42:37 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_HCA-HOUSTON-HEALTHCARE-KINGWOOD_standardcharges.json?si=dpx-pt-json-access-policy&spr=https&sv=2026-02-06&sr=c&sig=ks%2BgfAjyEHlZmeP2PYJ%2f9NpMuCoRStjTb2bhIy9Y6LM%3D"
+   },
+   {
+    "ccn": "670005",
+    "name": "Memorial Hermann Surgical Hospital Kingwood",
+    "distance_km": 3.6,
+    "approximate": false,
+    "steps": [
+     "cms-hpt.txt found at https://memorialhermann.org/cms-hpt.txt",
+     "19 entries, none resemble MEMORIAL HERMANN SURGICAL HOSPITAL KINGWOOD"
+    ],
+    "ok": false,
+    "reason": "index found but no entry for this hospital (none)",
+    "mrf_url": null
+   },
+   {
+    "ccn": "670266",
+    "name": "Townsen Memorial Hospital",
+    "distance_km": 5.7,
+    "approximate": false,
+    "steps": [
+     "no cms-hpt.txt at townsenmemorial.com, but 1 standard-charges link(s) on https://www.townsenmemorial.com/pricing-transparency",
+     "standard charges file linked: https://www.townsenmemorial.com/images/Files/364867804_TownsenMemorialHospital_StandardCharges.csv",
+     "price file csv, 3 MB, modified Thu, 05 Jan 2023 18:21:05 GMT"
+    ],
+    "ok": true,
+    "reason": "",
+    "mrf_url": "https://www.townsenmemorial.com/images/Files/364867804_TownsenMemorialHospital_StandardCharges.csv"
+   }
+  ]
+ },
+ "services": {
+  "knee mri": {
+   "service": "MRI scan of leg joint",
+   "codes": "CPT 73721",
+   "reviewed": false,
+   "hospitals": [
+    {
+     "name": "Texas Childrens Hospital",
+     "file_date": "2026-03-05",
+     "url": "https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 3174.46,
+      "gross": 4738.0,
+      "min": 208.84,
+      "max": 4501.1,
+      "context": "outpatient, facility",
+      "ref": "row 28173",
+      "description": "TC MRI, EXTREMITY ANY JOINT, LOWER EXTREMITY W/O CONTR"
+     }
+    },
+    {
+     "name": "Baylor St Lukes Medical Center",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 2725.8,
+      "gross": 7788.0,
+      "min": 174.32,
+      "max": 7788.0,
+      "context": "outpatient",
+      "ref": "item 9144/charge 1",
+      "description": "HC MR LOWER EXTREM JNT WO CONT"
+     }
+    },
+    {
+     "name": "Houston Methodist Hospital",
+     "file_date": "2026-04-01",
+     "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 1230.0,
+      "gross": 2460.0,
+      "min": null,
+      "max": null,
+      "context": "both, facility",
+      "ref": "item 13569/charge 1",
+      "description": "HC MRI LOWER EXT JOINT W/O CONTRA"
+     }
+    },
+    {
+     "name": "Texas Orthopedic Hospital",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Harris Health",
+     "file_date": "3/24/2026",
+     "url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge",
+     "lines": 1,
+     "headline": {
+      "cash": 231.944843,
+      "gross": 3821.0,
+      "min": 208.84,
+      "max": 2483.65,
+      "context": "both",
+      "ref": "row 33175",
+      "description": "MRI LOWER EXTREMITY JOINT W/O CONTRAST"
+     }
+    },
+    {
+     "name": "The Woodlands Specialty Hospital",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Houston Methodist The Woodlands Hospital",
+     "file_date": "2026-04-01",
+     "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 1243.5,
+      "gross": 2487.0,
+      "min": null,
+      "max": null,
+      "context": "both, facility",
+      "ref": "item 13552/charge 1",
+      "description": "HC MRI LOWER EXT JOINT W/O CONTRA"
+     }
+    },
+    {
+     "name": "CHI St Lukes Lakeside Hospital",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 2725.8,
+      "gross": 7788.0,
+      "min": 174.32,
+      "max": 7788.0,
+      "context": "outpatient",
+      "ref": "item 9186/charge 1",
+      "description": "HC MR LOWER EXTREM JNT WO CONT"
+     }
+    },
+    {
+     "name": "St Luke's The Woodlands Hospital",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 2725.8,
+      "gross": 7788.0,
+      "min": 174.32,
+      "max": 7788.0,
+      "context": "outpatient",
+      "ref": "item 9186/charge 1",
+      "description": "HC MR LOWER EXTREM JNT WO CONT"
+     }
+    },
+    {
+     "name": "Woodland Springs",
+     "file_date": "7/31/2026",
+     "url": "https://www.woodlandspringshealth.com/docs/bhwoodlandspringslibraries/3q26/352565165_woodland-springs_standardcharges.csv",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "Elite Hospital Kingwood",
+     "file_date": "6/1/2026",
+     "url": "https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge",
+     "lines": 1,
+     "headline": {
+      "cash": 2735.8,
+      "gross": 5471.59,
+      "min": 431.06,
+      "max": 574.74,
+      "context": "both",
+      "ref": "row 1570",
+      "description": "Magnetic resonance (eg proton) imaging any joint of lower extremity; without contrast material"
+     }
+    },
+    {
+     "name": "Kingwood Pines Hospital",
+     "file_date": "2026-08-31",
+     "url": "https://uhsfilecdn.eskycity.net/bh/731726290_kingwood-pines_standardcharges.csv",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "HCA Houston Healthcare Kingwood",
+     "file_date": "2026-05-14",
+     "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_HCA-HOUSTON-HEALTHCARE-KINGWOOD_standardcharges.json?si=dpx-pt-json-access-policy&spr=https&sv=2026-02-06&sr=c&sig=ks%2BgfAjyEHlZmeP2PYJ%2f9NpMuCoRStjTb2bhIy9Y6LM%3D",
+     "verdict": "modifier-specific lines only",
+     "detail": "priced lines carry modifiers 50, LT, RT; no unmodified line to compare",
+     "lines": 48,
+     "headline": null
+    },
+    {
+     "name": "Memorial Hermann Surgical Hospital Kingwood",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Townsen Memorial Hospital",
+     "verdict": "not scanned"
+    }
+   ]
+  },
+  "colonoscopy": {
+   "service": "Diagnostic examination of large bowel using an endoscope",
+   "codes": "CPT 45378",
+   "reviewed": false,
+   "hospitals": [
+    {
+     "name": "Texas Childrens Hospital",
+     "file_date": "2026-03-05",
+     "url": "https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "Baylor St Lukes Medical Center",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
+     "verdict": "negotiated rates only, no cash or gross price",
+     "detail": "1 line, each with negotiated min/max only",
+     "lines": 1,
+     "headline": null
+    },
+    {
+     "name": "Houston Methodist Hospital",
+     "file_date": "2026-04-01",
+     "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 519.0,
+      "gross": 1038.0,
+      "min": null,
+      "max": null,
+      "context": "both, facility",
+      "ref": "item 12398/charge 1",
+      "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD"
+     }
+    },
+    {
+     "name": "Texas Orthopedic Hospital",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Harris Health",
+     "file_date": "3/24/2026",
+     "url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 5 other lines for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 6,
+     "headline": {
+      "cash": 1835.24,
+      "gross": 3880.0,
+      "min": 1940.0,
+      "max": 1940.0,
+      "context": "both",
+      "ref": "row 32341",
+      "description": "ECHG GI PROC COLONOSCOPY, FLEX ; DX"
+     }
+    },
+    {
+     "name": "The Woodlands Specialty Hospital",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Houston Methodist The Woodlands Hospital",
+     "file_date": "2026-04-01",
+     "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 866.0,
+      "gross": 1732.0,
+      "min": null,
+      "max": null,
+      "context": "both, facility",
+      "ref": "item 12425/charge 1",
+      "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD"
+     }
+    },
+    {
+     "name": "CHI St Lukes Lakeside Hospital",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
+     "verdict": "negotiated rates only, no cash or gross price",
+     "detail": "1 line, each with negotiated min/max only",
+     "lines": 1,
+     "headline": null
+    },
+    {
+     "name": "St Luke's The Woodlands Hospital",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
+     "verdict": "negotiated rates only, no cash or gross price",
+     "detail": "1 line, each with negotiated min/max only",
+     "lines": 1,
+     "headline": null
+    },
+    {
+     "name": "Woodland Springs",
+     "file_date": "7/31/2026",
+     "url": "https://www.woodlandspringshealth.com/docs/bhwoodlandspringslibraries/3q26/352565165_woodland-springs_standardcharges.csv",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "Elite Hospital Kingwood",
+     "file_date": "6/1/2026",
+     "url": "https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "Kingwood Pines Hospital",
+     "file_date": "2026-08-31",
+     "url": "https://uhsfilecdn.eskycity.net/bh/731726290_kingwood-pines_standardcharges.csv",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "HCA Houston Healthcare Kingwood",
+     "file_date": "2026-05-14",
+     "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_HCA-HOUSTON-HEALTHCARE-KINGWOOD_standardcharges.json?si=dpx-pt-json-access-policy&spr=https&sv=2026-02-06&sr=c&sig=ks%2BgfAjyEHlZmeP2PYJ%2f9NpMuCoRStjTb2bhIy9Y6LM%3D",
+     "verdict": "negotiated rates only, no cash or gross price",
+     "detail": "20 lines, each with negotiated min/max only",
+     "lines": 20,
+     "headline": null
+    },
+    {
+     "name": "Memorial Hermann Surgical Hospital Kingwood",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Townsen Memorial Hospital",
+     "verdict": "not scanned"
+    }
+   ]
+  },
+  "head ct": {
+   "service": "CT scan, head or brain, without contrast",
+   "codes": "CPT 70450",
+   "reviewed": false,
+   "hospitals": [
+    {
+     "name": "Texas Childrens Hospital",
+     "file_date": "2026-03-05",
+     "url": "https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 2278.67,
+      "gross": 3401.0,
+      "min": 104.75,
+      "max": 3230.95,
+      "context": "outpatient, facility",
+      "ref": "row 26951",
+      "description": "TC CT, BRAIN WITHOUT CONTRAST"
+     }
+    },
+    {
+     "name": "Baylor St Lukes Medical Center",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 2399.25,
+      "gross": 6855.0,
+      "min": 76.69,
+      "max": 6855.0,
+      "context": "outpatient",
+      "ref": "item 8783/charge 1",
+      "description": "HC CT BRAIN"
+     }
+    },
+    {
+     "name": "Houston Methodist Hospital",
+     "file_date": "2026-04-01",
+     "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 1120.0,
+      "gross": 2240.0,
+      "min": null,
+      "max": null,
+      "context": "both, facility",
+      "ref": "item 11945/charge 1",
+      "description": "HC CT HEAD/BRAIN SCAN WO CONTRA"
+     }
+    },
+    {
+     "name": "Texas Orthopedic Hospital",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Harris Health",
+     "file_date": "3/24/2026",
+     "url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 102.03961,
+      "gross": 2320.0,
+      "min": 104.75,
+      "max": 1508.0,
+      "context": "both",
+      "ref": "row 34428",
+      "description": "CT HEAD W/O CONTRAST (MOD CT \ufffd MCARE ONLY)"
+     }
+    },
+    {
+     "name": "The Woodlands Specialty Hospital",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Houston Methodist The Woodlands Hospital",
+     "file_date": "2026-04-01",
+     "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 1120.0,
+      "gross": 2240.0,
+      "min": null,
+      "max": null,
+      "context": "both, facility",
+      "ref": "item 11959/charge 1",
+      "description": "HC CT HEAD/BRAIN SCAN WO CONTRA"
+     }
+    },
+    {
+     "name": "CHI St Lukes Lakeside Hospital",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 2399.25,
+      "gross": 6855.0,
+      "min": 76.69,
+      "max": 6855.0,
+      "context": "outpatient",
+      "ref": "item 8825/charge 1",
+      "description": "HC CT BRAIN"
+     }
+    },
+    {
+     "name": "St Luke's The Woodlands Hospital",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 2399.25,
+      "gross": 6855.0,
+      "min": 76.69,
+      "max": 6855.0,
+      "context": "outpatient",
+      "ref": "item 8825/charge 1",
+      "description": "HC CT BRAIN"
+     }
+    },
+    {
+     "name": "Woodland Springs",
+     "file_date": "7/31/2026",
+     "url": "https://www.woodlandspringshealth.com/docs/bhwoodlandspringslibraries/3q26/352565165_woodland-springs_standardcharges.csv",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "Elite Hospital Kingwood",
+     "file_date": "6/1/2026",
+     "url": "https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge",
+     "lines": 1,
+     "headline": {
+      "cash": 2612.15,
+      "gross": 5224.29,
+      "min": 226.89,
+      "max": 302.52,
+      "context": "both",
+      "ref": "row 508",
+      "description": "Computed tomography head or brain; without contrast material"
+     }
+    },
+    {
+     "name": "Kingwood Pines Hospital",
+     "file_date": "2026-08-31",
+     "url": "https://uhsfilecdn.eskycity.net/bh/731726290_kingwood-pines_standardcharges.csv",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "HCA Houston Healthcare Kingwood",
+     "file_date": "2026-05-14",
+     "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_HCA-HOUSTON-HEALTHCARE-KINGWOOD_standardcharges.json?si=dpx-pt-json-access-policy&spr=https&sv=2026-02-06&sr=c&sig=ks%2BgfAjyEHlZmeP2PYJ%2f9NpMuCoRStjTb2bhIy9Y6LM%3D",
+     "verdict": "conflicting",
+     "detail": "5 unmodified lines disagree (cash $10,294.00, $10,294.23)",
+     "lines": 48,
+     "headline": null
+    },
+    {
+     "name": "Memorial Hermann Surgical Hospital Kingwood",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Townsen Memorial Hospital",
+     "verdict": "not scanned"
+    }
+   ]
+  },
+  "cbc": {
+   "service": "Complete blood count, automated",
+   "codes": "CPT 85027",
+   "reviewed": false,
+   "hospitals": [
+    {
+     "name": "Texas Childrens Hospital",
+     "file_date": "2026-03-05",
+     "url": "https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip",
+     "verdict": "conflicting",
+     "detail": "4 unmodified lines disagree (cash $75.71, $78.39, $80.40, $85.76)",
+     "lines": 8,
+     "headline": null
+    },
+    {
+     "name": "Baylor St Lukes Medical Center",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 174.3,
+      "gross": 498.0,
+      "min": 4.66,
+      "max": 498.0,
+      "context": "outpatient",
+      "ref": "item 10588/charge 1",
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
+     }
+    },
+    {
+     "name": "Houston Methodist Hospital",
+     "file_date": "2026-04-01",
+     "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 133.0,
+      "gross": 266.0,
+      "min": null,
+      "max": null,
+      "context": "both, facility",
+      "ref": "item 10713/charge 1",
+      "description": "HC COMPLETE BLOOD COUNT CBC"
+     }
+    },
+    {
+     "name": "Texas Orthopedic Hospital",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Harris Health",
+     "file_date": "3/24/2026",
+     "url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge",
+     "lines": 1,
+     "headline": {
+      "cash": 6.47,
+      "gross": 166.0,
+      "min": 5.43,
+      "max": 107.9,
+      "context": "both",
+      "ref": "row 36051",
+      "description": "CBC/PLATELET"
+     }
+    },
+    {
+     "name": "The Woodlands Specialty Hospital",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Houston Methodist The Woodlands Hospital",
+     "file_date": "2026-04-01",
+     "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 95.5,
+      "gross": 191.0,
+      "min": null,
+      "max": null,
+      "context": "both, facility",
+      "ref": "item 10719/charge 1",
+      "description": "HC COMPLETE BLOOD COUNT CBC"
+     }
+    },
+    {
+     "name": "CHI St Lukes Lakeside Hospital",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 174.3,
+      "gross": 498.0,
+      "min": 4.66,
+      "max": 498.0,
+      "context": "outpatient",
+      "ref": "item 10630/charge 1",
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
+     }
+    },
+    {
+     "name": "St Luke's The Woodlands Hospital",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 174.3,
+      "gross": 498.0,
+      "min": 4.66,
+      "max": 498.0,
+      "context": "outpatient",
+      "ref": "item 10630/charge 1",
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
+     }
+    },
+    {
+     "name": "Woodland Springs",
+     "file_date": "7/31/2026",
+     "url": "https://www.woodlandspringshealth.com/docs/bhwoodlandspringslibraries/3q26/352565165_woodland-springs_standardcharges.csv",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "Elite Hospital Kingwood",
+     "file_date": "6/1/2026",
+     "url": "https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge",
+     "lines": 1,
+     "headline": {
+      "cash": 97.2,
+      "gross": 194.4,
+      "min": 145.8,
+      "max": 145.8,
+      "context": "both",
+      "ref": "row 229",
+      "description": "Blood count; complete (CBC) automated (Hgb Hct RBC WBC and platelet count)"
+     }
+    },
+    {
+     "name": "Kingwood Pines Hospital",
+     "file_date": "2026-08-31",
+     "url": "https://uhsfilecdn.eskycity.net/bh/731726290_kingwood-pines_standardcharges.csv",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "HCA Houston Healthcare Kingwood",
+     "file_date": "2026-05-14",
+     "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_HCA-HOUSTON-HEALTHCARE-KINGWOOD_standardcharges.json?si=dpx-pt-json-access-policy&spr=https&sv=2026-02-06&sr=c&sig=ks%2BgfAjyEHlZmeP2PYJ%2f9NpMuCoRStjTb2bhIy9Y6LM%3D",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 33 other lines for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 34,
+     "headline": {
+      "cash": 1299.26,
+      "gross": 1299.26,
+      "min": 77.96,
+      "max": 1169.33,
+      "context": "outpatient",
+      "ref": "item 308567/charge 1",
+      "description": "CBC AUTOMATED"
+     }
+    },
+    {
+     "name": "Memorial Hermann Surgical Hospital Kingwood",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Townsen Memorial Hospital",
+     "verdict": "not scanned"
+    }
+   ]
+  },
+  "screening mammogram": {
+   "service": "Mammography, screening, bilateral",
+   "codes": "CPT 77067",
+   "reviewed": false,
+   "hospitals": [
+    {
+     "name": "Texas Childrens Hospital",
+     "file_date": "2026-03-05",
+     "url": "https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "Baylor St Lukes Medical Center",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/bslmc/soho/finance/price-transparency/741161938-1184622847_chi-st-lukes-health-baylor-college-of-medicine-medical-center_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 297.5,
+      "gross": 850.0,
+      "min": 119.36,
+      "max": 850.0,
+      "context": "outpatient",
+      "ref": "item 9582/charge 1",
+      "description": "HC MAMMO SCRN BIL & CAD"
+     }
+    },
+    {
+     "name": "Houston Methodist Hospital",
+     "file_date": "2026-04-01",
+     "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 332.5,
+      "gross": 665.0,
+      "min": null,
+      "max": null,
+      "context": "both, facility",
+      "ref": "item 13151/charge 1",
+      "description": "HC MAMMOGRAM SCREENING INCL CAD BIL"
+     }
+    },
+    {
+     "name": "Texas Orthopedic Hospital",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Harris Health",
+     "file_date": "3/24/2026",
+     "url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge",
+     "lines": 1,
+     "headline": {
+      "cash": 82.302,
+      "gross": 174.0,
+      "min": 43.848,
+      "max": 199.3837,
+      "context": "both",
+      "ref": "row 32991",
+      "description": "SCREENING MAMMOGRAPHY BILATERAL INCL CAD WHEN PEFORMED"
+     }
+    },
+    {
+     "name": "The Woodlands Specialty Hospital",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Houston Methodist The Woodlands Hospital",
+     "file_date": "2026-04-01",
+     "url": "https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx",
+     "verdict": "comparable",
+     "detail": "1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 715.5,
+      "gross": 1431.0,
+      "min": null,
+      "max": null,
+      "context": "both, facility",
+      "ref": "item 13155/charge 1",
+      "description": "HC MAMMOGRAM SCREENING INCL CAD BIL"
+     }
+    },
+    {
+     "name": "CHI St Lukes Lakeside Hospital",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/300427437-1184868879_st-lukes-lakeside-hospital-llc_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 297.5,
+      "gross": 850.0,
+      "min": 140.25,
+      "max": 850.0,
+      "context": "outpatient",
+      "ref": "item 9624/charge 1",
+      "description": "HC MAMMO SCRN BIL & CAD"
+     }
+    },
+    {
+     "name": "St Luke's The Woodlands Hospital",
+     "file_date": "2026-02-28",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/stluh/soho/finance/price-transparency/760536234-1942208616_st-lukes-community-health-services-st-lukes-the-woodlands-hospital_standardcharges.json",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge; 1 other line for this code (modifiers, revenue centers or payer-only rates)",
+     "lines": 2,
+     "headline": {
+      "cash": 297.5,
+      "gross": 850.0,
+      "min": 140.25,
+      "max": 850.0,
+      "context": "outpatient",
+      "ref": "item 9624/charge 1",
+      "description": "HC MAMMO SCRN BIL & CAD"
+     }
+    },
+    {
+     "name": "Woodland Springs",
+     "file_date": "7/31/2026",
+     "url": "https://www.woodlandspringshealth.com/docs/bhwoodlandspringslibraries/3q26/352565165_woodland-springs_standardcharges.csv",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "Elite Hospital Kingwood",
+     "file_date": "6/1/2026",
+     "url": "https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv",
+     "verdict": "unknown: no billing class stated",
+     "detail": "the file does not say whether this is a facility or professional charge",
+     "lines": 1,
+     "headline": {
+      "cash": 449.04,
+      "gross": 898.08,
+      "min": 267.8,
+      "max": 357.06,
+      "context": "both",
+      "ref": "row 2080",
+      "description": "Screening mammography bilateral (2-view study of each breast) including computer-aided detection (CAD) when performed"
+     }
+    },
+    {
+     "name": "Kingwood Pines Hospital",
+     "file_date": "2026-08-31",
+     "url": "https://uhsfilecdn.eskycity.net/bh/731726290_kingwood-pines_standardcharges.csv",
+     "verdict": "not found",
+     "detail": "",
+     "lines": 0,
+     "headline": null
+    },
+    {
+     "name": "HCA Houston Healthcare Kingwood",
+     "file_date": "2026-05-14",
+     "url": "https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_HCA-HOUSTON-HEALTHCARE-KINGWOOD_standardcharges.json?si=dpx-pt-json-access-policy&spr=https&sv=2026-02-06&sr=c&sig=ks%2BgfAjyEHlZmeP2PYJ%2f9NpMuCoRStjTb2bhIy9Y6LM%3D",
+     "verdict": "conflicting",
+     "detail": "4 unmodified lines disagree (cash $818.95, $912.90)",
+     "lines": 14,
+     "headline": null
+    },
+    {
+     "name": "Memorial Hermann Surgical Hospital Kingwood",
+     "verdict": "no price file located"
+    },
+    {
+     "name": "Townsen Memorial Hospital",
+     "verdict": "not scanned"
+    }
+   ]
+  }
+ }
+}

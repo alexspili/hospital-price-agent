@@ -245,13 +245,13 @@ compare: Methodist vs Baylor: unknown (Baylor row has no billing class)
    chargemaster export); metrics in the README. `hpa prices` gives per-hospital verdicts:
    comparable / unknown (no billing class) / modifier-specific only / negotiated only /
    inpatient only / conflicting / not found. Catalog `expected_*` fields still to fill.
-4. One complete Houston example: 5 hospitals, one service category, real charges, links to
-   the source rows, comparability verdicts. First reviewed mappings. `hpa demo` runs it
-   offline from checked-in results with no API key.
-5. Pipeline with Claude at the fuzzy steps, CLI trace. Eval harness reporting **four numbers
-   separately**: hospital match accuracy (against the external index), extraction accuracy
-   (against hand-checked rows), comparison eligibility rate, and unresolved cases. All in
-   the README.
+4. Houston example (done 2026-09-19): `demo/houston.json` records 15 hospitals × 5 services
+   with verdicts and source refs; `hpa demo` replays it offline. `docs/mapping-review.md`
+   (from `scripts/review_sheet.py`) is the sheet for the human mapping review; entries are
+   marked `reviewed` only from that sheet.
+5. Eval (done 2026-09-19): `hpa eval` reports the four numbers; extraction fidelity re-reads
+   sampled charges from the raw files at their source ref (256/256). Claude's third use:
+   `confirm_service`, which may only choose among the resolver's candidates or ask.
 6. FastAPI + server-sent events, React split-pane UI. Simpler than first planned; the
    trace is the feature.
 7. Deploy.

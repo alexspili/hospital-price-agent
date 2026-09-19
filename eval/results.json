@@ -1,0 +1,464 @@
+{
+ "zips": [
+  "77030",
+  "77380",
+  "77339"
+ ],
+ "hospitals": 15,
+ "discovery": {
+  "located": 12,
+  "of": 15,
+  "by_method": {
+   "cms-hpt": 9,
+   "cms-hpt+tie-break": 1,
+   "web-search+cms-hpt": 1,
+   "site-page": 1
+  },
+  "external_index": {
+   "fetched_on": "2026-09-18",
+   "overlap": 2,
+   "agree": 1,
+   "differ": 1,
+   "note": "index URLs date from 2020-2021; disagreements are the index being stale"
+  }
+ },
+ "fidelity": {
+  "files": 11,
+  "sampled": 256,
+  "matched": 256,
+  "per_file": {
+   "Texas Childrens Hospital": {
+    "sampled": 25,
+    "checked": 25,
+    "matched": 25,
+    "mismatches": []
+   },
+   "Baylor St Lukes Medical Center": {
+    "sampled": 25,
+    "checked": 25,
+    "matched": 25,
+    "mismatches": []
+   },
+   "Houston Methodist Hospital": {
+    "sampled": 25,
+    "checked": 25,
+    "matched": 25,
+    "mismatches": []
+   },
+   "Harris Health": {
+    "sampled": 25,
+    "checked": 25,
+    "matched": 25,
+    "mismatches": []
+   },
+   "Houston Methodist The Woodlands Hospital": {
+    "sampled": 25,
+    "checked": 25,
+    "matched": 25,
+    "mismatches": []
+   },
+   "CHI St Lukes Lakeside Hospital": {
+    "sampled": 25,
+    "checked": 25,
+    "matched": 25,
+    "mismatches": []
+   },
+   "St Luke's The Woodlands Hospital": {
+    "sampled": 25,
+    "checked": 25,
+    "matched": 25,
+    "mismatches": []
+   },
+   "Woodland Springs": {
+    "sampled": 17,
+    "checked": 17,
+    "matched": 17,
+    "mismatches": []
+   },
+   "Elite Hospital Kingwood": {
+    "sampled": 25,
+    "checked": 25,
+    "matched": 25,
+    "mismatches": []
+   },
+   "Kingwood Pines Hospital": {
+    "sampled": 14,
+    "checked": 14,
+    "matched": 14,
+    "mismatches": []
+   },
+   "HCA Houston Healthcare Kingwood": {
+    "sampled": 25,
+    "checked": 25,
+    "matched": 25,
+    "mismatches": []
+   }
+  }
+ },
+ "comparison": {
+  "pairs": 66,
+  "by_verdict": {
+   "comparable": 12,
+   "unknown: no billing class stated": 28,
+   "not found": 15,
+   "modifier-specific lines only": 1,
+   "negotiated rates only, no cash or gross price": 4,
+   "conflicting": 6
+  },
+  "comparable_share": 0.182,
+  "detail": [
+   {
+    "service": "knee mri",
+    "hospital": "Texas Childrens Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "knee mri",
+    "hospital": "Baylor St Lukes Medical Center",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "knee mri",
+    "hospital": "Houston Methodist Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "knee mri",
+    "hospital": "Harris Health",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "knee mri",
+    "hospital": "Houston Methodist The Woodlands Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "knee mri",
+    "hospital": "CHI St Lukes Lakeside Hospital",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "knee mri",
+    "hospital": "St Luke's The Woodlands Hospital",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "knee mri",
+    "hospital": "Woodland Springs",
+    "verdict": "not found"
+   },
+   {
+    "service": "knee mri",
+    "hospital": "Elite Hospital Kingwood",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "knee mri",
+    "hospital": "Kingwood Pines Hospital",
+    "verdict": "not found"
+   },
+   {
+    "service": "knee mri",
+    "hospital": "HCA Houston Healthcare Kingwood",
+    "verdict": "modifier-specific lines only"
+   },
+   {
+    "service": "colonoscopy",
+    "hospital": "Texas Childrens Hospital",
+    "verdict": "not found"
+   },
+   {
+    "service": "colonoscopy",
+    "hospital": "Baylor St Lukes Medical Center",
+    "verdict": "negotiated rates only, no cash or gross price"
+   },
+   {
+    "service": "colonoscopy",
+    "hospital": "Houston Methodist Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "colonoscopy",
+    "hospital": "Harris Health",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "colonoscopy",
+    "hospital": "Houston Methodist The Woodlands Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "colonoscopy",
+    "hospital": "CHI St Lukes Lakeside Hospital",
+    "verdict": "negotiated rates only, no cash or gross price"
+   },
+   {
+    "service": "colonoscopy",
+    "hospital": "St Luke's The Woodlands Hospital",
+    "verdict": "negotiated rates only, no cash or gross price"
+   },
+   {
+    "service": "colonoscopy",
+    "hospital": "Woodland Springs",
+    "verdict": "not found"
+   },
+   {
+    "service": "colonoscopy",
+    "hospital": "Elite Hospital Kingwood",
+    "verdict": "not found"
+   },
+   {
+    "service": "colonoscopy",
+    "hospital": "Kingwood Pines Hospital",
+    "verdict": "not found"
+   },
+   {
+    "service": "colonoscopy",
+    "hospital": "HCA Houston Healthcare Kingwood",
+    "verdict": "negotiated rates only, no cash or gross price"
+   },
+   {
+    "service": "head ct",
+    "hospital": "Texas Childrens Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "head ct",
+    "hospital": "Baylor St Lukes Medical Center",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "head ct",
+    "hospital": "Houston Methodist Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "head ct",
+    "hospital": "Harris Health",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "head ct",
+    "hospital": "Houston Methodist The Woodlands Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "head ct",
+    "hospital": "CHI St Lukes Lakeside Hospital",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "head ct",
+    "hospital": "St Luke's The Woodlands Hospital",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "head ct",
+    "hospital": "Woodland Springs",
+    "verdict": "not found"
+   },
+   {
+    "service": "head ct",
+    "hospital": "Elite Hospital Kingwood",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "head ct",
+    "hospital": "Kingwood Pines Hospital",
+    "verdict": "not found"
+   },
+   {
+    "service": "head ct",
+    "hospital": "HCA Houston Healthcare Kingwood",
+    "verdict": "conflicting"
+   },
+   {
+    "service": "cbc",
+    "hospital": "Texas Childrens Hospital",
+    "verdict": "conflicting"
+   },
+   {
+    "service": "cbc",
+    "hospital": "Baylor St Lukes Medical Center",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "cbc",
+    "hospital": "Houston Methodist Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "cbc",
+    "hospital": "Harris Health",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "cbc",
+    "hospital": "Houston Methodist The Woodlands Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "cbc",
+    "hospital": "CHI St Lukes Lakeside Hospital",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "cbc",
+    "hospital": "St Luke's The Woodlands Hospital",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "cbc",
+    "hospital": "Woodland Springs",
+    "verdict": "not found"
+   },
+   {
+    "service": "cbc",
+    "hospital": "Elite Hospital Kingwood",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "cbc",
+    "hospital": "Kingwood Pines Hospital",
+    "verdict": "not found"
+   },
+   {
+    "service": "cbc",
+    "hospital": "HCA Houston Healthcare Kingwood",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "screening mammogram",
+    "hospital": "Texas Childrens Hospital",
+    "verdict": "not found"
+   },
+   {
+    "service": "screening mammogram",
+    "hospital": "Baylor St Lukes Medical Center",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "screening mammogram",
+    "hospital": "Houston Methodist Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "screening mammogram",
+    "hospital": "Harris Health",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "screening mammogram",
+    "hospital": "Houston Methodist The Woodlands Hospital",
+    "verdict": "comparable"
+   },
+   {
+    "service": "screening mammogram",
+    "hospital": "CHI St Lukes Lakeside Hospital",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "screening mammogram",
+    "hospital": "St Luke's The Woodlands Hospital",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "screening mammogram",
+    "hospital": "Woodland Springs",
+    "verdict": "not found"
+   },
+   {
+    "service": "screening mammogram",
+    "hospital": "Elite Hospital Kingwood",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "screening mammogram",
+    "hospital": "Kingwood Pines Hospital",
+    "verdict": "not found"
+   },
+   {
+    "service": "screening mammogram",
+    "hospital": "HCA Houston Healthcare Kingwood",
+    "verdict": "conflicting"
+   },
+   {
+    "service": "lipid panel",
+    "hospital": "Texas Childrens Hospital",
+    "verdict": "conflicting"
+   },
+   {
+    "service": "lipid panel",
+    "hospital": "Baylor St Lukes Medical Center",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "lipid panel",
+    "hospital": "Houston Methodist Hospital",
+    "verdict": "conflicting"
+   },
+   {
+    "service": "lipid panel",
+    "hospital": "Harris Health",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "lipid panel",
+    "hospital": "Houston Methodist The Woodlands Hospital",
+    "verdict": "conflicting"
+   },
+   {
+    "service": "lipid panel",
+    "hospital": "CHI St Lukes Lakeside Hospital",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "lipid panel",
+    "hospital": "St Luke's The Woodlands Hospital",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "lipid panel",
+    "hospital": "Woodland Springs",
+    "verdict": "not found"
+   },
+   {
+    "service": "lipid panel",
+    "hospital": "Elite Hospital Kingwood",
+    "verdict": "unknown: no billing class stated"
+   },
+   {
+    "service": "lipid panel",
+    "hospital": "Kingwood Pines Hospital",
+    "verdict": "not found"
+   },
+   {
+    "service": "lipid panel",
+    "hospital": "HCA Houston Healthcare Kingwood",
+    "verdict": "unknown: no billing class stated"
+   }
+  ]
+ },
+ "unresolved": [
+  {
+   "hospital": "Texas Orthopedic Hospital",
+   "stage": "discovery",
+   "reason": "file URL failed: HTTP 403"
+  },
+  {
+   "hospital": "The Woodlands Specialty Hospital",
+   "stage": "discovery",
+   "reason": "no cms-hpt.txt or linked file located: woodlandsspecialty.com: ConnectError; www.woodlandsspecialty.com: ConnectError; woodlandsspecialty.org: ConnectError; www.woodlandsspecialty.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError; woodlandsspecialtyhospital.org: ConnectError; www.woodlandsspecialtyhospital.org: ConnectError; woodlandsspecialtyhospital.com: ConnectError; www.woodlandsspecialtyhospital.com: ConnectError"
+  },
+  {
+   "hospital": "Memorial Hermann Surgical Hospital Kingwood",
+   "stage": "discovery",
+   "reason": "index found but no entry for this hospital (none)"
+  },
+  {
+   "hospital": "Townsen Memorial Hospital",
+   "stage": "extraction",
+   "reason": "not extracted (off-template or not scanned)"
+  }
+ ]
+}

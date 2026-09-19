@@ -214,3 +214,9 @@ the billing class that would make the comparison safe. Some of what's behind the
 `modifier-specific lines only`, `negotiated rates only`, `inpatient line only`,
 `conflicting` (unmodified lines disagree), `not found`. Every line behind a verdict is one
 `--all` away, with its row number or JSON path.
+
+**Two more things extraction turned up.** Houston Methodist labels its CPT codes with code
+type `HCPCS` (the CPT set is HCPCS Level I, so this is defensible, but a query filtering on
+`CPT` alone would miss the whole file). Harris Health publishes prices to five decimal
+places ($5,011.64785); a first schema at two decimals rounded them, and the fidelity check
+caught it on the first run (254 of 256), which is what the check is for.

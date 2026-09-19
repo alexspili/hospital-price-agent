@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 
 import ijson
 
-PARSER_VERSION = "2"  # 2: JSON "modifiers" string accepted alongside modifier_code
+PARSER_VERSION = "3"  # 2: JSON "modifiers" string; 3: sub-cent values kept (DECIMAL(18,6))
 SUMMARY_COLUMNS = ("gross", "discounted_cash", "min", "max")
 
 

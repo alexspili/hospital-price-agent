@@ -47,8 +47,9 @@ CREATE TABLE IF NOT EXISTS item_codes (
 );
 CREATE TABLE IF NOT EXISTS charges (
     extraction_id VARCHAR, charge_id VARCHAR, item_id VARCHAR, setting VARCHAR, billing_class VARCHAR,
-    modifiers VARCHAR, gross DECIMAL(14, 2), discounted_cash DECIMAL(14, 2), minimum DECIMAL(14, 2),
-    maximum DECIMAL(14, 2), notes VARCHAR, source_ref VARCHAR, off_template_note VARCHAR
+    -- DECIMAL(18, 6): some files carry sub-cent values (Harris Health: 5011.64785); store what is there.
+    modifiers VARCHAR, gross DECIMAL(18, 6), discounted_cash DECIMAL(18, 6), minimum DECIMAL(18, 6),
+    maximum DECIMAL(18, 6), notes VARCHAR, source_ref VARCHAR, off_template_note VARCHAR
 );
 CREATE TABLE IF NOT EXISTS llm_cache (
     key VARCHAR PRIMARY KEY, model VARCHAR, prompt_version VARCHAR, input VARCHAR,

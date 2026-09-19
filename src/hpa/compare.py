@@ -79,7 +79,8 @@ def summarise(lines: list[Line]) -> Summary:
     gross = {l.gross for l in pool if l.gross is not None}
     if len(cash) > 1 or (not cash and len(gross) > 1):
         s.verdict = CONFLICTING
-        s.detail = f"{len(pool)} unmodified lines disagree (cash {sorted(cash)})" if len(cash) > 1 else f"{len(pool)} unmodified lines disagree (gross {sorted(gross)})"
+        vals = sorted(cash) if len(cash) > 1 else sorted(gross)
+        s.detail = f"{len(pool)} unmodified lines disagree ({'cash' if len(cash) > 1 else 'gross'} {', '.join(f'${float(v):,.2f}' for v in vals)})"
         return s
     headline = next((l for l in pool if l.discounted_cash is not None), pool[0])
     s.headline = headline
