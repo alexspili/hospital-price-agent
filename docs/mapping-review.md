@@ -1,5 +1,5 @@
 # Mapping review sheet
-*Generated 2026-09-18 by `scripts/review_sheet.py` from the scanned Houston files. For each service: does the plain-English alias mean this CMS entry, and how do the files represent it (billing class, modifiers, extra lines)? Fill in the **Decision** block; the answers go into `shoppable_services.json` as `reviewed`.*
+*Generated 2026-09-19 by `scripts/review_sheet.py` from the scanned Houston files. For each service: does the plain-English alias mean this CMS entry, and how do the files represent it (billing class, modifiers, extra lines)? Fill in the **Decision** block, or better, the answer columns in `docs/mapping-review.csv` (same rows, one per service x hospital); `python scripts/apply_review.py` writes them into the catalog.*
 
 ## 'knee mri' → MRI scan of leg joint (CPT 73721)
 Aliases: knee MRI, hip MRI, ankle MRI, lower extremity joint MRI. Qualifiers: {'contrast': 'without'}. Notes: Without contrast. Knee MRI with contrast (73722) or with and without (73723) is not on the CMS list.
@@ -265,7 +265,7 @@ verdict: *unknown: no billing class stated* — the file does not say whether th
 verdict: *not found*
 
 **HCA Houston Healthcare Kingwood** — file dated 2026-05-14, `https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_H…`  
-verdict: *conflicting* — 5 unmodified lines disagree (cash [Decimal('10294.00'), Decimal('10294.23')])
+verdict: *conflicting* — 5 unmodified lines disagree (cash $10,294.00, $10,294.23)
 
 | description as written | codes | context | cash | gross | min–max | ref |
 |---|---|---|---|---|---|---|
@@ -296,7 +296,7 @@ Verdicts across hospitals: {'comparable': 3, 'unknown: no billing class stated':
 Aliases: CBC, complete blood count. Qualifiers: none. Notes: none
 
 **Texas Childrens Hospital** — file dated 2026-03-05, `https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-…`  
-verdict: *conflicting* — 4 unmodified lines disagree (cash [Decimal('75.71'), Decimal('78.39'), Decimal('80.40'), Decimal('85.76')])
+verdict: *conflicting* — 4 unmodified lines disagree (cash $75.71, $78.39, $80.40, $85.76)
 
 | description as written | codes | context | cash | gross | min–max | ref |
 |---|---|---|---|---|---|---|
@@ -464,7 +464,7 @@ verdict: *unknown: no billing class stated* — the file does not say whether th
 verdict: *not found*
 
 **HCA Houston Healthcare Kingwood** — file dated 2026-05-14, `https://stctrprodsnsvc00455826e6.blob.core.windows.net/pt-final-posting-files/62-1619857_H…`  
-verdict: *conflicting* — 4 unmodified lines disagree (cash [Decimal('818.95'), Decimal('912.90')])
+verdict: *conflicting* — 4 unmodified lines disagree (cash $818.95, $912.90)
 
 | description as written | codes | context | cash | gross | min–max | ref |
 |---|---|---|---|---|---|---|

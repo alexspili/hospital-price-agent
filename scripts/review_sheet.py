@@ -29,7 +29,8 @@ def main(queries: list[str]) -> int:
         f"*Generated {date.today()} by `scripts/review_sheet.py` from the scanned Houston files. "
         "For each service: does the plain-English alias mean this CMS entry, and how do the "
         "files represent it (billing class, modifiers, extra lines)? Fill in the **Decision** "
-        "block; the answers go into `shoppable_services.json` as `reviewed`.*\n",
+        "block, or better, the answer columns in `docs/mapping-review.csv` (same rows, one per "
+        "service x hospital); `python scripts/apply_review.py` writes them into the catalog.*\n",
     ]
     for q in queries:
         r = catalog.resolve(q)
@@ -81,7 +82,75 @@ def main(queries: list[str]) -> int:
         )
     OUT.write_text("".join(parts))
     print(f"wrote {OUT} ({OUT.stat().st_size / 1e3:.0f} KB)")
+    write_csv(con, queries, targets)
     return 0
+
+
+CSV_OUT = OUT.with_suffix(".csv")
+ANSWER_COLUMNS = ["alias_means_this_service", "headline_is_this_service", "billing_class_if_known", "note", "reviewer", "date"]
+
+
+def write_csv(con, queries, targets) -> None:
+    """One row per service x hospital with the headline line, plus blank answer columns.
+    Existing answers in the file are kept when the sheet is regenerated."""
+    import csv
+
+    previous = {}
+    if CSV_OUT.exists():
+        with open(CSV_OUT, newline="") as f:
+            for row in csv.DictReader(f):
+                previous[(row["query"], row["hospital"])] = {k: row.get(k, "") for k in ANSWER_COLUMNS}
+    rows = []
+    for q in queries:
+        r = catalog.resolve(q)
+        if r.verdict != catalog.SELECTED:
+            continue
+        svc = r.service
+        codes = [c for _, c in svc.codes]
+        for h, c in targets:
+            ext = scan.latest_extraction(con, c["mrf_url"])
+            if not ext:
+                continue
+            lines = _lines(con, ext, codes)
+            s = compare.summarise(lines)
+            hl = s.headline
+            row = {
+                "query": q, "service_id": svc.id, "service": svc.name, "codes": svc.code_list,
+                "hospital": short_name(h), "ccn": h.ccn, "verdict": s.verdict, "lines": len(lines),
+                "headline_description": hl.description if hl else "", "headline_context": hl.context if hl else "",
+                "cash": _cents(hl and hl.discounted_cash), "gross": _cents(hl and hl.gross),
+                "min": _cents(hl and hl.minimum), "max": _cents(hl and hl.maximum), "ref": hl.source_ref if hl else "",
+                "file_date": ext.get("last_updated_on") or "", "url": c["mrf_url"],
+            }
+            row.update(previous.get((q, short_name(h)), {k: "" for k in ANSWER_COLUMNS}))
+            rows.append(row)
+    with open(CSV_OUT, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()), lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+    print(f"wrote {CSV_OUT} ({len(rows)} rows; answer columns: {', '.join(ANSWER_COLUMNS)})")
+
+
+def _cents(v):
+    return "" if v is None or v is False else f"{float(v):.2f}".rstrip("0").rstrip(".")
+
+
+def _lines(con, ext, codes):
+    rows = con.execute(
+        """
+        SELECT ic.code_type, ic.code,
+               (SELECT list(o.code_type || ' ' || o.code ORDER BY o.code_type, o.code) FROM item_codes o
+                 WHERE o.extraction_id = ic.extraction_id AND o.item_id = ic.item_id AND NOT (o.code_type = ic.code_type AND o.code = ic.code)),
+               i.description, ch.setting, ch.billing_class, ch.modifiers, ch.gross, ch.discounted_cash, ch.minimum, ch.maximum,
+               ch.source_ref, ch.off_template_note
+        FROM charges ch JOIN items i USING (extraction_id, item_id) JOIN item_codes ic USING (extraction_id, item_id)
+        WHERE ch.extraction_id = ? AND ic.code_type IN ('CPT', 'HCPCS', 'MS-DRG', 'DRG') AND list_contains(?, ic.code)
+        ORDER BY ic.code, ch.modifiers NULLS FIRST, ch.setting, ch.billing_class, ch.source_ref
+        """,
+        [ext["extraction_id"], codes],
+    ).fetchall()
+    return [compare.Line(ct, code, tuple(o or []), d, st, bc, m, g, cash, mn, mx, ref, note)
+            for ct, code, o, d, st, bc, m, g, cash, mn, mx, ref, note in rows]
 
 
 if __name__ == "__main__":

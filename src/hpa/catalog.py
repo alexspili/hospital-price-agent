@@ -19,7 +19,7 @@ class Service:
     codes: tuple[tuple[str, str], ...]  # (code type, code)
     aliases: tuple[str, ...]
     qualifiers: dict[str, str]  # e.g. {"contrast": "without"}; variants the CMS name leaves implicit
-    reviewed: bool
+    reviewed: dict | bool  # False, or the review evidence (reviewer, date, per-hospital answers)
     notes: str
 
     @property
@@ -52,7 +52,7 @@ def load() -> list[Service]:
             codes=tuple((c["type"], c["code"]) for c in s["codes"]),
             aliases=tuple(s["aliases"]),
             qualifiers=dict(s["qualifiers"]),
-            reviewed=s["reviewed"],
+            reviewed=s["reviewed"] or False,
             notes=s["notes"],
         )
         for s in raw["services"]
