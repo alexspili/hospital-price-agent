@@ -3,6 +3,7 @@
 from math import asin, cos, radians, sin, sqrt
 
 EARTH_RADIUS_KM = 6371.0088
+KM_PER_MILE = 1.609344
 
 
 def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:

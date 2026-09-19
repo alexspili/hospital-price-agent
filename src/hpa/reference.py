@@ -6,9 +6,12 @@ from pathlib import Path
 
 import httpx
 
+from hpa import geocode
 from hpa.store import DATA_DIR
 
 RAW_DIR = DATA_DIR / "raw"
+HGI_CSV = RAW_DIR / "Hospital_General_Information.csv"
+COORDS_CSV = RAW_DIR / "hospital_coords.csv"
 
 # CMS versions the CSV's URL on every release, so resolve it through the metastore API.
 CMS_HOSPITAL_DATASET = (
@@ -25,9 +28,8 @@ def fetch_cms_hospitals(client: httpx.Client) -> Path:
     csv_url = next(
         d["downloadURL"] for d in meta["distribution"] if d.get("mediaType") == "text/csv"
     )
-    dest = RAW_DIR / "Hospital_General_Information.csv"
-    dest.write_bytes(client.get(csv_url).raise_for_status().content)
-    return dest
+    HGI_CSV.write_bytes(client.get(csv_url).raise_for_status().content)
+    return HGI_CSV
 
 
 def fetch_zcta_gazetteer(client: httpx.Client) -> Path:
@@ -38,7 +40,13 @@ def fetch_zcta_gazetteer(client: httpx.Client) -> Path:
     return dest
 
 
-def fetch_all() -> tuple[Path, Path]:
+def geocode_hospitals(client: httpx.Client, hgi_csv: Path) -> tuple[Path, int]:
+    """Geocode every hospital address (about a minute for the whole country)."""
+    rows = geocode.hospital_address_rows(str(hgi_csv))
+    matched = geocode.write_coords_csv(geocode.geocode_batch(client, rows), str(COORDS_CSV))
+    return COORDS_CSV, matched
+
+
+def client() -> httpx.Client:
     RAW_DIR.mkdir(parents=True, exist_ok=True)
-    with httpx.Client(follow_redirects=True, timeout=120) as client:
-        return fetch_cms_hospitals(client), fetch_zcta_gazetteer(client)
+    return httpx.Client(follow_redirects=True, timeout=300)
