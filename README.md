@@ -26,6 +26,21 @@ nearest 5 hospitals to the centre of 77385
      2.1 mi  CHI ST LUKES LAKESIDE HOSPITAL  [670059, Acute Care Hospitals]
      ...
 
+$ hpa locate 77339
+locating price files for 5 hospitals
+Kingwood Pines Hospital: cms-hpt.txt found at https://kingwoodpines.com/wp-content/uploads/2025/08/cms-hpt.txt
+Kingwood Pines Hospital: 1 entries, matched Kingwood Pines Hospital (100)
+Kingwood Pines Hospital: price file csv, 129 KB, modified Tue, 01 Sep 2026 22:35:00 GMT
+HCA Houston Healthcare Kingwood: cms-hpt.txt found at https://www.hcahoustonhealthcare.com/cms-hpt.txt
+HCA Houston Healthcare Kingwood: 36 entries, matched HCA HOUSTON KINGWOOD (100)
+HCA Houston Healthcare Kingwood: price file json, 860 MB, modified Wed, 27 May 2026 21:42:37 GMT
+Memorial Hermann Surgical Hospital Kingwood: cms-hpt.txt found at https://memorialhermann.org/cms-hpt.txt
+Memorial Hermann Surgical Hospital Kingwood: 19 entries, none resemble MEMORIAL HERMANN SURGICAL HOSPITAL KINGWOOD
+Townsen Memorial Hospital: no cms-hpt.txt at townsenmemorial.com, but 1 standard-charges link(s) on https://www.townsenmemorial.com/pricing-transparency
+Townsen Memorial Hospital: standard charges file linked: https://www.townsenmemorial.com/images/Files/364867804_TownsenMemorialHospital_StandardCharges.csv
+Townsen Memorial Hospital: price file csv, 3 MB, modified Thu, 05 Jan 2023 18:21:05 GMT
+...
+
 $ hpa catalog "knee mri"
 selected: MRI scan of leg joint (CPT 73721)  [unreviewed]
   note: Without contrast. Knee MRI with contrast (73722) or with and without (73723) is not on the CMS list.
@@ -44,6 +59,16 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
   shown as approximate (`~0.0 mi (ZIP centroid)`); the ZIP's size travels with the result
   as an uncertainty figure but is not a bound, since ZIPs aren't circles. 34 hospitals
   can't be placed at all and are excluded rather than guessed.
+- **Price-file discovery, live.** `hpa locate ZIP` takes the nearest hospitals and finds
+  each one's machine-readable standard-charges file: a small seed of Houston health-system
+  domains plus guesses from the name → `cms-hpt.txt` (tolerating banners, CRLF, legal
+  "d/b/a" names, freestanding-ER entries) → a fuzzy match to the right entry that refuses
+  same-system near-misses → a HEAD/64-byte probe for size, date and real shape. Sites with
+  no index get a scan for a linked standard-charges file. Claude is called only when the
+  hospital's site can't be guessed (web search) or two entries tie (it gets the address).
+  **On the 15 hospitals nearest 77030, 77380 and 77339: 10 resolve with no model call at
+  all, in 15 seconds.** The other five, and everything that broke along the way, are in
+  [docs/houston-compliance-findings.md](docs/houston-compliance-findings.md).
 - **A procedure catalog** of the 70 CMS-specified shoppable services with plain-English
   aliases. `hpa catalog QUERY` gives a verdict, not just a list: *selected*, *ambiguous*
   (asks which), *unsupported variant* ("with contrast" when the list only has "without"),
@@ -56,9 +81,9 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
 
 - [x] **1. Scaffold.** Hospital lookup by ZIP, geocoded and sanity-checked; the 70-service
       catalog with verdicts; CI; lock file
-- [ ] **2. Discovery.** Find the website and price file for ~10 Houston-area hospitals; publish
-      what breaks and how often; measure hospital-to-file match accuracy against an external
-      URL index, not our own labels
+- [x] **2. Discovery.** Price files for 15 Houston-area hospitals, live; the
+      [findings write-up](docs/houston-compliance-findings.md); an external-index check
+      (`hpa eval-discovery`), honest about how little current ground truth exists
 - [ ] **3. Extraction.** Stream CMS v3.0 files (CSV wide, CSV tall, JSON; v2.x as legacy) into
       DuckDB with caching; report scan time, peak memory and cache speed-up on named files
 - [ ] **4. One complete Houston example.** Five hospitals, one service category, real prices,
@@ -77,6 +102,7 @@ pip install -r requirements-lock.txt && pip install -e . --no-deps
 hpa setup                    # downloads CMS + Census data (~8 MB) and geocodes; about a minute
 hpa hospitals 77030          # Texas Medical Center: nearest 5
 hpa hospitals 77494 --limit 8
+hpa locate 77339             # find each hospital's price file, live (Claude fallbacks need ANTHROPIC_API_KEY in .env)
 hpa catalog                  # all 70 services
 hpa catalog colonoscopy
 pytest                       # offline, no API key
@@ -96,8 +122,8 @@ flowchart LR
     D --> C[compare<br/>provenance + comparability verdict]
 ```
 
-Milestone 1 is the two left-hand boxes. The rest is designed in [SPEC.md](SPEC.md) and not
-built yet. The pipeline is ordinary, testable Python; Claude is used only where the input
+Milestones 1 and 2 are the four left-hand boxes. Scanning and comparison are designed in
+[SPEC.md](SPEC.md) and not built yet. The pipeline is ordinary, testable Python; Claude is used only where the input
 is fuzzy: confirming which catalog entry the user meant (or asking "with or without
 contrast?"), picking a hospital's official website, matching a hospital to its entry in a
 health system's `cms-hpt.txt`, and reading files that don't follow the CMS template.

@@ -233,11 +233,11 @@ compare: Methodist vs Baylor: unknown (Baylor row has no billing class)
 1. Scaffold. CMS hospital dataset loaded, geocoded and sanity-checked, DuckDB store,
    `find_hospitals` working, the 70-service catalog with a verdict-giving resolver, CI, lock
    file, offline tests.
-2. Discovery: `find_hospital_website` + `locate_price_file` against ~10 real Houston-area
-   hospitals. Record what breaks and how often; publish `docs/houston-compliance-findings.md`.
-   Measure hospital-to-file match accuracy against an **external URL index** (e.g. a dated
-   snapshot of the DoltHub hospital-price-transparency dataset keyed by CCN, frozen under
-   `eval/`), reporting that index's own coverage alongside. Add `sources`.
+2. Discovery (done 2026-09-18): `locate_price_file` against the 15 hospitals nearest
+   77030, 77380 and 77339, with a "site page" layer for hosts that exist but serve no index.
+   `docs/houston-compliance-findings.md` records what broke. `hpa eval-discovery` compares
+   domains with a dated DoltHub snapshot under `eval/`; it overlaps only 2 of 15 hospitals
+   and is reported as such. `sources` table exists but is not yet filled by setup.
 3. Streaming extraction with the storage and caching above, v3.0 first, tall-format
    deduplication. Parser fixtures (small excerpts of each shape) in the repo. Fill in
    `expected_billing_class`, `expected_setting`, `alternate_codes`, `hospital_types` from
