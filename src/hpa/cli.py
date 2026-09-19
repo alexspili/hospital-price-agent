@@ -122,7 +122,9 @@ def cmd_locate(args: argparse.Namespace) -> int:
 
     claude = None
     if llm.have_api_key() and not args.no_llm:
-        claude = llm.Claude(llm.make_client(), con)
+        # A DuckDB connection is not thread-safe; a cursor is a separate connection the
+        # worker threads can use while the main thread writes results.
+        claude = llm.Claude(llm.make_client(), con.cursor())
     else:
         print("  (no ANTHROPIC_API_KEY: web-search and tie-break fallbacks disabled)")
     lock = threading.Lock()
@@ -131,7 +133,7 @@ def cmd_locate(args: argparse.Namespace) -> int:
         with lock:
             print(line, flush=True)
 
-    # Claude calls touch the DuckDB connection, which isn't thread-safe: serialise them.
+    # One Claude call at a time keeps the trace readable and the cache cursor single-threaded.
     def tie_breaker(h, cands):
         with lock:
             return claude.pick_entry(h, cands)

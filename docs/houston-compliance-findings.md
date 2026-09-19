@@ -23,20 +23,36 @@ to cope with along the way.
 | Kingwood Pines (psychiatric) | cms-hpt.txt redirected into `/wp-content/uploads/` | 1 | 100 | csv | 129 KB | 2026-09-01 |
 | Elite Hospital Kingwood | cms-hpt.txt | 1 | 100 on the trade name after "d/b/a" | csv | 415 KB | 2026-06-04 |
 | Townsen Memorial | **no index**; standard-charges link on `/pricing-transparency` | — | single file | csv | 3 MB | **2023-01-05** |
-| Harris Health (Ben Taub) | cms-hpt.txt on www.harrishealth.org (bare domain times out) | 2 | **ambiguous**: CMS names the system, not the hospital | — | — | needs tie-break |
+| Harris Health (Ben Taub) | cms-hpt.txt on www.harrishealth.org (bare domain times out) | 2 | **ambiguous** by name; **Claude tie-break** picked Ben Taub from the address | zip | 2 MB | 2026-03-27 |
 | Texas Orthopedic Hospital | cms-hpt.txt | 1 | 100 | json on Azure blob | — | **published URL returns 403** |
 | Memorial Hermann Surgical Hospital Kingwood | cms-hpt.txt on memorialhermann.org | 19 | **not listed** in the system's index | — | — | — |
-| The Woodlands Specialty Hospital | no site found from the name | — | — | — | — | needs web search |
-| Woodland Springs (psychiatric) | site exists; returns its home page for every path, no index, no file link | — | — | — | — | needs web search |
+| The Woodlands Specialty Hospital | **renamed** Woodlands Oaks Hospital; web search returned the old, dead domain | — | — | — | — | not found |
+| Woodland Springs (psychiatric) | name guess hit an unrelated site; **Claude web search** found woodlandspringshealth.com, which has an index | 1 | 100 | csv | unknown (no length sent) | 2026-08-12 |
 
 **Deterministic layers alone: 10 of 15 resolved to a probed file, in 15 seconds wall-clock
 (hospitals run in parallel; the slowest is Harris Health at 15 s, waiting for the bare
-domain to time out).** The other five are exactly the cases the design hands to a person
-or a model: a tie-break with an address, a web search for a site, and two that no amount
-of cleverness fixes (a broken URL, a missing entry).
+domain to time out).**
 
-*Section to be completed after the run with Claude fallbacks enabled: Harris Health
-tie-break, Woodlands Specialty and Woodland Springs web search.*
+**With Claude's two fallbacks: 12 of 15.** Three model calls in total, each cached:
+- *Tie-break with the address* (Harris Health): given the two candidates and "1504 Taub
+  Loop", it chose Ben Taub, explaining that LBJ Hospital is at 5656 Kelley St. Correct.
+- *Web search for the site* (Woodland Springs): the name guess `woodlandsprings.com` is a
+  real but unrelated site (an apartment complex, judging by the HTML). The search found
+  `woodlandspringshealth.com`, which serves a proper index. Correct.
+- *Web search* (The Woodlands Specialty Hospital): the search returned
+  `woodlandsspecialtyhospital.com`, which resolves to 0.0.0.0, and noted in passing that
+  the hospital is "now branded The Woodlands Oaks Hospital". The parent site, wchh.care,
+  does serve an index listing "Woodlands Oaks Hospital" with a file on a vendor host
+  (claraprice.net). The pipeline can't get there from CMS's name, and the model's answer
+  was the dead domain, not the live one. Reported as not found, which is the truthful
+  result for a program that follows CMS's own records.
+
+The three still unresolved are each a different kind of unfixable-by-cleverness: a
+hospital that has been renamed since CMS's dataset was compiled, a published URL that its
+own host rejects, and a joint-venture hospital absent from its system's index.
+
+**Repeat runs answer from the cache in under a second**, with no network and no model
+calls; the trace says "cached result from <date>".
 
 ## What broke, by category
 
@@ -94,9 +110,18 @@ Every one of these is now a test fixture or a regression test.
   rejected with the signature URL-encoded. HCA Kingwood's URL on the same storage account
   works. Nothing to do but report it; the trace says "file URL failed: HTTP 403".
 
-**Currency**
+**Currency and size**
 - Townsen Memorial's file is dated **5 January 2023**. Hospitals must update at least
   annually. It is findable and parseable, and out of date; the trace will say so.
+- Woodland Springs' server sends neither `Content-Length` nor a `Content-Range` for a
+  range request (HTTP/2, chunked). The size stays "unknown" until the file is streamed.
+
+**Stale reference data**
+- CMS's Hospital General Information still lists "THE WOODLANDS SPECIALTY HOSPITAL"; the
+  facility now operates as Woodlands Oaks Hospital under a different parent, whose site
+  has the index. A renamed hospital is invisible to name-based discovery until CMS catches
+  up, or until a model is asked to look for the *current* name, which is a reasonable next
+  step and not done here.
 
 ## Rules this run confirmed
 

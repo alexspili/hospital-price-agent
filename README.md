@@ -67,8 +67,10 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
   no index get a scan for a linked standard-charges file. Claude is called only when the
   hospital's site can't be guessed (web search) or two entries tie (it gets the address).
   **On the 15 hospitals nearest 77030, 77380 and 77339: 10 resolve with no model call at
-  all, in 15 seconds.** The other five, and everything that broke along the way, are in
-  [docs/houston-compliance-findings.md](docs/houston-compliance-findings.md).
+  all, in 15 seconds; Claude's two fallbacks add two more (one tie-break by address, one
+  web search).** The remaining three, and everything that broke along the way, are in
+  [docs/houston-compliance-findings.md](docs/houston-compliance-findings.md). A repeat
+  run answers from the cache in under a second.
 - **A procedure catalog** of the 70 CMS-specified shoppable services with plain-English
   aliases. `hpa catalog QUERY` gives a verdict, not just a list: *selected*, *ambiguous*
   (asks which), *unsupported variant* ("with contrast" when the list only has "without"),
