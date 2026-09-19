@@ -150,3 +150,67 @@ table above, with every URL, is the evidence that can actually be checked.
 Extraction has to handle, on this sample alone: JSON from 63 MB to 860 MB, zip-wrapped
 files, CSVs of 129 KB to 3 MB, a BOM, and files dated from 2023 to this month. It will
 stream everything and record the file date next to every price.
+
+## Addendum, milestone 3: what the files contain
+
+*Added 2026-09-18 after extracting the 12 located files. Reproduce with `hpa scan 77030 77380 77339`
+and `hpa prices "knee mri" 77030 77380 77339`.*
+
+**11 of 12 extracted.** Townsen Memorial's "standard charges" CSV is a chargemaster export
+("Charge #, Description, Dept, Rev Code, CPT/HCPCS, …, Cost, Charge Amt, Markup"), not the
+CMS template: findable, dated 2023, and off-template. The other eleven are all template
+v3.0.0: seven JSON, three CSV wide (two of them inside zips), one CSV tall.
+
+**Sizes and speed.** 860 MB (HCA Kingwood, JSON) down to 129 KB (Kingwood Pines, CSV tall).
+Parsing streams: the 860 MB file takes 9 s to parse and 1 s to load at a 470 MB peak; the
+whole set re-extracts from disk in 39 s. The first attempt at loading rows one at a time
+through DuckDB's `executemany` ran for 19 minutes before it was stopped; bulk-loading through
+a temporary CSV is ~1,000× faster. HCA's blob server delivered the 860 MB at ~1 MB/s the
+second time and ~15 MB/s the first: download, not parsing, is the variable cost.
+
+**What "the price of a knee MRI" looks like in practice (CPT 73721):**
+
+| Hospital | Cash | Gross | Negotiated min–max | Verdict |
+|---|---|---|---|---|
+| Harris Health (Ben Taub) | $231.94 | $3,821.00 | $208.84–$2,483.65 | unknown: no billing class |
+| Houston Methodist Hospital | $1,230.00 | $2,460.00 | — | comparable (facility) |
+| Houston Methodist The Woodlands | $1,243.50 | $2,487.00 | — | comparable (facility) |
+| Baylor St. Luke's | $2,725.80 | $7,788.00 | $3,504.60–$7,788.00 | unknown: no billing class |
+| St. Luke's Lakeside | $2,725.80 | $7,788.00 | $3,426.72–$7,788.00 | unknown: no billing class |
+| St. Luke's The Woodlands | $2,725.80 | $7,788.00 | $3,348.84–$7,788.00 | unknown: no billing class |
+| Elite Hospital Kingwood | $2,735.80 | $5,471.59 | $431.06–$574.74 | unknown: no billing class |
+| Texas Children's | $3,174.46 | $4,738.00 | $208.84–$4,501.10 | comparable (facility, outpatient) |
+| HCA Houston Kingwood | — | — | 47 lines at $215.06–$2,974.36 | modifier-specific lines only |
+| Kingwood Pines, Woodland Springs (psychiatric) | — | — | — | not found |
+
+A 14× spread in cash price for the same CPT code, and only three of nine hospitals state
+the billing class that would make the comparison safe. Some of what's behind the rows:
+
+- **Houston Methodist's cash price is exactly half of gross on every one of its 29,430 priced
+  lines**: a flat 50% self-pay discount. Its negotiated min/max live on separate charge
+  objects from the gross/cash ones, so the headline line shows none.
+- **HCA Kingwood's cash price equals gross on every one of its 88,988 priced lines**: no
+  self-pay discount anywhere in the file.
+- **CommonSpirit's three files share one chargemaster** (identical gross and cash) but
+  different negotiated ranges per hospital. The files have different checksums; the
+  headers name three different legal entities.
+- **HCA lists CPT 73721 fifty times.** Three are chargemaster lines with modifiers (bilateral,
+  right, left) at gross = cash = $19,634; 47 are per-revenue-center
+  lines (RC 321, 350, 612, 920, …) carrying only negotiated rates; and one "PACK INSTR
+  XSMALL" has a chargemaster number `73721` of type `CDM` that merely collides with the
+  CPT code (excluded by code type). HCA also writes `"modifiers": "RT"` where the JSON
+  dictionary specifies a `modifier_code` array; the parser reads both.
+- **Texas Children's prices the same line for inpatient and outpatient** at the same cash
+  and gross but different negotiated ranges; the outpatient line is the headline and the
+  inpatient one is listed.
+- **Harris Health's cash price is 6% of gross.** As the county safety-net system its
+  self-pay pricing is not comparable to a commercial hospital's in kind, whatever the number.
+- **Colonoscopy (45378) at the Medical Center:** Methodist cash $519 (comparable), Harris
+  $1,835.24 (unknown class, 5 other lines), Baylor St. Luke's negotiated rates only ($345.58–
+  $7,221) with no cash or gross price, Texas Children's not found.
+
+**Verdict vocabulary** used by `hpa prices`, in order of what it means for a reader:
+`comparable` (one unmodified facility line with a price), `unknown: no billing class stated`,
+`modifier-specific lines only`, `negotiated rates only`, `inpatient line only`,
+`conflicting` (unmodified lines disagree), `not found`. Every line behind a verdict is one
+`--all` away, with its row number or JSON path.

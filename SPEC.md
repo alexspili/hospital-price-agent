@@ -238,11 +238,13 @@ compare: Methodist vs Baylor: unknown (Baylor row has no billing class)
    `docs/houston-compliance-findings.md` records what broke. `hpa eval-discovery` compares
    domains with a dated DoltHub snapshot under `eval/`; it overlaps only 2 of 15 hospitals
    and is reported as such. `sources` table exists but is not yet filled by setup.
-3. Streaming extraction with the storage and caching above, v3.0 first, tall-format
-   deduplication. Parser fixtures (small excerpts of each shape) in the repo. Fill in
-   `expected_billing_class`, `expected_setting`, `alternate_codes`, `hospital_types` from
-   what the Houston files actually contain. Report scan time, peak memory, cache speed-up
-   and failure counts on named files.
+3. Extraction (done 2026-09-18): streaming readers for all three shapes plus zip, tall
+   deduplication with conflicts kept, bulk load through temp CSVs (DuckDB's executemany is
+   ~2 ms/row), one HEAD per scan for freshness, on-disk downloads reused after an
+   interrupted extraction. 11 of 12 located files extracted (Townsen is an off-template
+   chargemaster export); metrics in the README. `hpa prices` gives per-hospital verdicts:
+   comparable / unknown (no billing class) / modifier-specific only / negotiated only /
+   inpatient only / conflicting / not found. Catalog `expected_*` fields still to fill.
 4. One complete Houston example: 5 hospitals, one service category, real charges, links to
    the source rows, comparability verdicts. First reviewed mappings. `hpa demo` runs it
    offline from checked-in results with no API key.

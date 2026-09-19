@@ -116,6 +116,18 @@ def load_hospitals(con, hgi_csv: str, coords_csv: str | None = None) -> int:
     return con.execute("SELECT count(*) FROM hospitals").fetchone()[0]
 
 
+def hospital_by_ccn(con, ccn: str) -> Hospital | None:
+    """One hospital, with no distance (0) and its own location details."""
+    row = con.execute(
+        "SELECT ccn, name, address, city, state, zip, hospital_type, ownership, location_source, "
+        "geocode_match, zip_radius_km, location_note FROM hospitals WHERE ccn = ?", [ccn]
+    ).fetchone()
+    if row is None:
+        return None
+    *fields, source, match, radius, note = row
+    return Hospital(*fields, 0.0, radius if source == "zip" else 0.0, source, match, note)
+
+
 def location_counts(con) -> dict[str, int]:
     rows = con.execute("SELECT location_source, count(*) FROM hospitals GROUP BY 1").fetchall()
     return {source: dict(rows).get(source, 0) for source in LOCATION_SOURCES}

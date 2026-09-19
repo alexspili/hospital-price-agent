@@ -113,3 +113,11 @@ def test_zip_opens_the_largest_csv_member(tmp_path):
 def test_json_header_from_prefix_only():
     h = read_json_header(b'\xef\xbb\xbf{"hospital_name":"A","last_updated_on":"2026-02-28","version":"3.0.0","location_name": ["A","A ER"],"x":1')
     assert h.hospital_name == "A" and h.location_names == ("A", "A ER") and h.shape == "json"
+
+
+def test_json_modifiers_string_is_read_like_modifier_code(tmp_path):
+    p = tmp_path / "x.json"
+    p.write_text('{"hospital_name":"H","standard_charge_information":[{"description":"MRI LW JNT RT","code_information":[{"code":"73721","type":"CPT"}],'
+                 '"standard_charges":[{"modifiers":"RT","setting":"outpatient","gross_charge":"19633.57","discounted_cash":"19633.57"}]}]}')
+    _, charges = charges_of(p)
+    assert charges[0].modifiers == "RT" and charges[0].gross == 19633.57

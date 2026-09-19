@@ -71,6 +71,33 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
   web search).** The remaining three, and everything that broke along the way, are in
   [docs/houston-compliance-findings.md](docs/houston-compliance-findings.md). A repeat
   run answers from the cache in under a second.
+- **Streaming extraction and real comparisons.** `hpa scan` downloads each located file
+  once (validators and a 30-day cap decide when to re-fetch), streams it through a
+  parser for CSV wide, CSV tall, JSON or a zip of either, and bulk-loads every charge into
+  DuckDB with its row number or JSON path. On the 12 files above (129 KB to 860 MB):
+
+  | file | size | charges | items | parse + load | peak RSS |
+  |---|---|---|---|---|---|
+  | HCA Houston Kingwood (JSON) | 860 MB | 349,975 | 285,658 | 10 s | 470 MB |
+  | Baylor St. Luke's (JSON) | 256 MB | 45,609 | 22,390 | 3 s | 290 MB |
+  | Houston Methodist (JSON as .ashx) | 72 MB | 31,628 | 29,585 | 1 s | 311 MB |
+  | Texas Children's (zip → CSV wide) | 40 MB | 72,659 | 38,139 | 15 s | 281 MB |
+  | Harris Health (zip → CSV wide) | 2 MB | 45,350 | 40,034 | 1 s | 322 MB |
+  | Kingwood Pines (CSV tall, 766 payer rows) | 129 KB | 14 | 14 | 0 s | — |
+
+  `hpa prices "knee mri" 77030` then answers from the database and says how comparable
+  each hospital's line is:
+
+  ```
+  Houston Methodist Hospital  (file dated 2026-04-01; …)
+    verdict: comparable — 1 other line for this code
+    cash $1,230.00  gross $2,460.00  negotiated —–—  [both, facility]  item 13569/charge 1
+  Harris Health  (file dated 3/24/2026; …)
+    verdict: unknown: no billing class stated
+    cash $231.94  gross $3,821.00  negotiated $208.84–$2,483.65  [both]  row 33175
+  HCA Houston Healthcare Kingwood  (file dated 2026-05-14; …)
+    verdict: modifier-specific lines only — priced lines carry modifiers 50, LT, RT
+  ```
 - **A procedure catalog** of the 70 CMS-specified shoppable services with plain-English
   aliases. `hpa catalog QUERY` gives a verdict, not just a list: *selected*, *ambiguous*
   (asks which), *unsupported variant* ("with contrast" when the list only has "without"),
@@ -86,8 +113,8 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
 - [x] **2. Discovery.** Price files for 15 Houston-area hospitals, live; the
       [findings write-up](docs/houston-compliance-findings.md); an external-index check
       (`hpa eval-discovery`), honest about how little current ground truth exists
-- [ ] **3. Extraction.** Stream CMS v3.0 files (CSV wide, CSV tall, JSON; v2.x as legacy) into
-      DuckDB with caching; report scan time, peak memory and cache speed-up on named files
+- [x] **3. Extraction.** CSV wide, CSV tall, JSON and zip streamed into DuckDB; one HEAD per
+      scan decides freshness; measured on 12 real files (table above)
 - [ ] **4. One complete Houston example.** Five hospitals, one service category, real prices,
       clickable evidence; first hand-reviewed catalog entries; `hpa demo` runs it offline
 - [ ] **5. Pipeline + eval.** Claude at the fuzzy steps, CLI trace; accuracy reported here in
@@ -105,6 +132,8 @@ hpa setup                    # downloads CMS + Census data (~8 MB) and geocodes;
 hpa hospitals 77030          # Texas Medical Center: nearest 5
 hpa hospitals 77494 --limit 8
 hpa locate 77339             # find each hospital's price file, live (Claude fallbacks need ANTHROPIC_API_KEY in .env)
+hpa scan 77339               # download + extract them (860 MB for HCA; files stay in data/mrf/)
+hpa prices "knee mri" 77339  # the four summary prices per hospital, with a comparability verdict
 hpa catalog                  # all 70 services
 hpa catalog colonoscopy
 pytest                       # offline, no API key
@@ -124,14 +153,14 @@ flowchart LR
     D --> C[compare<br/>provenance + comparability verdict]
 ```
 
-Milestones 1 and 2 are the four left-hand boxes. Scanning and comparison are designed in
-[SPEC.md](SPEC.md) and not built yet. The pipeline is ordinary, testable Python; Claude is used only where the input
+Milestones 1–3 are everything except the Claude-confirmed catalog step and the web UI;
+`hpa prices` is the comparison in CLI form. The rest is designed in [SPEC.md](SPEC.md). The pipeline is ordinary, testable Python; Claude is used only where the input
 is fuzzy: confirming which catalog entry the user meant (or asking "with or without
 contrast?"), picking a hospital's official website, matching a hospital to its entry in a
 health system's `cms-hpt.txt`, and reading files that don't follow the CMS template.
 Everything else runs without an API key, which is what makes the accuracy numbers meaningful.
 
-Design rules, enforced from milestone 3:
+Design rules, in force:
 - **Never invents a price.** A hospital that can't be resolved is listed as missing, with the reason.
 - **Every number has its source**: the file URL, the row or JSON path, and the date the hospital published it.
 - **Says when rows can't be compared.** Two rows with the same code but different billing

@@ -9,9 +9,9 @@ from pathlib import Path
 
 import httpx
 
-from hpa import build, catalog, discovery, geocode, llm, reference, scan, store
+from hpa import build, catalog, compare, discovery, geocode, llm, reference, scan, store
 from hpa.geo import KM_PER_MILE
-from hpa.hospitals import UnknownZip, find_hospitals
+from hpa.hospitals import UnknownZip, find_hospitals, hospital_by_ccn
 
 
 def cmd_setup(args: argparse.Namespace) -> int:
@@ -112,12 +112,11 @@ def cmd_locate(args: argparse.Namespace) -> int:
             print(e, file=sys.stderr)
             return 1
     if args.ccn:
-        row = con.execute("SELECT ccn FROM hospitals WHERE ccn = ?", [args.ccn]).fetchone()
-        if not row:
+        h = hospital_by_ccn(con, args.ccn)
+        if h is None:
             print(f"no hospital with CCN {args.ccn}", file=sys.stderr)
             return 1
-        hospitals[args.ccn] = next(h for h in find_hospitals(con, con.execute(
-            "SELECT zip FROM hospitals WHERE ccn = ?", [args.ccn]).fetchone()[0], 50, include_federal=True) if h.ccn == args.ccn)
+        hospitals[args.ccn] = h
     print(f"locating price files for {len(hospitals)} hospitals")
 
     claude = None
@@ -182,10 +181,10 @@ def _located(con, zips, ccn, limit):
         for h in find_hospitals(con, z, limit):
             hospitals.setdefault(h.ccn, h)
     if ccn:
-        z = con.execute("SELECT zip FROM hospitals WHERE ccn = ?", [ccn]).fetchone()
-        if not z:
+        h = hospital_by_ccn(con, ccn)
+        if h is None:
             raise UnknownZip(f"no hospital with CCN {ccn}")
-        hospitals[ccn] = next(h for h in find_hospitals(con, z[0], 50, include_federal=True) if h.ccn == ccn)
+        hospitals[ccn] = h
     out = []
     for h in hospitals.values():
         cached = store.cached_discovery(con, h.ccn)
@@ -242,6 +241,7 @@ def cmd_prices(args: argparse.Namespace) -> int:
         print(e, file=sys.stderr)
         return 1
     codes = [code for _, code in service.codes]
+    money = lambda v: f"${v:,.2f}" if v is not None else "—"
     for h, c in targets:
         who = discovery.short_name(h)
         if not (c and c["ok"]):
@@ -253,29 +253,35 @@ def cmd_prices(args: argparse.Namespace) -> int:
             continue
         rows = con.execute(
             """
-            SELECT i.description, ic.code_type, ic.code, ch.setting, ch.billing_class, ch.modifiers,
-                   ch.gross, ch.discounted_cash, ch.minimum, ch.maximum, ch.source_ref, ch.off_template_note, f.last_updated_on
+            SELECT ic.code_type, ic.code,
+                   (SELECT list(o.code_type || ' ' || o.code ORDER BY o.code_type, o.code) FROM item_codes o
+                     WHERE o.extraction_id = ic.extraction_id AND o.item_id = ic.item_id AND NOT (o.code_type = ic.code_type AND o.code = ic.code)),
+                   i.description, ch.setting, ch.billing_class, ch.modifiers,
+                   ch.gross, ch.discounted_cash, ch.minimum, ch.maximum, ch.source_ref, ch.off_template_note
             FROM charges ch
             JOIN items i ON i.extraction_id = ch.extraction_id AND i.item_id = ch.item_id
             JOIN item_codes ic ON ic.extraction_id = ch.extraction_id AND ic.item_id = ch.item_id
-            JOIN files f ON f.checksum = ?
             WHERE ch.extraction_id = ? AND ic.code_type IN ('CPT', 'HCPCS', 'MS-DRG', 'DRG') AND list_contains(?, ic.code)
-            ORDER BY ic.code, ch.setting, ch.billing_class, ch.source_ref
+            ORDER BY ic.code, ch.modifiers NULLS FIRST, ch.setting, ch.billing_class, ch.source_ref
             """,
-            [ext["checksum"], ext["extraction_id"], codes],
+            [ext["extraction_id"], codes],
         ).fetchall()
-        date = rows[0][12] if rows else ext.get("last_updated_on")
-        print(f"\n{who}  (file dated {date}, {c['mrf_url'][:70]}…)")
-        if not rows:
-            print("  not found in this file")
-        for d, ct, code, setting, bc, mods, gross, cash, mn, mx, ref, note in [r[:12] for r in rows]:
-            ctx = ", ".join(x for x in [setting, bc, f"mod {mods}" if mods else None] if x) or "no context"
-            money = lambda v: f"${v:,.2f}" if v is not None else "—"
-            line = f"  {ct} {code}  cash {money(cash)}  gross {money(gross)}  negotiated {money(mn)}–{money(mx)}  [{ctx}]  {ref}"
-            if note:
-                line += f"  note: {note}"
-            print(line)
-            print(f"      {d[:100]}")
+        lines = [compare.Line(ct, code, tuple(others or []), d, setting, bc, mods, g, cash, mn, mx, ref, note)
+                 for ct, code, others, d, setting, bc, mods, g, cash, mn, mx, ref, note in rows]
+        s = compare.summarise(lines)
+        print(f"\n{who}  (file dated {ext.get('last_updated_on') or '?'}; {c['mrf_url'][:60]}…)")
+        print(f"  verdict: {s.verdict}" + (f" — {s.detail}" if s.detail else ""))
+        if s.headline:
+            l = s.headline
+            print(f"  cash {money(l.discounted_cash)}  gross {money(l.gross)}  negotiated {money(l.minimum)}–{money(l.maximum)}  [{l.context}]  {l.source_ref}")
+            print(f"      {l.description[:100]}")
+        if args.all or not s.headline:
+            for l in (lines if args.all else lines[:8]):
+                extra = f" + {', '.join(l.other_codes)}" if l.other_codes else ""
+                print(f"    {l.code_type} {l.code}{extra}  cash {money(l.discounted_cash)}  gross {money(l.gross)}  negotiated {money(l.minimum)}–{money(l.maximum)}  [{l.context}]  {l.source_ref}"
+                      + (f"  note: {l.off_template_note}" if l.off_template_note else ""))
+            if not args.all and len(lines) > 8:
+                print(f"    … {len(lines) - 8} more lines (--all)")
     return 0
 
 
@@ -367,6 +373,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("zip", nargs="*")
     p.add_argument("--ccn")
     p.add_argument("--limit", type=positive_int, default=5)
+    p.add_argument("--all", action="store_true", help="list every matching line, not just the headline")
 
     args = parser.parse_args(argv)
     return {"setup": cmd_setup, "hospitals": cmd_hospitals, "catalog": cmd_catalog, "locate": cmd_locate,

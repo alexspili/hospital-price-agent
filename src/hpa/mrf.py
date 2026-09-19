@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 
 import ijson
 
-PARSER_VERSION = "1"
+PARSER_VERSION = "2"  # 2: JSON "modifiers" string accepted alongside modifier_code
 SUMMARY_COLUMNS = ("gross", "discounted_cash", "min", "max")
 
 
@@ -232,11 +232,13 @@ def iter_json(stream) -> Iterator[Charge]:
         item_id = _item_id(description, codes, drug_unit, drug_type)
         for k, sc in enumerate(item.get("standard_charges") or [], start=1):
             problems: list[str] = []
+            # The dictionary says `modifier_code` (an array); HCA writes `modifiers` (a string).
             mods = sc.get("modifier_code")
+            mods = ", ".join(str(m) for m in mods) if isinstance(mods, list) and mods else _blank(mods) or _blank(sc.get("modifiers"))
             yield Charge(
                 item_id=item_id, description=description, codes=codes,
                 setting=_enum(sc.get("setting")), billing_class=_enum(sc.get("billing_class")),
-                modifiers=", ".join(str(m) for m in mods) if mods else None,
+                modifiers=mods,
                 drug_unit=drug_unit, drug_type=drug_type,
                 gross=_num(sc.get("gross_charge"), problems, "gross"),
                 discounted_cash=_num(sc.get("discounted_cash"), problems, "discounted_cash"),

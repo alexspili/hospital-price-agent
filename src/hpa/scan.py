@@ -212,13 +212,13 @@ def extract(con, path: Path, checksum: str, size: int, trace: Trace) -> tuple[st
             for f in files.values():
                 f.close()
         parse_seconds = time.monotonic() - started
-        con.execute("INSERT INTO items SELECT * FROM read_csv(?, header = false, columns = "
+        con.execute("INSERT INTO items SELECT * FROM read_csv(?, auto_detect = false, header = false, delim = ',', columns = "
                     "{'a': 'VARCHAR', 'b': 'VARCHAR', 'c': 'VARCHAR', 'd': 'VARCHAR', 'e': 'VARCHAR'}, nullstr = '')",
                     [str(paths["items"])])
-        con.execute("INSERT INTO item_codes SELECT * FROM read_csv(?, header = false, columns = "
+        con.execute("INSERT INTO item_codes SELECT * FROM read_csv(?, auto_detect = false, header = false, delim = ',', columns = "
                     "{'a': 'VARCHAR', 'b': 'VARCHAR', 'c': 'VARCHAR', 'd': 'VARCHAR'}, nullstr = '')",
                     [str(paths["item_codes"])])
-        con.execute("INSERT INTO charges SELECT * FROM read_csv(?, header = false, columns = "
+        con.execute("INSERT INTO charges SELECT * FROM read_csv(?, auto_detect = false, header = false, delim = ',', columns = "
                     "{'a': 'VARCHAR', 'b': 'VARCHAR', 'c': 'VARCHAR', 'd': 'VARCHAR', 'e': 'VARCHAR', 'f': 'VARCHAR', "
                     "'g': 'DOUBLE', 'h': 'DOUBLE', 'i': 'DOUBLE', 'j': 'DOUBLE', 'k': 'VARCHAR', 'l': 'VARCHAR', 'm': 'VARCHAR'}, nullstr = '')",
                     [str(paths["charges"])])
