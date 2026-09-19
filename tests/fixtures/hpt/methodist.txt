@@ -1,0 +1,148 @@
+
+*********************************
+*                               *
+*  Instructions for viewing the * 
+*  price transparency files:    *
+*                               *
+*********************************
+
+For access to the price transparency files, copy this source-page-url and paste it into your internet browser:    
+https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+You will land on Houston Methodistâ€™s Pricing Transparency page. 
+See the Machine Readable Files.  
+Click the link associated with location of your choice to download a copy of the file.
+The downloaded file will appear in the upper right corner.  
+Open that file.  
+
+
+
+**********************************************
+*                                            *
+*  Centers for Medicare & Medicaid Services  *
+*  requires the following information to be  *
+*  available to the public:                  *
+*                                            *
+**********************************************
+
+
+location-name: Houston Methodist Hospital
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Sugar Land Hospital
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_methodist-sugar-land-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist West Hospital
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_methodist-west-houston-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Baytown Hospital
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/741287015_houston-methodist-baytown-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Willowbrook Hospital
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_methodist-willowbrook-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Clear Lake Hospital
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/464389870_houston-methodist-clear-lake-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist The Woodlands Hospital
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Continuing Care Hospital
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/452118_houston-methodist-continuing-care-hospital_standard-charges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Emergency Care Center at Kirby
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Emergency Care Center at Voss
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Emergency Care Center at Cinco Ranch
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_methodist-west-houston-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Emergency Care Center in Cypress
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_methodist-willowbrook-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Emergency Care Center in Deer Park
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/464389870_houston-methodist-clear-lake-hospital_standardcharges.ashx
+
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Emergency Care Center in League City
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/464389870_houston-methodist-clear-lake-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Emergency Care Center in Magnolia
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_methodist-willowbrook-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Emergency Care Center in Pearland
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/74110155_the-methodist-hospital_standardcharges.ashx
+
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Emergency Care Center in Sienna
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_methodist-willowbrook-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Emergency Care Center in Spring
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Emergency Care Center in The Woodlands
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-the-woodlands-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org
+
+location-name: Houston Methodist Cypress Hospital
+source-page-url: https://www.houstonmethodist.org/for-patients/patient-resources/billing-insurance/pricing-transparency/
+mrf-url: https://www.houstonmethodist.org/-/media/files/patient-resources/760545192_houston-methodist-cypress-hospital_standardcharges.ashx
+contact-name: Lisa Schillaci
+contact-email: lschillaci@houstonmethodist.org

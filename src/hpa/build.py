@@ -10,6 +10,7 @@ from pathlib import Path
 import duckdb
 
 from hpa import store
+from hpa.store import REFERENCE_TABLES
 from hpa.geo import load_zcta
 from hpa.hospitals import load_hospitals, location_counts
 
@@ -64,6 +65,7 @@ def build_database(
     geocoding went wrong somewhere, which is different from choosing --skip-geocoding.
     """
     db = Path(db)
+    _assert_not_held(db)  # before we touch anything; checked again before the rename
     fd, tmp_name = tempfile.mkstemp(prefix=db.name + ".", suffix=".building", dir=db.parent)
     os.close(fd)
     os.unlink(tmp_name)  # DuckDB wants to create the file itself
@@ -73,6 +75,7 @@ def build_database(
         try:
             zips = load_zcta(con, zcta_txt)
             hospitals = load_hospitals(con, hgi_csv, coords_csv)
+            carried = _carry_over(con, db)
             counts = location_counts(con)
             if zips < min_zips or hospitals < min_hospitals:
                 raise BuildFailed(f"implausible row counts: {zips} ZIPs, {hospitals} hospitals")
@@ -94,4 +97,24 @@ def build_database(
         if tmp.exists():
             tmp.unlink()
         raise
-    return {"zips": zips, "hospitals": hospitals, "rejected_geocodes": rejected, **counts}
+    return {"zips": zips, "hospitals": hospitals, "rejected_geocodes": rejected, "carried_tables": carried, **counts}
+
+
+def _carry_over(con, old_db: Path) -> list[str]:
+    """Copy every non-reference table (discovery results, caches) from the old database."""
+    if not old_db.exists():
+        return []
+    con.execute(f"ATTACH '{old_db}' AS old (READ_ONLY)")
+    try:
+        names = [r[0] for r in con.execute(
+            "SELECT table_name FROM duckdb_tables() WHERE database_name = 'old'"
+        ).fetchall()]
+        carried = []
+        for name in names:
+            if name in REFERENCE_TABLES:
+                continue
+            con.execute(f'CREATE OR REPLACE TABLE "{name}" AS SELECT * FROM old."{name}"')
+            carried.append(name)
+        return carried
+    finally:
+        con.execute("DETACH old")

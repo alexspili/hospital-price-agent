@@ -1,0 +1,13 @@
+location-name: Harris Health Ben Taub Hospital
+source-page-url: https://www.harrishealth.org/access-care-hh/Pages/default.aspx
+mrf-url: https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip
+contact-name: Julie Rabat-Torki
+contact-email: julie.rabat-torki@harrishealth.org
+
+location-name: Harris Health Lyndon B Johnson Hospital
+source-page-url: https://www.harrishealth.org/access-care-hh/Pages/default.aspx
+mrf-url: https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2026/741536936_Harris-Health-Lyndon-B-Johnson-Hospital_StandardCharges.zip
+contact-name: Julie Rabat-Torki
+contact-email: julie.rabat-torki@harrishealth.org
+
+ 

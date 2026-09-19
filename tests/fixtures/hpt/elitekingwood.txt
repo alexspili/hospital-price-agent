@@ -1,0 +1,5 @@
+location-name: 23330 Emergency Center, LLC d/b/a/ Elite Hospital Kingwood
+source-page-url: https://elitekingwood.com/patients/price-transparency/
+mrf-url: https://elitekingwood.com/823349983_Elite-Hospital-Kingwood_Standard-Charges.csv
+contact-name: Jeremy Brynes
+contact-email: jbrynes@elitekingwood.com

@@ -1,0 +1,1637 @@
+{
+ "source": "https://www.dolthub.com/api/v1alpha1/dolthub/hospital-price-transparency/master",
+ "query": "SELECT npi_number, name, url, street_address, city, state, zip_code, publish_date FROM hospitals WHERE state = 'TX'",
+ "fetched_on": "2026-09-18",
+ "rows": [
+  {
+   "npi_number": "1003833013",
+   "name": "ASCENSION SETON HIGHLAND LAKES",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_ascension-seton-highland-lakes_standardcharges.xlsx",
+   "street_address": "3201 S WATER ST",
+   "city": "BURNET",
+   "state": "TX",
+   "zip_code": "78611-4510",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1013085083",
+   "name": "Baylor Scott & White Continuing Care Hospital - Temple",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/20-2850920_BAYLOR%20%20SCOTT%20&%20WHITE%20%20CONTINUING%20CARE%20HOSPITAL_standardcharges.csv",
+   "street_address": "546 N Kegley Rd",
+   "city": "Temple",
+   "state": "TX",
+   "zip_code": "76502",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1013109305",
+   "name": "South Texas Health System Children\u2019s",
+   "url": "https://uhsfilecdn.eskycity.net/ac/south-texas-healthcare-system_standard-charges.csv",
+   "street_address": "1102 W. Trenton Road",
+   "city": "Edinburg",
+   "state": "TX",
+   "zip_code": "78539",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1023055084.0",
+   "name": "Rio Grande Regional Hospital",
+   "url": "https://riohealth.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "101 East Ridge Road",
+   "city": "McAllen",
+   "state": "TX",
+   "zip_code": "78503.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1023065794.0",
+   "name": "Woman's Hospital of Texas",
+   "url": "https://womanshospital.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "7600 Fannin",
+   "city": "Houston",
+   "state": "TX",
+   "zip_code": "77054.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1023069739.0",
+   "name": "Medical City Lewisville",
+   "url": "https://medicalcitylewisville.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "13155 Noel Rd. Suite 200",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75240.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1023180502",
+   "name": "Medical City Dallas",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/62-1682198_medical-city-dallas_standardcharges.csv",
+   "street_address": "7777 Forest Ln",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75230",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1023180502.0",
+   "name": "Medical City Dallas",
+   "url": "https://medicalcityhospital.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "13155 Noel Rd. Suite 200",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75240.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1033120423",
+   "name": "Texas Health Huguley",
+   "url": "https://www.adventhealth.com/sites/default/files/CDM/2021/452694620_Texas%20Health%20Huguley%20Hospital%20Fort%20Worth%20South_standardcharges.xml",
+   "street_address": "11801 SOUTH FWY",
+   "city": "BURLESON",
+   "state": "TX",
+   "zip_code": "76028-7021",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1043267701.0",
+   "name": "Valley Regional Medical Center",
+   "url": "https://valleyregionalmedicalcenter.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "100-A Alton Gloor Blvd",
+   "city": "Brownsville",
+   "state": "TX",
+   "zip_code": "78526.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1043641749",
+   "name": "Baylor Scott & White Emergency Hospital - Colleyville",
+   "url": "https://www.bsweh.org/bsw-assets/uploads/forms/262978009_364755936_BSWEMERGENCYHOSPITALS_STANDARDCHARGES.csv",
+   "street_address": "5500 Colleyville Blvd",
+   "city": "Colleyville",
+   "state": "TX",
+   "zip_code": "76034",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1053778860",
+   "name": "Vibra Hospital of Richardson",
+   "url": "https://vhrichardson.com/wp-content/uploads/sites/32/2021/02/204779077_Vibra-Specialty-Hosptial-of-Richardson_Standard-Charges.xlsx",
+   "street_address": "401 West Campbell Road, Suite 300",
+   "city": " Richardson",
+   "state": "TX",
+   "zip_code": "75080",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1063411767",
+   "name": "Paris Regional Medical Center",
+   "url": "https://parisregionalmedical.com/sites/paris/assets/uploads/33-1073948_PARIS_REGIONAL_MEDICAL_CENTER_StandardCharges.zip",
+   "street_address": "865 DeShong Drive",
+   "city": "Paris",
+   "state": "TX",
+   "zip_code": "75460",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1063466035.0",
+   "name": "HCA Houston Healthcare Clear Lake",
+   "url": "https://clearlakermc.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "500 Medical Center Blvd.",
+   "city": "Webster",
+   "state": "TX",
+   "zip_code": "77598.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1063844306",
+   "name": "Vibra Hospital of Amarillo",
+   "url": "https://vhamarillo.com/wp-content/uploads/sites/2/2021/02/462640171_Vibra-Hospital-of-Amarillo_Standard-Charges.xlsx",
+   "street_address": "7501 Wallace Blvd.",
+   "city": " Amarillo",
+   "state": "TX",
+   "zip_code": "79124",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1073511762",
+   "name": "Baylor Scott & White Medical Center - Grapevine",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/75-1777119_BAYLOR%20SCOTT%20&%20WHITE%20REGIONAL%20MEDICAL%20CENTER%20AT%20GRAPEVINE_standardcharges.csv",
+   "street_address": "1650 W College St",
+   "city": "Grapevine",
+   "state": "TX",
+   "zip_code": "76051",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1073775813",
+   "name": "Mission Trail Baptist Hospital",
+   "url": "https://www.baptisthealthsystem.com/docs/global/standard-charges/760714523_missiontrailbaptisthospital_standardcharges.json?sfvrsn=c625aeb6_4&download=true",
+   "street_address": "3333 Research Plaza",
+   "city": "San Antonio",
+   "state": "TX",
+   "zip_code": "78235",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1083633143",
+   "name": "Baylor Scott & White Heart and Vascular Hospital - Fort Worth",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/75-2834135_BAYLOR%20SCOTT%20&%20WHITE%20HEART%20&%20VASCULAR%20HOSPITAL_standardcharges.csv",
+   "street_address": "1400 8th Ave Bldg A, 6th Floor",
+   "city": "Fort Worth",
+   "state": "TX",
+   "zip_code": "76104",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1083738827.0",
+   "name": "Corpus Christi Medical Center",
+   "url": "https://ccmedicalcenter.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "7101 South Padre Island Dr",
+   "city": "Corpus Christi",
+   "state": "TX",
+   "zip_code": "78412.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1093708679",
+   "name": "ASCENSION PROVIDENCE",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109636_ascension-providence_standardcharges.xlsx",
+   "street_address": "6901 MEDICAL PKWY",
+   "city": "WACO",
+   "state": "TX",
+   "zip_code": "76712-7910",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1093810327",
+   "name": "DELL SETON MEDICAL CENTER AT THE UNIVERSITY OF TEXAS",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_dell-seton-medical-center-at-the-university-of-texas_standardcharges.xlsx",
+   "street_address": "1500 RED RIVER ST",
+   "city": "AUSTIN",
+   "state": "TX",
+   "zip_code": "78701-1918",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1114964178",
+   "name": "Rio Grande Regional Hospital",
+   "url": "https://riohealth.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "101 East Ridge Road",
+   "city": "Mcallen",
+   "state": "TX",
+   "zip_code": "78503",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1114975893",
+   "name": "Baylor Scott & White Medical Center - Lakeway",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/20-3749695_BALOR%20SCOTT%20&%20WHITE%20%20MEDICAL%20CENTER%20AT%20LAKEWAY_standardcharges.csv",
+   "street_address": "100 Medical Pkwy",
+   "city": "Lakeway",
+   "state": "TX",
+   "zip_code": "78738",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1124061064",
+   "name": "Baylor Scott & White T. Boone Pickens Cancer Hospital",
+   "url": "https://www.bswrehab.com/-/media/project/baylorrehab/dotcom/usa/documents/pricing-confirmation-documents/cms-hospital-pricing-transparency-dallas.csv?t=20210106160139",
+   "street_address": "3535 Worth St",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75246",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1124137054",
+   "name": "ASCENSION SETON NORTHWEST",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_ascension-seton-northwest_standardcharges.xlsx",
+   "street_address": "11113 RESEARCH",
+   "city": "AUSTIN",
+   "state": "TX",
+   "zip_code": "78759-5236",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1124305065",
+   "name": "Baylor Scott & White The Heart Hospital - McKinney",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/41-2101361_THE%20HEART%20HOSPITAL%20BAYLOR%20MCKINNEY_standardcharges.csvhttps://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/41-2101361",
+   "street_address": "5268 W University Dr",
+   "city": "McKinney",
+   "state": "TX",
+   "zip_code": "75071",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1134172406",
+   "name": "Medical City Arlington",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/62-1682201_medical-city-arlington_standardcharges.csv",
+   "street_address": "3301 Matlock Rd",
+   "city": "Arlington",
+   "state": "TX",
+   "zip_code": "76015",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1144210840",
+   "name": "South Texas Health System Edinburg",
+   "url": "https://uhsfilecdn.eskycity.net/ac/south-texas-healthcare-system_standard-charges.csv",
+   "street_address": "1102 W. Trenton Road",
+   "city": "Edinburg",
+   "state": "TX",
+   "zip_code": "78539",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1144294893",
+   "name": "Encompass Health Rehabilitation Hospital of Plano",
+   "url": "https://encompasshealth.com/locations/planorehab/transparency-healthcare",
+   "street_address": "2800 W 15TH ST",
+   "city": "PLANO",
+   "state": "TX",
+   "zip_code": "75075",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1144566316",
+   "name": "Baylor Scott & White Emergency Medical Center - Cedar Park",
+   "url": "https://www.bsweh.org/bsw-assets/uploads/forms/262978009_364755936_BSWEMERGENCYHOSPITALS_STANDARDCHARGES.csv",
+   "street_address": "900 E Whitestone Blvd",
+   "city": "Cedar Park",
+   "state": "TX",
+   "zip_code": "78613",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1144756578",
+   "name": "Encompass Health Rehabilitation Hospital of Pearland",
+   "url": "https://encompasshealth.com/locations/pearlandrehab/transparency-healthcare",
+   "street_address": "2121 BUSINESS CENTER DRIVE",
+   "city": "PEARLAND",
+   "state": "TX",
+   "zip_code": "77584",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1144781501",
+   "name": "Baylor Scott & White Medical Center - Buda",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/81-3040663_BAYLOR%20SCOTT%20&%20WHITE%20%20MEDICAL%20CENTER%20BUDA_standardcharges.csv",
+   "street_address": "5330 Overpass Rd",
+   "city": "Buda",
+   "state": "TX",
+   "zip_code": "78610",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1154315307",
+   "name": "Baylor Scott & White Medical Center - Brenham",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/74-2519752_BAYLOR%20SCOTT%20&%20WHITE%20%20MEDICAL%20CENTER%20AT%20BRENHAM_standardcharges.csv",
+   "street_address": "700 Medical Pkwy",
+   "city": "Brenham",
+   "state": "TX",
+   "zip_code": "77833",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1154378255.0",
+   "name": "HCA Houston Healthcare Mainland",
+   "url": "https://mainlandmedical.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "6801 Emmett F. Lowry Expressway",
+   "city": "Texas City",
+   "state": "TX",
+   "zip_code": "77591.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1154508653.0",
+   "name": "Medical City Children's Hospital",
+   "url": "https://medicalcitychildrenshospital.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "7777 Forest Lane",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75230.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1154612638",
+   "name": "ASCENSION SETON SMITHVILLE",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_ascension-seton-smithville_standardcharges.xlsx",
+   "street_address": "1201 HILL RD",
+   "city": "SMITHVILLE",
+   "state": "TX",
+   "zip_code": "78957-9533",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1164510673",
+   "name": "Palestine Regional Medical Center",
+   "url": "http://www.palestineregional.com/Content/Uploads/Palestine Regional/files/742791525%20Palestine%20Regional%20Medical%20Center%20Standard%20Charges%2012162020.zip",
+   "street_address": "2900 South Loop 256",
+   "city": "Palestine",
+   "state": "TX",
+   "zip_code": "75801",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1164526786",
+   "name": "ASCENSION SETON MEDICAL CENTER AUSTIN",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_ascension-seton-medical-center-austin_standardcharges.xlsx",
+   "street_address": "1201 W 38TH ST",
+   "city": "AUSTIN",
+   "state": "TX",
+   "zip_code": "78705-1006",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1164529400",
+   "name": "Valley Baptist Medical Center",
+   "url": "https://www.valleybaptist.net/docs/global/standard-charges/452662980_valleybaptistmedicalcenterharlingen_standardcharges.json?sfvrsn=a579d48a_4&download=true",
+   "street_address": "2101 Pease Street",
+   "city": "Harlingen",
+   "state": "TX",
+   "zip_code": "78550",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1164688495",
+   "name": "KIMBLE HOSPITAL",
+   "url": "https://kimblehospital.org/wp-content/uploads/2020/12/26-2294680_Kimble-Hospital_standardcharges.csv",
+   "street_address": "349 REID RD",
+   "city": "JUNCTION",
+   "state": "TX",
+   "zip_code": "76849-3049",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1164688495-A",
+   "name": "Kimble Hospital - Emergency Room",
+   "url": "https://kimblehospital.org/wp-content/uploads/2020/12/26-2294680_Kimble-Hospital_standardcharges.csv",
+   "street_address": "349 Reid Rd",
+   "city": "Junction",
+   "state": "TX",
+   "zip_code": "76849",
+   "publish_date": "2020-12-01"
+  },
+  {
+   "npi_number": "1164807624",
+   "name": "BEN TAUB GENERAL HOSPITAL",
+   "url": "https://www.harrishealth.org/SiteCollectionDocuments/financials/charge%20description%20master/2020-12-31%20CDM%20Transparency%20FY21.zip",
+   "street_address": "1504 TAUB LOOP",
+   "city": "HOUSTON",
+   "state": "TX",
+   "zip_code": "77030-1608",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1164952685.0",
+   "name": "HCA Houston Healthcare Cypress Fairbanks",
+   "url": "https://cyfairhospital.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "21214 NW Freeway",
+   "city": "Cypress",
+   "state": "TX",
+   "zip_code": "77429.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1194242990.0",
+   "name": "Medical City Weatherford",
+   "url": "https://medicalcityweatherford.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "713 East Anderson Street",
+   "city": "Weatherford",
+   "state": "TX",
+   "zip_code": "76086.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1194753590",
+   "name": "Baylor Scott & White The Heart Hospital - Denton",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/26-3603862_THE%20HEART%20HOSPITAL%20BAYLOR%20DENTON_standardcharges.csv",
+   "street_address": "2801 S Mayhill Rd",
+   "city": "Denton",
+   "state": "TX",
+   "zip_code": "76208",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1194798801",
+   "name": "Encompass Health Rehabilitation Hospital of The Woodlands",
+   "url": "https://encompasshealth.com/locations/thewoodlandsrehab/transparency-healthcare",
+   "street_address": "18550 I H 45 S",
+   "city": "CONROE",
+   "state": "TX",
+   "zip_code": "77384",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1205018439",
+   "name": "Baylor Scott & White Medical Center - Lake Pointe",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/26-0194016_BAYLOR%20SCOTT%20&%20WHITE%20MEDICAL%20CENTER%20LAKE%20POINTE_standardcharges.csv",
+   "street_address": "6800 Scenic Dr",
+   "city": "Rowlett",
+   "state": "TX",
+   "zip_code": "75088",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1205880275.0",
+   "name": "Medical City Plano",
+   "url": "https://medicalcityplano.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "3901 West 15th St",
+   "city": "Plano",
+   "state": "TX",
+   "zip_code": "75075.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1215233176",
+   "name": "SETON SHOAL CREEK HOSPITAL",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_ascension-seton-shoal-creek-ip-psych_standardcharges.xlsx",
+   "street_address": "3501 MILLS AVE",
+   "city": "AUSTIN",
+   "state": "TX",
+   "zip_code": "78731-6309",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1215969787",
+   "name": "The Hospitals of Providence Sierra Campus",
+   "url": "https://www.thehospitalsofprovidence.com/docs/global/standard-charges/954537720_thehospitalsofprovidencesierracampus_standardcharges.json?sfvrsn=803dfdaa_4&download=true",
+   "street_address": "1625 Medical Center Dr.",
+   "city": "El Paso",
+   "state": "TX",
+   "zip_code": "79902",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1215989975.0",
+   "name": "Medical City Denton",
+   "url": "https://medicalcitydenton.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "13155 Noel Rd. Suite 200",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75240.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1245422567",
+   "name": "Encompass Health Rehabilitation Hospital of Round Rock",
+   "url": "https://encompasshealth.com/locations/roundrockrehab/transparency-healthcare",
+   "street_address": "1400 HESTERS CROSSING RD",
+   "city": "ROUND ROCK",
+   "state": "TX",
+   "zip_code": "78681",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1245571546",
+   "name": "Baylor Scott & White Charles A. Sammons Cancer Center - Dallas",
+   "url": "https://www.bswrehab.com/-/media/project/baylorrehab/dotcom/usa/documents/pricing-confirmation-documents/cms-hospital-pricing-transparency-dallas.csv?t=20210106160139",
+   "street_address": "3410 Worth St",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75246",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1255384533",
+   "name": "Medical City Lewisville",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/62-1682210_medical-city-lewisville_standardcharges.csv",
+   "street_address": "500 W Main St",
+   "city": "Lewisville",
+   "state": "TX",
+   "zip_code": "75057",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1255724639.0",
+   "name": "Medical City North Hills",
+   "url": "https://medicalcitynorthhills.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "4401 Booth Calloway Rd",
+   "city": "North Richland Hills",
+   "state": "TX",
+   "zip_code": "76180.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1255791885.0",
+   "name": "HCA Houston Healthcare Northwest",
+   "url": "https://hnmc.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "710 Cypress Creek Parkway",
+   "city": "Houston",
+   "state": "TX",
+   "zip_code": "77090.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1265430177",
+   "name": "Baylor Scott & White Medical Center - Waxahachie",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/75-1844139_BAYLOR%20SCOTT%20&%20WHITE%20MEDICAL%20CENTER%20AT%20WAXAHACHIE_standardcharges.csv",
+   "street_address": "2400 N Interstate 35E",
+   "city": "Waxahachie",
+   "state": "TX",
+   "zip_code": "75165",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1265568638",
+   "name": "Baylor Scott & White Medical Center - Round Rock",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/20-3749695_BAYLOR%20SCOTT%20&%20WHITE%20%20MEDICAL%20CENTER%20AT%20ROUND%20ROCK_standardcharges.csv",
+   "street_address": "300 University Blvd",
+   "city": "Round Rock",
+   "state": "TX",
+   "zip_code": "78665",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1265772362",
+   "name": "Baylor Scott & White Medical Center - College Station",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/27-4434451_BAYLOR%20SCOTT%20&%20WHITE%20%20MEDICAL%20CENTER%20AT%20COLLEGE%20STATION_standardcharges.csv",
+   "street_address": "700 Scott and White Dr",
+   "city": "College Station",
+   "state": "TX",
+   "zip_code": "77845",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1265936884",
+   "name": "Medical City Healthcare",
+   "url": "https://medicalcityhealthcare.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "13155 Noel Rd. Suite 200",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75240",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1275580938.0",
+   "name": "HCA Houston Healthcare West",
+   "url": "https://westhoustonmedical.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "12141 Richmond Avenue",
+   "city": "Houston",
+   "state": "TX",
+   "zip_code": "77082.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1275813610",
+   "name": "Encompass Health Rehabilitation Hospital of Cypress",
+   "url": "https://encompasshealth.com/locations/cypressrehab/transparency-healthcare",
+   "street_address": "13031 WORTHAM CENTER DR",
+   "city": "HOUSTON",
+   "state": "TX",
+   "zip_code": "77065",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1295843753",
+   "name": "Valley Baptist Medical Center",
+   "url": "https://www.valleybaptist.net/docs/global/standard-charges/452663071_valleybaptistmedicalcenterbrownsville_standardcharges.json?sfvrsn=3bb4b99_4&download=true",
+   "street_address": "1040 West Jefferson",
+   "city": "Brownsville",
+   "state": "TX",
+   "zip_code": "78520",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1295982882.0",
+   "name": "HCA Houston Healthcare \u2013 Medical Center",
+   "url": "https://parkplazahospital.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "1313 Hermann Dr",
+   "city": "Houston",
+   "state": "TX",
+   "zip_code": "77004.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1306897277",
+   "name": "Medical City Denton",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/62-1682213_medical-city-denton_standardcharges.csv",
+   "street_address": "3535 S Interstate 35",
+   "city": "Denton",
+   "state": "TX",
+   "zip_code": "76210",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1336186402",
+   "name": "Valley Regional Medical Center",
+   "url": "https://valleyregionalmedicalcenter.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "100-A Alton Gloor Blvd",
+   "city": "Brownsville",
+   "state": "TX",
+   "zip_code": "78526",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1346529781",
+   "name": "South Texas Health System Heart",
+   "url": "https://uhsfilecdn.eskycity.net/ac/south-texas-healthcare-system_standard-charges.csv",
+   "street_address": "1900 South D Street",
+   "city": "McAllen",
+   "state": "TX",
+   "zip_code": "78503",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1346729159",
+   "name": "Baylor Scott & White Medical Center - Pflugerville",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/81-3040663_BAYLOR%20SCOTT%20&%20WHITE%20%20MEDCICAL%20CENTER%20AT%20PFLUGERVILLE_standardcharges.csv",
+   "street_address": "2600 E Pflugerville Pkwy Ste 100",
+   "city": "Pflugerville",
+   "state": "TX",
+   "zip_code": "78660",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1346778602.0",
+   "name": "HCA Houston Healthcare Tomball",
+   "url": "https://tomballregionalmedicalcenter.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "605 Holderrieth Blvd.",
+   "city": "Tomball",
+   "state": "TX",
+   "zip_code": "77375.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1356446686",
+   "name": "ASCENSION SETON EDGAR B DAVIS",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_ascension-seton-edgar-b-davis_standardcharges.xlsx",
+   "street_address": "130 HAYS ST",
+   "city": "LULING",
+   "state": "TX",
+   "zip_code": "78648-3207",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1366871600",
+   "name": "Encompass Health Rehabilitation Hospital of Humble",
+   "url": "https://www.encompasshealth.com/locations/humblerehab/transparency-healthcare",
+   "street_address": "19002 MCKAY DR",
+   "city": "HUMBLE",
+   "state": "TX",
+   "zip_code": "77338",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1376829812",
+   "name": "Encompass Health Rehabilitation Hospital The Vintage",
+   "url": "https://encompasshealth.com/locations/thevintagerehab/transparency-healthcare",
+   "street_address": "20180 CHASEWOOD PARK DRIVE",
+   "city": "HOUSTON",
+   "state": "TX",
+   "zip_code": "77070",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1386652527",
+   "name": "Cornerstone Regional Hospital",
+   "url": "https://uhsfilecdn.eskycity.net/ac/cornerstone-regional-hospital_standard-charges.csv",
+   "street_address": "2302 Cornerstone Boulevard",
+   "city": "Edinburg",
+   "state": "TX",
+   "zip_code": "78539",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1396138970",
+   "name": "Baylor Scott & White Medical Center - Marble Falls",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/46-4007700_BAYLOR%20SCOTT%20&%20WHITE%20%20MEDICAL%20CENTER%20AT%20MARBLE%20FALLS_standardcharges.csv",
+   "street_address": "810 W. State Highway 71",
+   "city": "Marble Falls",
+   "state": "TX",
+   "zip_code": "78654",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1396731105",
+   "name": "Doctors Hospital of Laredo",
+   "url": "https://uhsfilecdn.eskycity.net/ac/doctors-hospital-of-laredo_standard-charges.csv",
+   "street_address": "10700 McPherson Road",
+   "city": "Laredo",
+   "state": "TX",
+   "zip_code": "78045",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1407010622",
+   "name": "Baylor Scott & White Emergency Hospital - Aubrey",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/26-0194016_BAYLOR%20SCOTT%20&%20WHITE%20MEDICAL%20CENTER%20LAKE%20POINTE_standardcharges.csv",
+   "street_address": "26791 US Highway 380 E",
+   "city": "Aubrey",
+   "state": "TX",
+   "zip_code": "76227",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1407344880",
+   "name": "Baylor Scott & White Emergency Hospital - Rockwall",
+   "url": "https://www.bsweh.org/bsw-assets/uploads/forms/262978009_364755936_BSWEMERGENCYHOSPITALS_STANDARDCHARGES.csv",
+   "street_address": "1975 Alpha Dr Ste 100",
+   "city": "Rockwall",
+   "state": "TX",
+   "zip_code": "75087",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1417471467",
+   "name": "Medical City Weatherford",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/822073410_medical-city-weatherford_standardcharges.csv",
+   "street_address": "713 E Anderson St",
+   "city": "Weatherford",
+   "state": "TX",
+   "zip_code": "76086",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1427472463",
+   "name": "Resolute Health Hospital",
+   "url": "https://www.resolutehealth.com/docs/global/standard-charges/462942963_resolutehealthhospital_standardcharges.json?sfvrsn=434811e0_4&download=true",
+   "street_address": "555 Creekside Crossing",
+   "city": "New Braunfels",
+   "state": "TX",
+   "zip_code": "78130",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1437102639",
+   "name": "Medical City McKinney",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/62-1682207_medical-city-mckinney_standardcharges.csv",
+   "street_address": "4500 Medical Center Dr",
+   "city": "McKinney",
+   "state": "TX",
+   "zip_code": "75069",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1437102639.0",
+   "name": "Medical City McKinney",
+   "url": "https://medicalcitymckinney.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "13155 Noel Rd. Suite 200",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75240.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1447250253",
+   "name": "Baylor University Medical Center, part of Baylor Scott & White Health",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/75-1837454_BAYLOR%20UNIVERSITY%20MEDICAL%20CENTER_standardcharges.csv",
+   "street_address": "3500 Gaston Ave",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75246",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1447355771",
+   "name": "DELL CHILDREN'S MEDICAL CENTER",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_dell-childrens-medical-center_standardcharges.xlsx",
+   "street_address": "4900 MUELLER BLVD",
+   "city": "AUSTIN",
+   "state": "TX",
+   "zip_code": "78723-3079",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1467442418",
+   "name": "Northwest Texas Healthcare System",
+   "url": "https://uhsfilecdn.eskycity.net/ac/northwest-texas-healthcare-system_standard-charges.csv",
+   "street_address": "1501 S. Coulter",
+   "city": "Amarillo",
+   "state": "TX",
+   "zip_code": "79106",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1477507432",
+   "name": "Vibra Specialty Hospital of DeSoto",
+   "url": "https://vshdesoto.com/wp-content/uploads/sites/38/2021/02/204779077_Vibra-Specialty-Hosptial-of-DeSoto_Standard-Charges.xlsx",
+   "street_address": "2700 Walker Way",
+   "city": " DeSoto",
+   "state": "TX",
+   "zip_code": "75115",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1477516466",
+   "name": "Baylor Scott & White Medical Center - Temple",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/74-1166904_BAYLOR%20SCOTT%20&%20WHITE%20%20MEMORIAL%20HOSPITAL%20AT%20TEMPLE_standardcharges.csv",
+   "street_address": "2401 S 31st St",
+   "city": "Temple",
+   "state": "TX",
+   "zip_code": "76508",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1477643690",
+   "name": "Texas Children's Hospital",
+   "url": "https://www.texaschildrens.org/sites/default/files/uploads/insurance/TCH_standard_charges.xlsx",
+   "street_address": "6621 FANNIN ST HOUSTON",
+   "city": "Houston",
+   "state": "TX",
+   "zip_code": "77030",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1477731156",
+   "name": "Encompass Health Rehabilitation Hospital Vision Park",
+   "url": "https://encompasshealth.com/locations/visionparkrehab/transparency-healthcare",
+   "street_address": "117 VISION PARK BLVD",
+   "city": "SHENANDOAH",
+   "state": "TX",
+   "zip_code": "77384",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1487633509",
+   "name": "Northeast Baptist Hospital",
+   "url": "https://www.baptisthealthsystem.com/docs/global/standard-charges/760714523_northeastbaptisthospital_standardcharges.json?sfvrsn=faced0f3_4&download=true",
+   "street_address": "8811 Village Dr.",
+   "city": "San Antonio",
+   "state": "TX",
+   "zip_code": "78217",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1497708929",
+   "name": "Parkview Regional Hospital",
+   "url": "http://www.parkviewregional.com/Content/Uploads/Parkview Regional/files/621692446%20Parkview%20Regional%20Hospital%20Standard%20Charges%2012152020.zip",
+   "street_address": "600 South Bonham Street",
+   "city": "Mexia",
+   "state": "TX",
+   "zip_code": "76667",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1508154923",
+   "name": "Baylor Scott & White Institute for Rehabilitation - Dallas",
+   "url": "https://www.bswrehab.com/-/media/project/baylorrehab/dotcom/usa/documents/pricing-confirmation-documents/cms-hospital-pricing-transparency-dallas.csv?t=20210106160139",
+   "street_address": "909 N Washington Ave",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75246",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1508856337",
+   "name": "South Texas Health System McAllen",
+   "url": "https://uhsfilecdn.eskycity.net/ac/south-texas-healthcare-system_standard-charges.csv",
+   "street_address": "301 W. Expressway 83",
+   "city": "McAllen",
+   "state": "TX",
+   "zip_code": "78503",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1518287721",
+   "name": "Encompass Health Rehabilitation Hospital of Sugar Land",
+   "url": "https://www.encompasshealth.com/locations/sugarlandrehab/transparency-healthcare",
+   "street_address": "1325 HIGHWAY 6",
+   "city": "SUGAR LAND",
+   "state": "TX",
+   "zip_code": "77478",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1518906510",
+   "name": "The Woman\u2019s Hospital of Texas",
+   "url": "https://womanshospital.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "7600 Fannin",
+   "city": "Houston",
+   "state": "TX",
+   "zip_code": "77054",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1518911833",
+   "name": "Medical City North Hills",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/62-1682205_medical-city-north-hills_standardcharges.csv",
+   "street_address": "4401 Booth Calloway Rd",
+   "city": "North Richland Hills",
+   "state": "TX",
+   "zip_code": "76180",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1538522412",
+   "name": "The Hospitals of Providence Transmountain Campus",
+   "url": "https://www.thehospitalsofprovidence.com/docs/global/standard-charges/954537720_thehospitalofprovidencetransmountaincampus_standardcharges.json?sfvrsn=fd47d09f_4&download=true",
+   "street_address": "2000 Transmountain Road",
+   "city": "El Paso",
+   "state": "TX",
+   "zip_code": "79911",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1548213739.0",
+   "name": "Medical City Las Colinas",
+   "url": "https://medicalcitylascolinas.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "6800 N MacArthur Blvd",
+   "city": "Irving",
+   "state": "TX",
+   "zip_code": "75039.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1548233265",
+   "name": "Encompass Health Rehabilitation Hospital of San Antonio",
+   "url": "https://encompasshealth.com/locations/sanantoniorehab/transparency-healthcare",
+   "street_address": "9119 CINNAMON HL",
+   "city": "SAN ANTONIO",
+   "state": "TX",
+   "zip_code": "78240",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1548546088",
+   "name": "Encompass Health Rehabilitation Hospital of Austin",
+   "url": "https://encompasshealth.com/locations/austinrehab/transparency-healthcare",
+   "street_address": "330 W. BEN WHITE BLVD.",
+   "city": "AUSTIN",
+   "state": "TX",
+   "zip_code": "78704",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1568948032.0",
+   "name": "HCA Houston Healthcare North Cypress",
+   "url": "https://ncmc-hospital.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "21214 NW Freeway",
+   "city": "Cypress",
+   "state": "TX",
+   "zip_code": "77429.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1578626875",
+   "name": "St. Luke's Baptist Hospital",
+   "url": "https://www.baptisthealthsystem.com/docs/global/standard-charges/760714523_st-luke'sbaptisthospital_standardcharges.json?sfvrsn=35454cc7_4&download=true",
+   "street_address": "7930 Floyd Curl Dr.",
+   "city": "San Antonio",
+   "state": "TX",
+   "zip_code": "78229",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1578729653",
+   "name": "Kimble Hospital - Health Clinic",
+   "url": "https://kimblehospital.org/wp-content/uploads/2020/12/26-2294680_Kimble-Hospital_standardcharges.csv",
+   "street_address": "349 Reid Rd",
+   "city": "Junction",
+   "state": "TX",
+   "zip_code": "76849",
+   "publish_date": "2020-12-01"
+  },
+  {
+   "npi_number": "1578741849",
+   "name": "Baylor Scott & White Medical Center - Taylor",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/74-1595711_BAYLOR%20SCOTT%20&%20WHITE%20%20MEDICAL%20CENTER%20AT%20TAYLOR_standardcharges.csv",
+   "street_address": "305 Mallard Ln",
+   "city": "Taylor",
+   "state": "TX",
+   "zip_code": "76574",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1578780870",
+   "name": "ASCENSION SETON WILLIAMSON",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_ascension-seton-williamson_standardcharges.xlsx",
+   "street_address": "201 SETON PARKWAY",
+   "city": "ROUND ROCK",
+   "state": "TX",
+   "zip_code": "78665-8000",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1598196206",
+   "name": "Baylor Scott & White Emergency Hospital - Mansfield",
+   "url": "https://www.bsweh.org/bsw-assets/uploads/forms/262978009_364755936_BSWEMERGENCYHOSPITALS_STANDARDCHARGES.csv",
+   "street_address": "1776 N US 287 Ste 100",
+   "city": "Mansfield",
+   "state": "TX",
+   "zip_code": "76063",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1598744856",
+   "name": "Baptist Medical Center",
+   "url": "https://www.baptisthealthsystem.com/docs/global/standard-charges/760714523_baptistmedicalcenter_standardcharges.json?sfvrsn=2ac35bba_4&download=true",
+   "street_address": "111 Dallas St.",
+   "city": "San Antonio",
+   "state": "TX",
+   "zip_code": "78205",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1609275585.0",
+   "name": "HCA Houston Healthcare Pearland",
+   "url": "https://pearlandmc.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "11100 Shadow Creek Pkwy",
+   "city": "Pearland",
+   "state": "TX",
+   "zip_code": "77584.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1609855139",
+   "name": "Baylor Scott & White Heart and Vascular Hospital - Dallas",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/75-2834135_BAYLOR%20SCOTT%20&%20WHITE%20HEART%20&%20VASCULAR%20HOSPITAL_standardcharges.csv",
+   "street_address": "621 N Hall St",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75226",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1619115383",
+   "name": "ASCENSION SETON HAYS",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_ascension-seton-hays_standardcharges.xlsx",
+   "street_address": "6001 KYLE PKWY",
+   "city": "KYLE",
+   "state": "TX",
+   "zip_code": "78640-6112",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1619295508",
+   "name": "Medical City Las Colinas",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/62-1650582_medical-city-las-colinas_standardcharges.csv",
+   "street_address": "6800 N MacArthur Blvd",
+   "city": "Irving",
+   "state": "TX",
+   "zip_code": "75039",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1619308319",
+   "name": "Baylor Scott & White Emergency Hospital - Murphy",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/26-0194016_BAYLOR%20SCOTT%20&%20WHITE%20MEDICAL%20CENTER%20LAKE%20POINTE_standardcharges.csv",
+   "street_address": "511 W FM 544 Ste 100",
+   "city": "Murphy",
+   "state": "TX",
+   "zip_code": "75094",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1619921871.0",
+   "name": "Medical City Healthcare",
+   "url": "https://medicalcityhealthcare.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "13155 Noel Rd. Suite 200",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75240.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1629015748.0",
+   "name": "Medical City Fort Worth",
+   "url": "https://medicalcityfortworth.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "900 8th Ave",
+   "city": "Fort Worth",
+   "state": "TX",
+   "zip_code": "76104.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1629089966",
+   "name": "ADVENTHEALTH CENTRAL TEXAS",
+   "url": "https://www.adventhealth.com/sites/default/files/CDM/2021/742575462_AdventHealthCentral Texas_standardcharges.xml",
+   "street_address": "2201 CLEAR CREEK RD",
+   "city": "KILLEEN",
+   "state": "TX",
+   "zip_code": "76549",
+   "publish_date": "2021-01-26"
+  },
+  {
+   "npi_number": "1649243353",
+   "name": "Encompass Health Rehabilitation Hospital of Texarkana",
+   "url": "https://encompasshealth.com/locations/texarkanarehab/transparency-healthcare",
+   "street_address": "515 W 12TH ST",
+   "city": "TEXARKANA",
+   "state": "TX",
+   "zip_code": "75501",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1649273434",
+   "name": "Baylor Scott & White Medical Center - Plano",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/82-0551704_BAYLOR%20SCOTT%20&%20WHITE%20%20REGIONAL%20MEDICAL%20CENTER%20AT%20PLANO_standardcharges.csv",
+   "street_address": "4700 Alliance Blvd",
+   "city": "Plano",
+   "state": "TX",
+   "zip_code": "75093",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1659323772",
+   "name": "Medical City Fort Worth",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/62-1682202_medical-city-fort-worth_standardcharges.csv",
+   "street_address": "900 8th Ave",
+   "city": "Fort Worth",
+   "state": "TX",
+   "zip_code": "76104",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1659539567",
+   "name": "Encompass Health Rehabilitation Hospital of Abilene",
+   "url": "https://encompasshealth.com/locations/abilenerehab/transparency-healthcare",
+   "street_address": "6401 DIRECTORS PKWY",
+   "city": "ABILENE",
+   "state": "TX",
+   "zip_code": "79606",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1669472387",
+   "name": "Baylor Scott & White All Saints Medical Center - Fort Worth",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/75-1008430_BAYLOR%20ALL%20SAINTS%20MEDICAL%20CENTER%20AT%20FORT%20WORTH_standardcharges.csv",
+   "street_address": "1400 8th Ave",
+   "city": "Fort Worth",
+   "state": "TX",
+   "zip_code": "76104",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1679903967",
+   "name": "Baylor Scott & White Emergency Hospital - Burleson",
+   "url": "https://www.bsweh.org/bsw-assets/uploads/forms/262978009_364755936_BSWEMERGENCYHOSPITALS_STANDARDCHARGES.csv",
+   "street_address": "12500 South Fwy Ste 100",
+   "city": "Burleson",
+   "state": "TX",
+   "zip_code": "76028",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1689002651",
+   "name": "Baylor Scott & White Emergency Hospital - Keller",
+   "url": "https://www.bsweh.org/bsw-assets/uploads/forms/262978009_364755936_BSWEMERGENCYHOSPITALS_STANDARDCHARGES.csv",
+   "street_address": "620 S Main St Ste 100",
+   "city": "Keller",
+   "state": "TX",
+   "zip_code": "76248",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1689627036.0",
+   "name": "Las Palmas Del Sol Bariatric Clinic",
+   "url": "https://loseweightelpaso.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "10175 Gateway West Suite 13",
+   "city": "El Paso",
+   "state": "TX",
+   "zip_code": "79925.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1689648339",
+   "name": "Encompass Health Rehabilitation Hospital of Wichita Falls",
+   "url": "https://www.encompasshealth.com/locations/wichitafallsrehab/transparency-healthcare",
+   "street_address": "3901 ARMORY RD",
+   "city": "WICHITA FALLS",
+   "state": "TX",
+   "zip_code": "76302",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1699726406-a",
+   "name": "Medical City Plano",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/62-1682203_medical-city-plano_standardcharges.csv",
+   "street_address": "3901 W 15th St",
+   "city": "Plano",
+   "state": "TX",
+   "zip_code": "75075",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1699726406-b",
+   "name": "Medical City Frisco",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/621682203_medical-city-frisco_standardcharges.csv",
+   "street_address": "5500 Frisco Square Blvd",
+   "city": "Frisco",
+   "state": "TX",
+   "zip_code": "75034",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1699729665.0",
+   "name": "HCA Houston Healthcare Conroe",
+   "url": "https://conroeregional.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "504 Medical Center Blvd",
+   "city": "Conroe",
+   "state": "TX",
+   "zip_code": "77304.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1699749341",
+   "name": "Encompass Health Rehabilitation Hospital of City View",
+   "url": "https://www.encompasshealth.com/locations/cityviewrehab/transparency-healthcare",
+   "street_address": "6701 OAKMONT BLVD",
+   "city": "FORT WORTH",
+   "state": "TX",
+   "zip_code": "76132",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1700801909",
+   "name": "The Hospitals of Providence Memorial Campus",
+   "url": "https://www.thehospitalsofprovidence.com/docs/global/standard-charges/954537720_thehospitalsofprovidencememorialcampus_standardcharges.json?sfvrsn=4b2ad6a7_4&download=true",
+   "street_address": "2001 North Oregon",
+   "city": "El Paso",
+   "state": "TX",
+   "zip_code": "79902",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1700805678",
+   "name": "Ennis Regional Medical Center",
+   "url": "http://www.ennisregional.com/Content/Uploads/Ennis Regional/files/621789402%20Ennis%20Regional%20Medical%20Center%20Standard%20Charges%2012142020.zip",
+   "street_address": "2201 West Lampasas",
+   "city": "Ennis",
+   "state": "TX",
+   "zip_code": "75165",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1700885076",
+   "name": "Nacogdoches Medical Center",
+   "url": "https://www.nacmedicalcenter.com/docs/global/standard-charges/760354630_nacogdochesmedicalcenter_standardcharges.json?sfvrsn=9acdbf61_4&download=true",
+   "street_address": "4920 NE Stallings Dr.",
+   "city": "Nacogdoches",
+   "state": "TX",
+   "zip_code": "75965",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1720279342",
+   "name": "Encompass Health Rehabilitation Hospital of Richardson",
+   "url": "https://encompasshealth.com/locations/richardsonrehab/transparency-healthcare",
+   "street_address": "3351 WATERVIEW PARKWAY",
+   "city": "RICHARDSON",
+   "state": "TX",
+   "zip_code": "75080",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1730126822.0",
+   "name": "HCA Houston Healthcare Kingwood",
+   "url": "https://kingwoodmedical.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "22999 US Hwy 59 N",
+   "city": "Kingwood",
+   "state": "TX",
+   "zip_code": "77339.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1730406265",
+   "name": "ASCENSION PROVIDENCE DEPAUL CENTER",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109636_ascension-providence-depaul-distinct-part-unit_standardcharges.xlsx",
+   "street_address": "301 LONDONDERRY DR",
+   "city": "WACO",
+   "state": "TX",
+   "zip_code": "76712-7915",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1740693316",
+   "name": "Highlands Rehabilitation Hospital",
+   "url": "https://vrhhighlands.com/wp-content/uploads/sites/3/2021/02/471033481_Highlands-Rehabilitation-Hospital_Standard-Charges.xlsx",
+   "street_address": "1395 George Dieter Drive",
+   "city": " El Paso",
+   "state": "TX",
+   "zip_code": "79936",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1750392916",
+   "name": "AdventHealth Rollins Brook",
+   "url": "https://www.adventhealth.com/sites/default/files/CDM/2021/742225672_AdventHealthRollinsBrook_standardcharges.xml",
+   "street_address": "608 N KEY AVE",
+   "city": "LAMPASAS",
+   "state": "TX",
+   "zip_code": "76550-1106",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1750499273",
+   "name": "ASCENSION SETON SOUTHWEST",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_ascension-seton-southwest_standardcharges.xlsx",
+   "street_address": "7900 FM 1826",
+   "city": "AUSTIN",
+   "state": "TX",
+   "zip_code": "78737-1407",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1750713012",
+   "name": "Vibra Rehabilitation Hospital of Amarillo",
+   "url": "https://vrhamarillo.com/wp-content/uploads/sites/19/2021/02/462640198_Vibra-Rehabilitation-Hospital-of-Amarillo_Standard-Charges.xlsx",
+   "street_address": "7200 W 9th Ave.",
+   "city": " Amarillo",
+   "state": "TX",
+   "zip_code": "79106",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1770579591",
+   "name": "Fort Duncan Regional Medical Center",
+   "url": "https://uhsfilecdn.eskycity.net/ac/fort-duncan-regional-medical-center_standard-charges.csv",
+   "street_address": "3333 N. Foster Maldonado Blvd.",
+   "city": "Eagle Pass",
+   "state": "TX",
+   "zip_code": "78852",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1780065540",
+   "name": "Corpus Christi Medical Center",
+   "url": "https://ccmedicalcenter.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "7101 South Padre Island Dr",
+   "city": "Corpus Christi",
+   "state": "TX",
+   "zip_code": "78412",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1790178176.0",
+   "name": "HCA Houston Healthcare",
+   "url": "https://hcahoustonhealthcare.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "3737 Buffalo Speedway Suite 140",
+   "city": "Houston",
+   "state": "TX",
+   "zip_code": "77098.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1801826839",
+   "name": "Baylor Scott & White Medical Center - Centennial",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/82-4052186_BAYLOR%20MEDICAL%20CENTER%20CENTENNIAL_standardcharges.csv",
+   "street_address": "12505 Lebanon Rd",
+   "city": "Frisco",
+   "state": "TX",
+   "zip_code": "75035",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1811940109.0",
+   "name": "Medical City Green Oaks Hospital",
+   "url": "https://medicalcitygreenoaks.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "13155 Noel Rd. Suite 200",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75240.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1821061532",
+   "name": "Encompass Health Rehabilitation Hospital of Midland Odessa",
+   "url": "https://www.encompasshealth.com/locations/midlandrehab/transparency-healthcare",
+   "street_address": "1800 HERITAGE BLVD",
+   "city": "MIDLAND",
+   "state": "TX",
+   "zip_code": "79707",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1821062050",
+   "name": "Encompass Health Rehabilitation Hospital of Arlington",
+   "url": "https://encompasshealth.com/locations/arlingtonrehab/transparency-healthcare",
+   "street_address": "3200 MATLOCK RD",
+   "city": "ARLINGTON",
+   "state": "TX",
+   "zip_code": "76015",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1831140698",
+   "name": "Medical City Green Oaks Hospital",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/62-1797829_medical-city-green-oaks-hospital-dallas_standardcharges.csv",
+   "street_address": "7808 Clodus Fields Dr",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75251",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1831341189",
+   "name": "North Central Baptist Hospital",
+   "url": "https://www.baptisthealthsystem.com/docs/global/standard-charges/760714523_northcentralbaptisthospital_standardcharges.json?sfvrsn=efb7e2b7_4&download=true",
+   "street_address": "520 Madison Oak Dr.",
+   "city": "San Antonio",
+   "state": "TX",
+   "zip_code": "78258",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1831629526",
+   "name": "Baylor Scott & White Emergency Hospital - Grand Prairie",
+   "url": "https://www.bsweh.org/bsw-assets/uploads/forms/262978009_364755936_BSWEMERGENCYHOSPITALS_STANDARDCHARGES.csv",
+   "street_address": "3095 Kingswood Blvd",
+   "city": "Grand Prairie",
+   "state": "TX",
+   "zip_code": "75052",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1841607934",
+   "name": "HCA Houston Healthcare",
+   "url": "https://hcahoustonhealthcare.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "3737 Buffalo Speedway Suite 140",
+   "city": "Houston",
+   "state": "TX",
+   "zip_code": "77098",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1851390967",
+   "name": "Texoma Medical Center",
+   "url": "https://uhsfilecdn.eskycity.net/ac/texoma-medical-center_standard-charges.csv",
+   "street_address": "5016 South US Highway 75",
+   "city": "Denison",
+   "state": "TX",
+   "zip_code": "75020",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1851889463",
+   "name": "Baylor Scott & White Institute for Rehabilitation - Lakeway",
+   "url": "https://www.bswrehab.com/-/media/project/baylorrehab/dotcom/usa/documents/pricing-confirmation-documents/cms-hospital-pricing-transparency-lakeway.csv?t=20210106160141",
+   "street_address": "2000 Medical Dr",
+   "city": "Lakeway",
+   "state": "TX",
+   "zip_code": "78734",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1871911016",
+   "name": "Medical City Alliance",
+   "url": "https://core.secure.ehc.com/src/util/detail-price-list/46-4027347_medical-city-alliance_standardcharges.csv",
+   "street_address": "3101 N Tarrant Pkwy",
+   "city": "Fort Worth",
+   "state": "TX",
+   "zip_code": "76177",
+   "publish_date": "2021-01-04"
+  },
+  {
+   "npi_number": "1881164937",
+   "name": "Baylor Scott & White Emergency Center - Forney",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/26-0194016_BAYLOR%20SCOTT%20&%20WHITE%20MEDICAL%20CENTER%20LAKE%20POINTE_standardcharges.csv",
+   "street_address": "757 E US Highway 80 Ste 150",
+   "city": "Forney",
+   "state": "TX",
+   "zip_code": "75126",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1891882833",
+   "name": "Baylor Scott & White Medical Center - Hillcrest",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/74-1161944_BAYLOR%20SCOTT%20&%20WHITE%20HILLCREST%20BAPTIST%20MEDICAL%20CENTER_standardcharges.csv",
+   "street_address": "100 Hillcrest Medical Blvd",
+   "city": "Waco",
+   "state": "TX",
+   "zip_code": "76712",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1902123581.0",
+   "name": "Medical City Arlington",
+   "url": "https://medicalcityarlington.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "13155 Noel Rd. Suite 200",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75240.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1902366305",
+   "name": "Baylor Scott & White Medical Center - Austin",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/81-3040663_BAYLOR%20SCOTT%20&%20WHITE%20%20MEDICAL%20CENTER%20AT%20AUSTIN%20OAK%20HILL_standardcharges.csv",
+   "street_address": "5245 West US Highway 290 Service Rd",
+   "city": "Austin",
+   "state": "TX",
+   "zip_code": "78735",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1912336611.0",
+   "name": "Medical City Alliance",
+   "url": "https://medicalcityalliance.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "13155 Noel Rd. Suite 200",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75240.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1942795133",
+   "name": "ASCENSION SETON BASTROP",
+   "url": "https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx/741109643_ascension-seton-bastrop_standardcharges.xlsx",
+   "street_address": "630 HIGHWAY 71 W",
+   "city": "BASTROP",
+   "state": "TX",
+   "zip_code": "78602-4234",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1962504340",
+   "name": "Baylor Scott & White The Heart Hospital - Plano",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/41-2101361_THE%20HEART%20HOSPITAL%20BAYLOR%20PLANO_standardcharges.csv",
+   "street_address": "1100 Allied Dr",
+   "city": "Plano",
+   "state": "TX",
+   "zip_code": "75093",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1972640316",
+   "name": "Andrews Women's Hospital at Baylor Scott & White - Fort Worth",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/75-1008430_BAYLOR%20ALL%20SAINTS%20MEDICAL%20CENTER%20AT%20FORT%20WORTH_standardcharges.csv",
+   "street_address": "1400 8th Ave",
+   "city": "Fort Worth",
+   "state": "TX",
+   "zip_code": "76104",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1972709970",
+   "name": "The Hospitals of Providence East Campus",
+   "url": "https://www.thehospitalsofprovidence.com/docs/global/standard-charges/954537720_thehospitalsofprovidenceeastcampus_standardcharges.json?sfvrsn=2b76b1e7_4&download=true",
+   "street_address": "3280 Joe Battle Blvd.",
+   "city": "El Paso",
+   "state": "TX",
+   "zip_code": "79938",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1982024402.0",
+   "name": "Medical City Frisco",
+   "url": "https://medicalcityfrisco.com/about/legal/pricing-transparency-cms-required-file-of-standard-charges.dot",
+   "street_address": "13155 Noel Rd. Suite 200",
+   "city": "Dallas",
+   "state": "TX",
+   "zip_code": "75240.0",
+   "publish_date": "2021-01-01"
+  },
+  {
+   "npi_number": "1982920773",
+   "name": "Encompass Health Rehabilitation Hospital of Dallas",
+   "url": "https://encompasshealth.com/locations/dallasrehab/transparency-healthcare",
+   "street_address": "7930 NORTHAVEN RD",
+   "city": "DALLAS",
+   "state": "TX",
+   "zip_code": "75230",
+   "publish_date": null
+  },
+  {
+   "npi_number": "1992700983",
+   "name": "Baylor Scott & White Medical Center - Irving",
+   "url": "https://www.bswhealth.com/SiteCollectionDocuments/patient-tools/estimate-cost-of-care/75-2586857_BAYLOR%20SCOTT%20&%20WHITE%20%20MEDICAL%20CENTER%20AT%20IRVING_standardcharges.csv",
+   "street_address": "1901 N MacArthur Blvd",
+   "city": "Irving",
+   "state": "TX",
+   "zip_code": "75061",
+   "publish_date": null
+  }
+ ]
+}

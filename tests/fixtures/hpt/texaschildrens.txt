@@ -1,0 +1,23 @@
+location-name: Texas Children's Hospital
+source-page-url: https://www.texaschildrens.org/patients-families/insurance-and-billing/cost-estimate
+mrf-url: https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital_standardcharges.zip
+contact-name: Lauren Girardi
+contact-email: Lngirard@texaschildrens.org
+
+location-name: Texas Children's Hospital West Campus
+source-page-url: https://www.texaschildrens.org/patients-families/insurance-and-billing/cost-estimate
+mrf-url: https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital-west-campus_standardcharges.zip
+contact-name: Lauren Girardi
+contact-email: Lngirard@texaschildrens.org
+
+location-name: Texas Children's Hospital The Woodlands
+source-page-url: https://www.texaschildrens.org/patients-families/insurance-and-billing/cost-estimate
+mrf-url: https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital-the-woodlands_standardcharges.zip
+contact-name: Lauren Girardi
+contact-email: Lngirard@texaschildrens.org
+
+location-name: Texas Children's Hospital North Austin Campus
+source-page-url: https://www.texaschildrens.org/patients-families/insurance-and-billing/cost-estimate
+mrf-url: https://www.texaschildrens.org/sites/tc/files/uploads/documents/741100555_texas-childrens-hospital-north-austin-campus_standardcharges.zip
+contact-name: Lauren Girardi
+contact-email: Lngirard@texaschildrens.org

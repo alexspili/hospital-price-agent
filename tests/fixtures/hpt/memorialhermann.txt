@@ -1,0 +1,139 @@
+
+*********************************
+*                               *
+*  Instructions for viewing the * 
+*  price transparency files:    *
+*                               *
+*********************************
+
+For access to the price transparency files, copy this source-page-url and paste it into your internet browser:    
+https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+You will land on Memorial Hermann Health System's Price Transparency page. 
+See the Machine Readable Files.  
+Click the link associated with location of your choice to download a copy of the file.
+The downloaded file will appear in the upper right corner.  
+Open that file.  
+
+
+
+**********************************************
+*                                            *
+*  Centers for Medicare & Medicaid Services  *
+*  requires the following information to be  *
+*  available to the public:                  *
+*                                            *
+**********************************************
+
+location-name: Children's Memorial Hermann Hospital
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_childrens-memorial-hermann-hospital_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Cypress Hospital
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-cypress-hospital_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Greater Heights Hospital
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-greater-heights-hospital_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Katy Hospital
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-katy-hospital_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Memorial City Medical Center
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-memorial-city-medical-center_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Northeast Hospital
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-northeast-hospital_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Rehabilitation Hospital-Katy
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/263896170_memorial-hermann-katy-rehab_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Rockets Orthopedic Hospital
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-orthopedic-and-spine-hospital_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Pearland Hospital
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-pearland-hospital_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Southeast Hospital
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-southeast-hospital_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Southwest Hospital
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-southwest-hospital_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Sugar Land Hospital
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-sugar-land-hospital_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann-Texas Medical Center
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-texas-medical-center_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann The Woodlands Medical Center
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_memorial-hermann-the-woodlands-medical-center_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: TIRR Memorial Hermann
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_tirr-memorial-hermann-_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Imaging Center (Bellaire)
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_mhhs-opid-bellaire_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Imaging Center (Cypress)
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_mhhs-opid-cypress-ccc_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Imaging Center (Texas Medical Center)
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_mhhs-opid-hermann_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
+
+location-name: Memorial Hermann Imaging Center (Upper Kirby)
+source-page-url: https://memorialhermann.org/patients-visitors/patient-services/financial-care/financial-resources/cms-price-transparency-information
+mrf-url: https://memorialhermann.org/-/media/memorial-hermann/org/files/patients-and-visitors/cms-standard-hospital-charges/741152597_mhhs-opid-upper-kirby_standardcharges.ashx
+contact-name: Margaret Hamilton
+contact-email: MRFteam@memorialhermann.org
