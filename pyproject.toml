@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Find and compare hospital price transparency data near a ZIP code, showing every step."
 readme = "README.md"
 license = { text = "MIT" }
+authors = [{ name = "Alex Spiliotopoulos" }]
 requires-python = ">=3.11"
 dependencies = [
     "duckdb>=1.1",
