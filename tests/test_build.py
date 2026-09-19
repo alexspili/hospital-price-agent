@@ -1,3 +1,5 @@
+import subprocess
+import sys
 import threading
 from pathlib import Path
 
@@ -55,15 +57,23 @@ def test_failed_geocoding_is_not_the_same_as_skipping_it(tmp_path):
     build_database(tmp_path / "hpa.duckdb", str(FIXTURES / "hospitals.csv"), str(FIXTURES / "zcta.txt"), None, **SMALL)
 
 
-def test_database_held_open_elsewhere_is_not_replaced(tmp_path):
+def test_database_held_open_by_another_process_is_not_replaced(tmp_path):
+    # DuckDB shares one instance within a process, so the holder must be a real second
+    # process, as the server would be.
     db = tmp_path / "hpa.duckdb"
     build_database(db, str(FIXTURES / "hospitals.csv"), str(FIXTURES / "zcta.txt"), None, **SMALL)
-    holder = duckdb.connect(str(db))  # simulates the server owning the file
+    holder = subprocess.Popen(
+        [sys.executable, "-c", f"import duckdb, sys; c = duckdb.connect({str(db)!r}); print('held', flush=True); sys.stdin.readline()"],
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True,
+    )
     try:
+        assert holder.stdout.readline().strip() == "held"
         with pytest.raises(BuildFailed, match="open in another process"):
             build_database(db, str(FIXTURES / "hospitals.csv"), str(FIXTURES / "zcta.txt"), None, **SMALL)
     finally:
-        holder.close()
+        holder.stdin.write("\n")
+        holder.stdin.close()
+        holder.wait(timeout=10)
     assert [p.name for p in tmp_path.iterdir()] == ["hpa.duckdb"]
 
 
