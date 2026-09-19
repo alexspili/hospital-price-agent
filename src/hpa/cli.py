@@ -4,12 +4,23 @@ import argparse
 import sys
 from pathlib import Path
 
-from hpa import build, catalog, reference, store
+import httpx
+
+from hpa import build, catalog, geocode, reference, store
 from hpa.geo import KM_PER_MILE
 from hpa.hospitals import UnknownZip, find_hospitals
 
 
 def cmd_setup(args: argparse.Namespace) -> int:
+    try:
+        with build.setup_lock(Path(args.db)):
+            return _setup(args)
+    except build.SetupInProgress as e:
+        print(e, file=sys.stderr)
+        return 1
+
+
+def _setup(args: argparse.Namespace) -> int:
     with reference.client() as client:
         print("downloading CMS Hospital General Information and Census ZCTA gazetteer")
         hgi_csv = reference.fetch_cms_hospitals(client)
@@ -17,7 +28,11 @@ def cmd_setup(args: argparse.Namespace) -> int:
         coords_csv = None
         if not args.skip_geocoding:
             print("geocoding hospital street addresses with the Census Geocoder (about a minute)")
-            coords_csv, matched = reference.geocode_hospitals(client, hgi_csv)
+            try:
+                coords_csv, matched = reference.geocode_hospitals(client, hgi_csv)
+            except (geocode.GeocodeError, httpx.HTTPError) as e:
+                print(f"geocoding failed: {e}\nrerun later, or use --skip-geocoding for ZIP centroids only", file=sys.stderr)
+                return 1
             print(f"geocoded {matched:,} addresses")
 
     # Built in a temporary file and swapped in only if it checks out, so a bad download

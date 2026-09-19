@@ -25,9 +25,10 @@ def load_zcta(con, gazetteer_txt: str) -> int:
     """Load ZCTA centroids from the tab-separated Census gazetteer file.
 
     `radius_km` is the radius of a circle with the ZCTA's land area: a rough size for the
-    ZIP, used to bound distances for hospitals we can only place at the centroid and to
-    sanity-check geocoded points. The gazetteer pads its last column with spaces, so
-    everything is read as text and trimmed before casting.
+    ZIP, reported as the uncertainty for hospitals we can only place at the centroid and
+    used to sanity-check geocoded points. It is not a bound; ZIPs are not circles.
+    The gazetteer pads its last column with spaces, so everything is read as text and
+    trimmed before casting.
     """
     con.execute(
         """

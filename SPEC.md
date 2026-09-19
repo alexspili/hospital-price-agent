@@ -192,8 +192,10 @@ can open it, even read-only** (verified: the reader fails with a lock error). So
 - Fallback for tools that must read the file while the server is up: the server writes a
   read-only snapshot copy on a schedule (`EXPORT`/copy after each scan), and readers open
   that.
-- `hpa setup` builds a new database in a temporary file, validates it (row counts, spot
-  queries), and only then swaps it in with an atomic rename. A failed build leaves the
+- `hpa setup` holds an exclusive lock for its whole run (downloads through the final
+  rename), builds into a uniquely named temporary file, validates it (row counts, share of
+  hospitals located by address when geocoding was attempted), refuses to replace a
+  database another process has open, and only then swaps it in with an atomic rename. A failed build leaves the
   existing database untouched. Once price tables exist, `setup` refreshes only the
   reference tables inside a transaction; wiping caches is a separate, explicit `--reset`.
 
