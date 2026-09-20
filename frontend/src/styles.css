@@ -79,6 +79,8 @@ section > h2 {
   border: 1px solid var(--line); color: var(--muted); background: var(--card);
 }
 .tag.reviewed { color: var(--ok); border-color: #bfe0cd; }
+/* whose prices these are: a children's or psychiatric hospital, said plainly */
+.tag.kind { color: var(--unsure); border-color: #e3d6a8; background: #fdfaef; }
 
 .hospital { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--thin); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; }
 .hospital.ok { border-left-color: var(--ok); }

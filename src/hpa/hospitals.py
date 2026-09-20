@@ -9,6 +9,10 @@ from hpa.geo import HAVERSINE_SQL, haversine_km, zip_centroid
 # are included; which of them offer a given service is the catalog's concern.
 FEDERAL_TYPES = ("Acute Care - Veterans Administration", "Acute Care - Department of Defense")
 
+# Types whose prices need saying out loud: a knee MRI at a children's hospital is a
+# child's knee, and a reader comparing it with an adult hospital's price should know.
+GENERAL = "Acute Care Hospitals"
+
 # How a hospital's coordinate was obtained, best first. Unresolved hospitals are kept in
 # the table (so they can be reported) but never returned as "nearest".
 LOCATION_SOURCES = ("address", "zip", "unresolved")

@@ -11,6 +11,7 @@ import duckdb
 import httpx
 
 from hpa import build, catalog, client, demo, discovery, evaluate, export, geocode, llm, pipeline, reference, scan, store, targets
+from hpa import hospitals as hospitals_module
 from hpa.geo import KM_PER_MILE
 from hpa.hospitals import UnknownZip, find_hospitals, hospital_by_ccn
 
@@ -314,7 +315,9 @@ def print_hospital(h: dict, show_all: bool) -> None:
     if h["verdict"] == pipeline.NOT_SCANNED:
         print(f"\n{h['name']}: file located but not scanned yet (hpa scan)")
         return
-    print(f"\n{h['name']}  (file dated {h['file_date'] or '?'}; {(h['url'] or '')[:60]}…)")
+    kind = h.get("hospital_type")
+    label = f"  [{kind}]" if kind and kind != hospitals_module.GENERAL else ""
+    print(f"\n{h['name']}{label}  (file dated {h['file_date'] or '?'}; {(h['url'] or '')[:60]}…)")
     print(f"  verdict: {h['verdict']}" + (f" — {h['detail']}" if h["detail"] else ""))
     hl = h["headline"]
     if hl:

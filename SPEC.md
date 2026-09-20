@@ -20,7 +20,7 @@ Do not revisit these without asking.
 | Distribution | Public repo + hosted demo |
 | Model | Claude API with tool use + structured output, **for the fuzzy steps only**. Orchestration is plain Python. |
 | Store | DuckDB, file-backed, committed empty. One process owns the file at a time (see Process model). |
-| Hosted demo | Cache-first: pre-scanned Houston ZIPs (77030, 77380, 77024) answer instantly; "run live" is opt-in |
+| Hosted demo | Cache-first: pre-scanned Houston ZIPs (77030, 77380, 77339) answer instantly; "run live" is opt-in behind a shared PIN |
 | Cadence | Built in public: repo goes public at milestone 1 and grows weekly |
 
 ### Where Claude is used, and where it is not
@@ -115,7 +115,7 @@ One entry per CMS service, in `src/hpa/data/shoppable_services.json`:
 | `notes` | how hospital files actually represent it (global vs facility code, add-on codes, OB packages → DRGs) |
 | `expected_billing_class`, `expected_setting` | what a comparable hospital row should say (added at milestone 3, from the discovery findings) |
 | `alternate_codes` | codes hospitals substitute (93005 for 93000) (milestone 3) |
-| `hospital_types` | which hospital types plausibly offer it, to keep children's hospitals out of adult searches and psychiatric hospitals in psychotherapy searches (milestone 3) |
+| `hospital_types` | **Not built, and deliberately so (2026-09-20).** The intent was to exclude, say, children's hospitals from adult searches. But Texas Children's publishes a real price for a knee MRI, and hiding it would be less honest than saying whose price it is: every result now carries the hospital's CMS type, and a type other than "Acute Care Hospitals" is labelled wherever the result appears. Excluding by type would also need per-service judgement on all 70 entries, which is review work, not code. Revisit if labelling proves not to be enough |
 | `reviewed` | mapping review evidence: reviewer, date, checksums (milestone 4) |
 
 A misspelling is a string-distance problem, not a question of meaning, so `resolve` fixes
@@ -167,7 +167,8 @@ charge its own identity:
 | `items` | extraction + item_id | description, drug unit and type, source row number or JSON path, `off_template_note` |
 | `item_codes` | extraction + item_id + code_type + code | one row per code on the item |
 | `charges` | extraction + charge_id | item_id, setting, billing class, modifiers, the four columns as DECIMAL (NULL when blank/N-A, with the raw text kept in `off_template_note`) |
-| `catalog_cache` | normalised query + model + prompt version + catalog version | verdict and entry chosen, or the clarification asked |
+| `llm_cache` | sha256 of model + per-call prompt version + call + input | every Claude answer: the entry chosen or clarification asked, the website found, the index entry picked. One table for all three calls rather than one per call, so a cached answer is a cached answer |
+| `llm_spend` | called_at | tokens and dollars per model call, from the usage the API reports. What the daily budget is measured against |
 
 One file shared by several hospitals is stored once and linked from `hospital_files` many
 times. Provenance is never overwritten.
@@ -202,9 +203,12 @@ can open it, even read-only** (verified: the reader fails with a lock error). So
   (asyncio + a thread pool for parsing).
 - While the server is running, the CLI sends queries to the server's HTTP API instead of
   opening the file. When no server is running, the CLI opens the file directly, read-only.
-- Fallback for tools that must read the file while the server is up: the server writes a
-  read-only snapshot copy on a schedule (`EXPORT`/copy after each scan), and readers open
-  that.
+- Fallback for tools that must read the file while the server is up: **replaced
+  (2026-09-20)** by two plainer things. Commands that only read go through the server's
+  API; commands that write stop with a message naming the process that holds the file. A
+  copy on demand is `hpa export-demo`, which is also what seeds the hosted demo. A
+  scheduled snapshot would have been a second source of truth that is always slightly
+  stale, for a case that turned out not to exist.
 - `hpa setup` holds an exclusive lock for its whole run (downloads through the final
   rename), builds into a uniquely named temporary file, validates it (row counts, share of
   hospitals located by address when geocoding was attempted), refuses to replace a

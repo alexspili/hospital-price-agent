@@ -24,6 +24,7 @@ export type HospitalResult = {
   name: string
   distance_km: number
   approximate: boolean
+  hospital_type?: string | null
   url: string | null
   file_date: string | null
   verdict: string

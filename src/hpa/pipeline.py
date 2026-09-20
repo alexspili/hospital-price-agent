@@ -94,6 +94,9 @@ def hospital_prices(con, service: catalog.Service, h: Hospital, disc: dict | Non
     who = discovery.short_name(h)
     out = {
         "ccn": h.ccn, "name": who, "distance_km": round(h.distance_km, 1), "approximate": h.approximate,
+        # Shown wherever the result is: a children's or psychiatric hospital publishes real
+        # prices, and hiding them would be less honest than saying whose prices they are.
+        "hospital_type": h.hospital_type,
         "url": (disc or {}).get("mrf_url"), "file_date": None, "verdict": status or NO_FILE,
         "detail": detail, "line_count": 0, "headline": None, "lines": [],
     }

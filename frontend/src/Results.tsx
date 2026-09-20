@@ -55,7 +55,12 @@ function Hospital({ hospital: h }: { hospital: HospitalResult }) {
   return (
     <article className={`hospital ${verdictClass(h.verdict)}`}>
       <h3>
-        {h.name}
+        <span>
+          {h.name}
+          {h.hospital_type && h.hospital_type !== 'Acute Care Hospitals' && (
+            <span className="tag kind">{h.hospital_type}</span>
+          )}
+        </span>
         <span className="distance">{miles(h.distance_km, h.approximate)}</span>
       </h3>
       <p className="verdict">
