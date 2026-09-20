@@ -328,3 +328,24 @@ def test_the_client_ip_comes_from_the_proxy_only_when_trusted(api):
 
     assert server._client_ip(FakeRequest(), Settings(trust_proxy=True)) == "203.0.113.9"
     assert server._client_ip(FakeRequest(), Settings(trust_proxy=False)) == "10.0.0.1"
+
+
+# --- nothing unauthenticated may spend money --------------------------------------------
+
+def no_claude_please(*a, **k):
+    raise AssertionError("an unauthenticated request must never reach Claude")
+
+
+def test_a_cache_first_run_never_calls_claude(con, monkeypatch):
+    """The PIN gates scanning; it must also gate spending. Otherwise a stranger could
+    burn the daily model budget by typing ambiguous service names."""
+    monkeypatch.setattr(pipeline.llm, "have_api_key", lambda: True)
+    monkeypatch.setattr(pipeline.llm, "Claude", no_claude_please)
+    with serving(con, monkeypatch, live_pin="hunter2") as api:
+        monkeypatch.setattr(pipeline.llm, "have_api_key", lambda: True)  # serving() reset it
+        body = api.post("/api/runs", json={"zip": "77030", "service": "knee mri with contrast"}).json()
+        assert body["status"] == "needs_clarification" and body["asked_claude"] is False
+        assert body["candidates"]  # the resolver's own answer, for free
+
+        priced = api.get("/api/prices", params={"service": "knee mri with contrast", "zip": "77030"}).json()
+        assert priced["status"] == "needs_clarification" and priced["note"] is None

@@ -235,7 +235,7 @@ def cmd_prices(args: argparse.Namespace) -> int:
     url = client.running_server()
     if url:
         try:
-            payload = client.get_prices(url, args.service, args.zip, args.ccn, args.limit, args.all, args.no_llm)
+            payload = client.get_prices(url, args.service, args.zip, args.ccn, args.limit, args.all)
         except (httpx.HTTPError, RuntimeError) as e:
             print(e, file=sys.stderr)
             return 1

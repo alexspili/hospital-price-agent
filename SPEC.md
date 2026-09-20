@@ -276,6 +276,9 @@ Milestone 7 only. Do not build these earlier.
 - Scans take minutes. Run them as tasks in the writer process with progress over SSE,
   never inside a request cycle.
 - Landing state is pre-scanned Houston ZIPs; a live scan is an explicit opt-in.
+- The server calls Claude only on a live run, which has already passed the PIN and the
+  rate limit. Cache-first runs and `/api/prices` are deterministic and free: an
+  unauthenticated visitor can never cause a model call, only the resolver's own verdict.
 - Per-IP rate limit, a hard daily API spend cap, and the per-run download cap. Spend is
   measured from the tokens the API reports and recorded in `llm_spend`; past the cap the
   deterministic pipeline carries on without Claude rather than failing.

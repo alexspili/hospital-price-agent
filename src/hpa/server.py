@@ -143,8 +143,13 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
         except UnknownZip as e:
             raise HTTPException(400, str(e))
         try:
+            # Claude is consulted only on a live run, which has already passed the PIN
+            # and the rate limit. A cache-first run costs nothing and must stay that way:
+            # otherwise a stranger could spend the daily budget by typing ambiguous
+            # service names at a page that asks them for nothing.
             service, r, note = pipeline.resolve_service(req.service or "", service_id=req.service_id,
-                                                        con=app.state.con, daily_cap_usd=s.daily_cap_usd)
+                                                        con=app.state.con, use_llm=req.live,
+                                                        daily_cap_usd=s.daily_cap_usd)
         except ValueError as e:
             raise HTTPException(400, str(e))
         if service is None:
@@ -207,13 +212,17 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
 
     @app.get("/api/prices")
     def prices(service: str, zip: Annotated[list[str] | None, Query()] = None,
-               ccn: str | None = None, limit: int = 5, all: bool = False, no_llm: bool = False) -> dict:
+               ccn: str | None = None, limit: int = 5, all: bool = False) -> dict:
         """Prices from what is already stored: the read path `hpa prices` uses while the
-        server holds the database."""
+        server holds the database.
+
+        Deterministic only: this endpoint is public and unauthenticated, so it never
+        spends money. An unclear service name comes back as the resolver's own verdict
+        and candidates, which is an answer, not a failure."""
         try:
             return pipeline.prices_payload(app.state.con, service, zip or [], ccn, limit,
                                            shown_lines=None if all else pipeline.SHOWN_LINES,
-                                           use_llm=not no_llm, llm_con=app.state.con)
+                                           use_llm=False)
         except UnknownZip as e:
             raise HTTPException(400, str(e))
 

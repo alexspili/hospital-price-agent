@@ -57,15 +57,15 @@ def running_server(path: Path = MARKER, timeout: float = 1.0) -> str | None:
 
 
 def get_prices(url: str, service: str, zips: list[str], ccn: str | None, limit: int,
-               show_all: bool = False, no_llm: bool = False) -> dict:
+               show_all: bool = False) -> dict:
+    """The server resolves deterministically (its endpoint is public), so an unclear
+    name comes back as candidates rather than a Claude answer."""
     params: list[tuple[str, str]] = [("service", service), ("limit", str(limit))]
     params += [("zip", z) for z in zips or []]
     if ccn:
         params.append(("ccn", ccn))
     if show_all:
         params.append(("all", "1"))
-    if no_llm:
-        params.append(("no_llm", "1"))
     r = httpx.get(url + "/api/prices", params=params, timeout=60)
     if r.status_code >= 400:
         raise RuntimeError(r.json().get("detail", r.text))

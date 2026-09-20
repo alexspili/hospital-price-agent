@@ -60,7 +60,9 @@ cd frontend && npm test        # the trace reducer; npm run dev proxies /api to 
 - Tests use fixtures cut from real files; when a real file breaks something, add the excerpt.
 - Commit messages: plain, what and why. Push to `main` is fine; CI runs pytest on 3.11/3.13.
 - Findings go in `docs/houston-compliance-findings.md` with the command that reproduces them.
-- A run is cache-first unless it asks to be live; only a live run touches the network.
+- A run is cache-first unless it asks to be live; only a live run touches the network,
+  and only a live run may call Claude — the public endpoints are deterministic, so a
+  visitor with no PIN can never spend money.
   The caps live in `settings.py` and are off unless the environment sets them, so local
   behaviour never depends on them.
 - The page computes nothing: verdicts and prices are `pipeline.hospital_prices` dicts, and
