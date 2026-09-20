@@ -98,3 +98,34 @@ def test_no_match_returns_empty():
     r = catalog.resolve("xyzzy")
     assert r.verdict == NOT_IN_CATALOG
     assert catalog.search("xyzzy") == []
+
+
+# --- misspellings: a string-distance problem, fixed without a model ----------------------
+
+def test_a_misspelling_resolves_and_says_what_it_read():
+    r = catalog.resolve("colonscopy")
+    assert r.verdict == catalog.SELECTED and r.service.id == "cpt-45378"
+    assert r.corrections == (("colonscopy", "colonoscopy"),)
+
+
+def test_a_misspelling_can_land_on_several_entries_and_still_asks():
+    r = catalog.resolve("mamogram")
+    assert r.verdict == catalog.AMBIGUOUS
+    assert r.corrections == (("mamogram", "mammogram"),)
+    assert len(r.candidates) >= 2  # it asks which, rather than picking one
+
+
+def test_a_word_nobody_uses_stays_unmatched():
+    r = catalog.resolve("xyzzy")
+    assert r.verdict == catalog.NOT_IN_CATALOG and not r.corrections
+
+
+def test_short_words_are_never_corrected():
+    # "cbc" -> "cmp" or "ekg" -> "eeg" would be a different test entirely; three letters
+    # carry too little signal, so they are left alone.
+    assert catalog.correct_tokens({"cbd", "eeg"}, catalog.load()) == {}
+
+
+def test_a_correct_query_is_never_rewritten():
+    for query in ("knee mri", "colonoscopy", "cbc", "screening mammogram", "45378"):
+        assert catalog.resolve(query).corrections == ()

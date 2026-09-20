@@ -54,7 +54,10 @@ cd frontend && npm test        # the trace reducer; npm run dev proxies /api to 
 - Never invent a price; every number keeps its source ref. Verdicts say "unknown" rather
   than compare across missing context. A reviewed billing class is marked "(per review)".
 - Claude is called only at the three fuzzy steps, may only choose among candidates the
-  code produced, and every call is cached in `llm_cache` by model + prompt version + input.
+  code produced, and every call is cached in `llm_cache` by model + per-call prompt
+  version + input. When the resolver finds nothing at all, the whole 70-service list
+  becomes the candidate set (live runs only, ~$0.043 a call); typos are fixed before that
+  by rapidfuzz, free.
 - `ANTHROPIC_API_KEY` lives in `.env` (gitignored). Never write a key into `.env.example`.
 - Bump `mrf.PARSER_VERSION` when the parser's output changes; extractions are keyed by it.
 - Tests use fixtures cut from real files; when a real file breaks something, add the excerpt.

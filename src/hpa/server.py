@@ -163,7 +163,7 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
         run = Run(id=secrets.token_hex(4), zip=req.zip, query=req.service or service.name,
                   service=pipeline.service_dict(service), loop=app.state.loop, live=req.live)
         app.state.runs[run.id] = run
-        app.state.pool.submit(_execute, app, run, service, req.limit)
+        app.state.pool.submit(_execute, app, run, service, req.limit, r.corrections)
         return {"status": "started", "run_id": run.id, "service": run.service, "live": run.live,
                 "resolver": None if r.verdict == catalog.SELECTED else {"verdict": r.verdict, "reason": r.reason},
                 "note": note}
@@ -273,7 +273,7 @@ def _client_ip(request: Request, settings: settings_module.Settings) -> str:
     return request.client.host if request.client else "unknown"
 
 
-def _execute(app: FastAPI, run: Run, service, limit: int) -> None:
+def _execute(app: FastAPI, run: Run, service, limit: int, corrections: tuple = ()) -> None:
     """The run itself, on a worker thread. Failures are reported, never raised into the
     request that started it."""
     s = app.state.settings
@@ -281,6 +281,7 @@ def _execute(app: FastAPI, run: Run, service, limit: int) -> None:
         hospitals = pipeline.run_search(
             app.state.con, run.zip, service, run.emit, query=run.query, limit=limit, live=run.live,
             max_downloads=s.max_downloads, daily_cap_usd=s.daily_cap_usd, keep_downloads=s.keep_downloads,
+            corrections=corrections,
         )
         run.result = {"zip": run.zip, "service": run.service, "live": run.live, "hospitals": hospitals}
         run.status = "done"

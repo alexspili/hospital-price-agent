@@ -104,6 +104,8 @@ def cmd_catalog(args: argparse.Namespace) -> int:
         return 0
 
     r = catalog.resolve(args.query, services)
+    for typed, known in r.corrections:
+        print(f'read "{typed}" as "{known}"')
     if r.verdict == catalog.SELECTED:
         s = r.service
         print(f"{r.verdict}: {s.name} ({s.code_list})  [{'reviewed' if s.reviewed else 'unreviewed'}]")
@@ -255,6 +257,8 @@ def money(v) -> str:
 
 
 def print_prices(payload: dict, show_all: bool) -> int:
+    for typed, known in payload.get("corrections") or []:
+        print(f'read "{typed}" as "{known}"')
     if payload.get("resolver"):
         print(f"resolver: {payload['resolver']['verdict']}: {payload['resolver']['reason']}")
     note = payload.get("note")

@@ -63,3 +63,39 @@ def test_confirm_service_picks_only_among_candidates():
     fake = FakeClient({"id": "cpt-99999", "question": "Which MRI: brain, knee or lower back?", "why": "several fit"})
     svc, why = Claude(fake).confirm_service("mri", res)
     assert svc is None and why.startswith("Which MRI")
+
+
+# --- lay phrasing: the whole list becomes the candidate set ------------------------------
+
+def test_with_no_candidates_the_whole_catalog_is_offered():
+    from hpa import catalog
+
+    services = catalog.load()
+    # "stomach" or "knee" would narrow it; these words appear nowhere in the catalog.
+    r = catalog.resolve("camera down my throat", services)
+    assert not r.candidates
+
+    fake = FakeClient({"id": "cpt-43235", "question": None, "why": "an upper GI endoscopy goes down the throat"})
+    chosen, why = Claude(fake).confirm_service("camera down my throat", r, catalogue=services)
+    prompt = fake.calls[0]["messages"][0]["content"]
+    assert "the whole list of CMS's 70 shoppable services follows" in prompt
+    assert prompt.count('"id"') >= 70  # every entry travelled as a candidate
+    assert chosen is not None and chosen.id == "cpt-43235"
+
+
+def test_it_may_still_only_pick_an_entry_that_exists():
+    from hpa import catalog
+
+    services = catalog.load()
+    r = catalog.resolve("camera down my throat", services)
+    fake = FakeClient({"id": "cpt-99999", "question": None, "why": "invented"})
+    chosen, why = Claude(fake).confirm_service("camera down my throat", r, catalogue=services)
+    assert chosen is None  # an id outside the candidates is not a choice
+
+
+def test_an_unmatched_query_asks_nothing_when_no_catalogue_is_offered():
+    from hpa import catalog
+
+    fake = FakeClient({"id": None, "question": "which service?", "why": ""})
+    chosen, why = Claude(fake).confirm_service("xyzzy", catalog.resolve("xyzzy"))
+    assert chosen is None and fake.calls == []  # the model was never asked

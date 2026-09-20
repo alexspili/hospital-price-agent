@@ -130,9 +130,13 @@ def resolve_service(query: str, *, service_id: str | None = None, con=None, use_
     r = catalog.resolve(query, services)
     if r.verdict == catalog.SELECTED:
         return r.service, r, None
-    if use_llm and r.candidates and llm.have_api_key():
+    if use_llm and llm.have_api_key():
+        # With candidates, Claude settles them. With none — the query shares no word with
+        # any entry — the whole list is the candidate set, so it still only ever picks an
+        # entry that exists, or asks.
         try:
-            service, why = llm.Claude(llm.make_client(), con, daily_cap_usd=daily_cap_usd).confirm_service(query, r)
+            service, why = llm.Claude(llm.make_client(), con, daily_cap_usd=daily_cap_usd).confirm_service(
+                query, r, catalogue=None if r.candidates else services)
         except llm.SpendCapReached:
             return None, r, None  # the resolver's own verdict and candidates still stand
         return service, r, why
@@ -146,7 +150,8 @@ def prices_payload(con, query: str, zips, ccn, limit, *, service_id=None, shown_
     from hpa import targets
 
     service, r, note = resolve_service(query, service_id=service_id, con=llm_con, use_llm=use_llm)
-    out = {"resolver": None if r.verdict == catalog.SELECTED else {"verdict": r.verdict, "reason": r.reason}, "note": note}
+    out = {"resolver": None if r.verdict == catalog.SELECTED else {"verdict": r.verdict, "reason": r.reason},
+           "note": note, "corrections": [list(c) for c in r.corrections]}
     if service is None:
         out.update(status="needs_clarification", candidates=[service_dict(c) for c in r.candidates])
         return out
@@ -182,7 +187,7 @@ def run_search(con, zip_code: str, service: catalog.Service, emit: Emit, *, quer
                limit: int = 5, fresh: bool = False, force: bool = False, workers: int = 5,
                use_llm: bool = True, shown_lines: int | None = SHOWN_LINES, live: bool = True,
                max_downloads: int | None = None, daily_cap_usd: float | None = None,
-               keep_downloads: bool = True) -> list[dict]:
+               keep_downloads: bool = True, corrections: tuple = ()) -> list[dict]:
     """Nearest hospitals -> located file -> scanned rows -> prices, hospitals in parallel.
 
     Every step reports through `emit`, and each hospital's result is emitted as soon as it
@@ -196,6 +201,8 @@ def run_search(con, zip_code: str, service: catalog.Service, emit: Emit, *, quer
     for h in hospitals:
         miles = h.distance_km / KM_PER_MILE
         emit("trace", ccn=h.ccn, text=f"  {'~' if h.approximate else ''}{miles:.1f} mi  {discovery.short_name(h)}")
+    for typed, known in corrections:
+        emit("trace", text=f'read "{typed}" as "{known}"')
     reviewed = "reviewed" if service.reviewed else "unreviewed"
     emit("trace", text=f'"{query or service.name}" -> {service.name} ({service.code_list})  [mapping {reviewed}]')
 

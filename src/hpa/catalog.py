@@ -7,7 +7,7 @@ says how sure it is; confirming a selection with the user (or Claude) is a later
 
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from importlib import resources
 
 
@@ -40,6 +40,10 @@ class Resolution:
     service: Service | None
     candidates: tuple[Service, ...] = ()
     reason: str = ""
+    # Spellings the resolver read as something else, e.g. (("colonscopy", "colonoscopy"),).
+    # Always shown to the reader: a corrected query is an answer to a question nobody
+    # asked, unless it says so.
+    corrections: tuple[tuple[str, str], ...] = ()
 
 
 def load() -> list[Service]:
@@ -95,8 +99,57 @@ def _haystack(s: Service) -> set[str]:
     return _tokens(s.name) | _tokens(" ".join(s.aliases))
 
 
+# A misspelling is a string-distance problem, not a question of meaning, so it is fixed
+# here rather than by a model. Only close, long-enough words qualify: "mri" must never
+# become "mra", and a word nobody in the catalog uses stays unmatched.
+TYPO_SCORE = 87
+TYPO_MIN_LENGTH = 5
+
+
+def vocabulary(services: list[Service]) -> set[str]:
+    words: set[str] = set()
+    for s in services:
+        words |= _haystack(s)
+    return words
+
+
+def correct_tokens(tokens: set[str], services: list[Service]) -> dict[str, str]:
+    """{typed word: the catalog's word}, for words the catalog does not contain."""
+    from rapidfuzz import fuzz, process
+
+    known = vocabulary(services)
+    fixes: dict[str, str] = {}
+    for token in tokens - known:
+        if len(token) < TYPO_MIN_LENGTH:
+            continue
+        match = process.extractOne(token, known, scorer=fuzz.ratio, score_cutoff=TYPO_SCORE)
+        if match:
+            fixes[token] = match[0]
+    return fixes
+
+
 def resolve(query: str, services: list[Service] | None = None) -> Resolution:
+    """Deterministic: an entry, or a stated reason why not. Never invents a code."""
     services = services if services is not None else load()
+    r = _resolve(query, services)
+    if r.verdict != NOT_IN_CATALOG or r.candidates:
+        return r
+    # Nothing matched at all. Before giving up, try reading the unknown words as the
+    # catalog's own, and resolve again with what that says.
+    tokens, _, _ = parse_query(query)
+    fixes = correct_tokens(tokens, services)
+    if not fixes:
+        return r
+    reread = query.lower()
+    for typed, known in fixes.items():
+        reread = re.sub(rf"\b{re.escape(typed)}\b", known, reread)
+    corrected = _resolve(reread, services)
+    if corrected.verdict == NOT_IN_CATALOG and not corrected.candidates:
+        return r  # the correction did not help; report the original miss
+    return replace(corrected, corrections=tuple(fixes.items()))
+
+
+def _resolve(query: str, services: list[Service]) -> Resolution:
     query = query.strip()
     for s in services:
         if any(code == query for _, code in s.codes):

@@ -118,6 +118,19 @@ One entry per CMS service, in `src/hpa/data/shoppable_services.json`:
 | `hospital_types` | which hospital types plausibly offer it, to keep children's hospitals out of adult searches and psychiatric hospitals in psychotherapy searches (milestone 3) |
 | `reviewed` | mapping review evidence: reviewer, date, checksums (milestone 4) |
 
+A misspelling is a string-distance problem, not a question of meaning, so `resolve` fixes
+it without a model: when nothing matches at all, unknown words of five letters or more are
+read against the catalog's own vocabulary (rapidfuzz, ratio >= 87) and the query is
+resolved again. The correction travels on the `Resolution` and is always shown
+("read 'colonscopy' as 'colonoscopy'"). Three-letter words are never corrected: `cbc`,
+`ekg` and `cmp` are different tests, not typos of each other.
+
+When even that finds nothing — lay phrasing such as "camera down my throat", which shares
+no word with any entry — a **live** run may pass the whole list of 70 as the candidate
+set, so the rule is unchanged: Claude picks an entry that exists, or asks. Measured cost:
+~$0.043 a call (about 8,000 input tokens), against ~$0.01-0.02 when the resolver has
+already narrowed it. Cached like every other call, and never reachable without the PIN.
+
 `resolve(query)` is deterministic and returns a verdict with candidates: `selected`,
 `ambiguous` (ties; ask), `unsupported variant` (the service exists but not in the variant
 asked for; never substitute a different organ), `needs clarification` (the query asks for

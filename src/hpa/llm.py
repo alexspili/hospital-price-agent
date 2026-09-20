@@ -17,7 +17,10 @@ from hpa.discovery import HptEntry
 from hpa.hospitals import Hospital
 
 MODEL = "claude-opus-5"
-PROMPT_VERSION = "1"
+# Per call, so changing one prompt does not throw away the answers already bought for the
+# other two (SPEC "Caching": cache keys include versions).
+PROMPT_VERSIONS = {"website": "1", "pick": "1", "confirm": "2"}
+PROMPT_VERSION = "1"  # kept for the llm_cache rows written before the split
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
 
 # USD per million tokens, first-party Claude API rates. Cache reads are a tenth of input
@@ -109,7 +112,8 @@ class Claude:
 
     def _cached(self, fn: str, payload: dict, run):
         self.fn = fn
-        key = hashlib.sha256(json.dumps([MODEL, PROMPT_VERSION, fn, payload], sort_keys=True).encode()).hexdigest()
+        version = PROMPT_VERSIONS.get(fn, PROMPT_VERSION)
+        key = hashlib.sha256(json.dumps([MODEL, version, fn, payload], sort_keys=True).encode()).hexdigest()
         if self.con is not None:
             row = self.con.execute("SELECT output FROM llm_cache WHERE key = ?", [key]).fetchone()
             if row:
@@ -118,7 +122,7 @@ class Claude:
         if self.con is not None:
             self.con.execute(
                 "INSERT INTO llm_cache VALUES (?, ?, ?, ?, ?, now())",
-                [key, MODEL, PROMPT_VERSION, json.dumps(payload, sort_keys=True), json.dumps(out)],
+                [key, MODEL, version, json.dumps(payload, sort_keys=True), json.dumps(out)],
             )
         return out, False
 
@@ -170,24 +174,38 @@ class Claude:
         domain = (out.get("domain") or "").lower().removeprefix("https://").removeprefix("http://").strip("/ ")
         return (domain or None), why
 
-    def confirm_service(self, query: str, resolution) -> tuple[object | None, str]:
+    def confirm_service(self, query: str, resolution, catalogue: list | None = None) -> tuple[object | None, str]:
         """The resolver could not settle the query. Ask Claude to pick among its candidates
         (never outside them) or to phrase the clarifying question. Returns (service, why or
-        question)."""
-        cands = list(resolution.candidates)
+        question).
+
+        `catalogue` is passed when the resolver found nothing that shares a word with the
+        query — lay phrasing like "stomach camera". The whole list then becomes the
+        candidates, so the rule is unchanged: Claude chooses an entry that exists, or asks.
+        """
+        cands = list(resolution.candidates) or list(catalogue or [])
         if not cands:
             return None, resolution.reason
+        narrowed = bool(resolution.candidates)
         payload = {
             "query": query,
-            "resolver": {"verdict": resolution.verdict, "reason": resolution.reason},
+            "resolver": {"verdict": resolution.verdict, "reason": resolution.reason, "narrowed": narrowed},
             "candidates": [{"id": c.id, "name": c.name, "codes": c.code_list, "qualifiers": c.qualifiers, "aliases": list(c.aliases)} for c in cands],
         }
+        opening = (
+            "A deterministic matcher narrowed it to these entries of CMS's list of 70 shoppable "
+            "services but could not settle it."
+            if narrowed else
+            "A deterministic matcher found no entry sharing a word with it, so the whole list of "
+            "CMS's 70 shoppable services follows. The user may have used everyday words for a "
+            "procedure, or may have asked for something the list does not cover at all."
+        )
         prompt = (
-            "A user typed a procedure name. A deterministic matcher narrowed it to these entries of "
-            "CMS's list of 70 shoppable services but could not settle it. If exactly one entry is what "
+            "A user typed a procedure name. " + opening + " If exactly one entry is what "
             "the user plainly means, return its id. If the user asked for a variant the list does not "
-            "have, or the words fit several entries, return null and a one-sentence question to ask "
-            "the user. Never pick an entry that is not in the candidates.\n\n" + json.dumps(payload, indent=1)
+            "have, or the words fit several entries, or you are not sure, return null and a "
+            "one-sentence question to ask the user. Never pick an entry that is not in the "
+            "candidates, and never guess.\n\n" + json.dumps(payload, indent=1)
         )
         out, cached = self._cached("confirm", payload, lambda: self._json_call(prompt, CONFIRM_SCHEMA))
         suffix = " [cached]" if cached else ""
