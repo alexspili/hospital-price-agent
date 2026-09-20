@@ -20,6 +20,7 @@ SCHEMA = """
 CREATE TABLE IF NOT EXISTS sources (
     name VARCHAR, url VARCHAR, fetched_at TIMESTAMP, note VARCHAR
 );
+
 CREATE TABLE IF NOT EXISTS hospital_files (
     ccn VARCHAR, name VARCHAR, discovered_at TIMESTAMP, ok BOOLEAN, method VARCHAR,
     domain VARCHAR, index_url VARCHAR, location_name VARCHAR, source_page_url VARCHAR,
@@ -61,6 +62,16 @@ CREATE TABLE IF NOT EXISTS llm_cache (
 );
 """
 
+# Columns added after the first databases were built. They arrive by migration rather
+# than in the CREATEs above, so an existing store keeps its rows and gains the columns —
+# and a rebuild, which carries the old tables over wholesale, must migrate them again.
+MIGRATIONS = """
+ALTER TABLE sources ADD COLUMN IF NOT EXISTS release_date VARCHAR;
+ALTER TABLE sources ADD COLUMN IF NOT EXISTS rows BIGINT;
+ALTER TABLE sources ADD COLUMN IF NOT EXISTS sha256 VARCHAR;
+ALTER TABLE sources ADD COLUMN IF NOT EXISTS size_bytes BIGINT;
+"""
+
 SUCCESS_TTL = timedelta(days=30)
 FAILURE_TTL = timedelta(days=7)
 
@@ -73,7 +84,46 @@ def connect(path: Path | str = DEFAULT_DB, read_only: bool = False) -> duckdb.Du
     con = duckdb.connect(str(path), read_only=read_only)
     if not read_only:
         con.execute(SCHEMA)
+        migrate(con)
     return con
+
+
+def migrate(con) -> None:
+    """Bring an existing store up to the current shape. Safe to run repeatedly."""
+    con.execute(MIGRATIONS)
+
+
+def save_sources(con, records: list[dict]) -> None:
+    """Where the reference data came from, one row per dataset per fetch. Never updated:
+    a rebuild appends, so the provenance of what you had before is still there."""
+    for r in records:
+        con.execute(
+            "INSERT INTO sources (name, url, fetched_at, note, release_date, rows, sha256, size_bytes) "
+            "VALUES (?, ?, now(), ?, ?, ?, ?, ?)",
+            [r["name"], r.get("url"), r.get("note", ""), r.get("release_date"),
+             r.get("rows"), r.get("sha256"), r.get("size_bytes")],
+        )
+
+
+SOURCE_COLUMNS = ("name", "url", "fetched_at", "note", "release_date", "rows", "sha256", "size_bytes")
+
+
+def sources(con) -> list[dict]:
+    """The newest row per dataset. Counts printed anywhere come from here, never from a
+    number typed into the code (SPEC "Behaviour rules").
+
+    A database built before the provenance columns existed is read here too: it is only
+    migrated when something opens it for writing, and a read-only reader should still get
+    whatever rows it has.
+    """
+    have = {c[0] for c in con.execute("DESCRIBE sources").fetchall()}
+    columns = [c for c in SOURCE_COLUMNS if c in have]
+    rows = con.execute(f"""
+        SELECT {", ".join(columns)} FROM sources
+        QUALIFY row_number() OVER (PARTITION BY name ORDER BY fetched_at DESC) = 1
+        ORDER BY name
+    """).fetchall()
+    return [{**{k: None for k in SOURCE_COLUMNS}, **dict(zip(columns, r))} for r in rows]
 
 
 def save_discovery(con, d) -> None:

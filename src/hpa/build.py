@@ -53,6 +53,7 @@ def build_database(
     hgi_csv: str,
     zcta_txt: str,
     coords_csv: str | None,
+    sources: list[dict] | None = None,
     min_zips: int = 30_000,
     min_hospitals: int = 4_000,
     min_address_share: float = 0.5,
@@ -76,6 +77,11 @@ def build_database(
             zips = load_zcta(con, zcta_txt)
             hospitals = load_hospitals(con, hgi_csv, coords_csv)
             carried = _carry_over(con, db)
+            # The carry-over restores the old tables wholesale, including their old shape,
+            # so migrate again before writing. Provenance then accumulates rather than
+            # being replaced: an earlier build's sources are still there.
+            store.migrate(con)
+            store.save_sources(con, _with_row_counts(sources or [], zips, hospitals))
             counts = location_counts(con)
             if zips < min_zips or hospitals < min_hospitals:
                 raise BuildFailed(f"implausible row counts: {zips} ZIPs, {hospitals} hospitals")
@@ -98,6 +104,13 @@ def build_database(
             tmp.unlink()
         raise
     return {"zips": zips, "hospitals": hospitals, "rejected_geocodes": rejected, "carried_tables": carried, **counts}
+
+
+def _with_row_counts(sources: list[dict], zips: int, hospitals: int) -> list[dict]:
+    """The row count belongs to the dataset that produced it, so the number printed later
+    is the number that was actually loaded."""
+    rows = {"CMS Hospital General Information": hospitals, "Census ZCTA gazetteer": zips}
+    return [{**s, "rows": s.get("rows") or rows.get(s["name"])} for s in sources]
 
 
 def _carry_over(con, old_db: Path) -> list[str]:

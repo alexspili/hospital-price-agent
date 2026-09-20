@@ -45,24 +45,27 @@ def cmd_setup(args: argparse.Namespace) -> int:
 
 
 def _setup(args: argparse.Namespace) -> int:
+    sources = []
     with reference.client() as client:
         print("downloading CMS Hospital General Information and Census ZCTA gazetteer")
-        hgi_csv = reference.fetch_cms_hospitals(client)
-        zcta_txt = reference.fetch_zcta_gazetteer(client)
+        hgi_csv, hgi_source = reference.fetch_cms_hospitals(client)
+        zcta_txt, zcta_source = reference.fetch_zcta_gazetteer(client)
+        sources += [hgi_source, zcta_source]
         coords_csv = None
         if not args.skip_geocoding:
             print("geocoding hospital street addresses with the Census Geocoder (about a minute)")
             try:
-                coords_csv, matched = reference.geocode_hospitals(client, hgi_csv)
+                coords_csv, matched, geo_source = reference.geocode_hospitals(client, hgi_csv)
             except (geocode.GeocodeError, httpx.HTTPError) as e:
                 print(f"geocoding failed: {e}\nrerun later, or use --skip-geocoding for ZIP centroids only", file=sys.stderr)
                 return 1
+            sources.append(geo_source)
             print(f"geocoded {matched:,} addresses")
 
     # Built in a temporary file and swapped in only if it checks out, so a bad download
     # never costs you the database you had.
     try:
-        r = build.build_database(Path(args.db), str(hgi_csv), str(zcta_txt), coords_csv and str(coords_csv))
+        r = build.build_database(Path(args.db), str(hgi_csv), str(zcta_txt), coords_csv and str(coords_csv), sources)
     except Exception as e:
         print(f"setup failed, existing database left untouched: {e}", file=sys.stderr)
         return 1
@@ -72,7 +75,27 @@ def _setup(args: argparse.Namespace) -> int:
         f"({r['rejected_geocodes']} geocodes rejected as too far from their ZIP); "
         f"{r['unresolved']} unresolved (excluded from results)"
     )
+    con = store.connect(args.db, read_only=True)
+    print_sources(store.sources(con))
     return 0
+
+
+def print_sources(rows: list[dict]) -> None:
+    """Where the reference data came from. Every count the tool prints traces back here."""
+    if not rows:
+        print("no reference-data provenance recorded; rerun `hpa setup` to record it")
+        return
+    print("reference data:")
+    for s in rows:
+        released = f", released {s['release_date'][:10]}" if s["release_date"] else ""
+        rows_seen = f"{s['rows']:,} rows, " if s["rows"] else ""
+        print(f"  {s['name']}{released}: {rows_seen}fetched {s['fetched_at']:%Y-%m-%d}")
+        if s["url"]:
+            print(f"    {s['url']}")
+        if s["sha256"]:
+            print(f"    sha256 {s['sha256'][:16]}…" + (f"  ({s['note']})" if s["note"] else ""))
+        elif s["note"]:
+            print(f"    {s['note']}")
 
 
 def cmd_hospitals(args: argparse.Namespace) -> int:
@@ -85,6 +108,8 @@ def cmd_hospitals(args: argparse.Namespace) -> int:
     except UnknownZip as e:
         print(e, file=sys.stderr)
         return 1
+    if args.verbose:
+        print_sources(store.sources(con))
     print(f"nearest {len(found)} hospitals to the centre of {args.zip}")
     for h in found:
         miles = h.distance_km / KM_PER_MILE
@@ -416,6 +441,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("zip")
     p.add_argument("--limit", type=positive_int, default=5, help="how many hospitals (default 5)")
     p.add_argument("--include-federal", action="store_true", help="include VA and DoD hospitals, which are exempt from the rule")
+    p.add_argument("--verbose", action="store_true", help="also print where the reference data came from")
 
     p = sub.add_parser("catalog", help="list the 70 CMS shoppable services, or resolve a query to one")
     p.add_argument("query", nargs="?", help='e.g. "knee mri" or a code like 45378')

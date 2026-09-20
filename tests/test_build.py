@@ -98,3 +98,58 @@ def test_second_setup_is_refused_while_the_first_holds_the_lock(tmp_path):
         t.join()
     with setup_lock(db):  # free again
         pass
+
+
+# --- where the reference data came from (SPEC "Storage": the sources table) --------------
+
+CMS_SOURCE = {"name": "CMS Hospital General Information", "url": "https://data.cms.gov/x.csv",
+              "release_date": "2026-07-22", "sha256": "a" * 64, "size_bytes": 1234, "note": "Hospital General Information"}
+ZCTA_SOURCE = {"name": "Census ZCTA gazetteer", "url": "https://www2.census.gov/z.zip",
+               "release_date": "2024", "sha256": "b" * 64, "size_bytes": 99}
+
+
+def test_the_build_records_where_each_dataset_came_from(tmp_path):
+    from hpa import store
+
+    db = tmp_path / "hpa.duckdb"
+    result = build_database(db, str(FIXTURES / "hospitals.csv"), str(FIXTURES / "zcta.txt"),
+                            str(FIXTURES / "coords.csv"), [CMS_SOURCE, ZCTA_SOURCE], **SMALL)
+    recorded = {s["name"]: s for s in store.sources(duckdb.connect(str(db), read_only=True))}
+
+    assert set(recorded) == {"CMS Hospital General Information", "Census ZCTA gazetteer"}
+    cms = recorded["CMS Hospital General Information"]
+    assert cms["release_date"] == "2026-07-22" and cms["sha256"] == "a" * 64
+    # The row count is the number actually loaded, not one typed anywhere.
+    assert cms["rows"] == result["hospitals"]
+    assert recorded["Census ZCTA gazetteer"]["rows"] == result["zips"]
+
+
+def test_a_rebuild_keeps_the_provenance_of_what_came_before(tmp_path):
+    from hpa import store
+
+    db = tmp_path / "hpa.duckdb"
+    build_database(db, str(FIXTURES / "hospitals.csv"), str(FIXTURES / "zcta.txt"), None, [CMS_SOURCE], **SMALL)
+    build_database(db, str(FIXTURES / "hospitals.csv"), str(FIXTURES / "zcta.txt"), None,
+                   [{**CMS_SOURCE, "release_date": "2026-08-19", "sha256": "c" * 64}], **SMALL)
+
+    con = duckdb.connect(str(db), read_only=True)
+    every = con.execute("SELECT release_date FROM sources ORDER BY fetched_at").fetchall()
+    assert [r[0] for r in every] == ["2026-07-22", "2026-08-19"]  # history, not a replacement
+    assert store.sources(con)[0]["release_date"] == "2026-08-19"  # newest per dataset
+
+
+def test_a_database_built_before_provenance_existed_still_reads(tmp_path):
+    from hpa import store
+
+    db = tmp_path / "old.duckdb"
+    con = duckdb.connect(str(db))
+    con.execute("CREATE TABLE sources (name VARCHAR, url VARCHAR, fetched_at TIMESTAMP, note VARCHAR)")
+    con.execute("INSERT INTO sources VALUES ('CMS Hospital General Information', 'https://x', now(), 'old row')")
+    con.close()
+
+    old = store.sources(duckdb.connect(str(db), read_only=True))
+    assert old[0]["note"] == "old row" and old[0]["release_date"] is None
+
+    store.connect(db).close()  # opening for writing migrates it
+    migrated = store.sources(duckdb.connect(str(db), read_only=True))
+    assert migrated[0]["note"] == "old row" and "release_date" in migrated[0]
