@@ -36,14 +36,16 @@ def export_demo(con, out: Path | str, zips=demo.DEFAULT_ZIPS, limit: int = 5) ->
     ccns = demo_hospitals(con, zips, limit)
 
     # ATTACH takes no parameters, so the path is inlined; doubling quotes keeps a path
-    # with an apostrophe in it from ending the literal.
-    con.execute(f"""ATTACH '{str(out).replace("'", "''")}' AS export""")
+    # with an apostrophe in it from ending the literal. READ_WRITE is explicit because the
+    # source is opened read-only and an attached database would otherwise inherit that.
+    con.execute(f"""ATTACH '{str(out).replace("'", "''")}' AS export (READ_WRITE)""")
     try:
         for table in REFERENCE:
             con.execute(f"CREATE TABLE export.{table} AS SELECT * FROM {table}")
         con.execute("CREATE TABLE export.hospital_files AS SELECT * FROM hospital_files WHERE list_contains(?, ccn)", [ccns])
         con.execute("CREATE TABLE export.llm_cache AS SELECT * FROM llm_cache")
-        con.execute("CREATE TABLE export.llm_spend AS SELECT * FROM llm_spend WHERE false")
+        # Tables the copy does not need (the spend ledger, say) are not created here: the
+        # server applies store.SCHEMA when it first opens the file for writing.
 
         # The chain from a located file to its rows: url -> checksum -> extraction.
         con.execute("""
