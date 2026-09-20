@@ -1,0 +1,9 @@
+# TLS from Let's Encrypt for the domain in HPA_DOMAIN, and a proxy that does not buffer:
+# the trace is server-sent events, so a buffering proxy would hold every line until the
+# run finished, which is the one thing this page must not do.
+{$HPA_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy hpa:8000 {
+		flush_interval -1
+	}
+}

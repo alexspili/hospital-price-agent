@@ -138,7 +138,9 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
 - [x] **6. Web UI.** FastAPI + server-sent events; split pane, trace left, results right.
       The server owns the DuckDB file while it runs, so `hpa prices` asks it through the
       API and the commands that write say who holds the file, rather than failing on a lock
-- [ ] **7. Hosted demo** on pre-scanned Houston ZIPs, with live scans on request
+- [ ] **7. Hosted demo** on pre-scanned Houston ZIPs, with live scans on request. Built and
+      ready to deploy ([docs/deploy.md](docs/deploy.md)): cache-first runs, a shared PIN for
+      live scans, per-IP rate limit, per-run download cap and a daily model budget
 
 ## The numbers (`hpa eval`, 2026-09-19, 15 hospitals nearest 77030 / 77380 / 77339)
 
@@ -173,6 +175,9 @@ hpa catalog colonoscopy
 pytest                       # offline, no API key
 ```
 
+By default a search answers from what has already been scanned, with no network at all;
+"run live" is the opt-in that goes out and fetches the files.
+
 The page, once the front end is built:
 
 ```bash
@@ -183,6 +188,10 @@ hpa serve                    # http://127.0.0.1:8000
 cd frontend && npm run dev   # Vite on :5173, handing /api to a running `hpa serve`
 npm test                     # the trace reducer
 ```
+
+For a public deployment there is a container, Caddy for HTTPS and a runbook in
+[docs/deploy.md](docs/deploy.md); the limits it turns on (PIN, rate limit, download cap,
+daily model budget) are all off unless the environment sets them.
 
 While `hpa serve` is running it owns `data/hpa.duckdb`: `hpa prices` quietly asks the
 server for the answer, and `hpa locate` / `hpa scan` tell you to stop the server or use

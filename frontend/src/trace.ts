@@ -19,6 +19,9 @@ export type RunState = {
   service: Service | null
   error: string | null
   recordedOn: string | null
+  // Did this run go to the web, or answer from files scanned earlier? The page says so,
+  // because it changes what the numbers mean.
+  live: boolean | null
 }
 
 export const idle: RunState = {
@@ -30,6 +33,7 @@ export const idle: RunState = {
   service: null,
   error: null,
   recordedOn: null,
+  live: null,
 }
 
 export function starting(recordedOn: string | null = null): RunState {
@@ -53,7 +57,8 @@ export function reduce(state: RunState, event: RunEvent): RunState {
     }
     case 'result':
       // The run's own order is nearest first, whatever order the files finished in.
-      return { ...next, hospitals: event.hospitals, service: event.service, counters: {}, status: 'done' }
+      return { ...next, hospitals: event.hospitals, service: event.service, counters: {},
+               live: event.live ?? state.live, status: 'done' }
     case 'error':
       return { ...next, status: 'failed', error: event.message, counters: {} }
     case 'end':

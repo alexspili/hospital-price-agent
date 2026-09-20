@@ -7,9 +7,11 @@ milestone status. README.md is the public face; keep its numbers generated, not 
 
 Milestones 1–6 are done and pushed: hospital lookup, live price-file discovery, streaming
 extraction, comparability verdicts, offline demo, eval harness, the first human mapping
-review (5 of 70 services), and the web UI (`hpa serve` + `frontend/`). 137 Python tests
-and 10 Vitest tests, all offline. Next is milestone 7, the hosted demo (cache-first on
-pre-scanned Houston ZIPs, per-IP rate limit, daily spend cap, per-run download cap).
+review (5 of 70 services), and the web UI (`hpa serve` + `frontend/`). 146 Python tests
+and 11 Vitest tests, all offline. Milestone 7 is built but not yet live: cache-first runs,
+PIN-gated live scans, rate limit, download cap and daily model budget, `hpa export-demo`,
+Dockerfile + compose + Caddy, runbook in `docs/deploy.md`. What remains is the deploy
+itself: an AWS VM with a disk, Alex's own domain, and the PIN he shares with recruiters.
 
 ## Layout
 
@@ -18,6 +20,7 @@ pre-scanned Houston ZIPs, per-IP rate limit, daily spend cap, per-run download c
   parsers), `scan.py` (download + extract), `compare.py` (verdicts), `catalog.py` (the 70
   services), `pipeline.py` (a whole run; the CLI, the demo and the server share it),
   `server.py` (FastAPI + SSE), `client.py` (how the CLI finds a running server),
+  `settings.py` (what a deployment allows), `export.py` (the compact hosted database),
   `evaluate.py`, `demo.py`, `cli.py`.
 - `frontend/` — React + TypeScript (Vite). `trace.ts` is the reducer and holds all the
   page's state; `api.ts` the types and the three calls; `npm test` runs Vitest.
@@ -55,6 +58,9 @@ cd frontend && npm test        # the trace reducer; npm run dev proxies /api to 
 - Tests use fixtures cut from real files; when a real file breaks something, add the excerpt.
 - Commit messages: plain, what and why. Push to `main` is fine; CI runs pytest on 3.11/3.13.
 - Findings go in `docs/houston-compliance-findings.md` with the command that reproduces them.
+- A run is cache-first unless it asks to be live; only a live run touches the network.
+  The caps live in `settings.py` and are off unless the environment sets them, so local
+  behaviour never depends on them.
 - The page computes nothing: verdicts and prices are `pipeline.hospital_prices` dicts, and
   a recorded run is served in the same shape as a live one. New per-hospital fields go
   there, not into the front end.

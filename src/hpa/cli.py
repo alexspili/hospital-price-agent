@@ -10,7 +10,7 @@ from pathlib import Path
 import duckdb
 import httpx
 
-from hpa import build, catalog, client, demo, discovery, evaluate, geocode, llm, pipeline, reference, scan, store, targets
+from hpa import build, catalog, client, demo, discovery, evaluate, export, geocode, llm, pipeline, reference, scan, store, targets
 from hpa.geo import KM_PER_MILE
 from hpa.hospitals import UnknownZip, find_hospitals, hospital_by_ccn
 
@@ -296,6 +296,24 @@ def print_hospital(h: dict, show_all: bool) -> None:
             print(f"    … {hidden} more lines (--all)")
 
 
+def cmd_export_demo(args: argparse.Namespace) -> int:
+    """The compact database the hosted demo runs on (SPEC "Hosted demo constraints")."""
+    con = open_db(args, read_only=True)
+    try:
+        counts = export.export_demo(con, args.out, args.zip or demo.DEFAULT_ZIPS, args.limit)
+    except UnknownZip as e:
+        print(e, file=sys.stderr)
+        return 1
+    print(f"wrote {args.out} ({counts['bytes'] / 1e6:,.0f} MB) for {counts['hospitals_kept']} hospitals "
+          f"near {', '.join(args.zip or demo.DEFAULT_ZIPS)}")
+    print(f"  {counts['extractions']:,} extractions, {counts['charges']:,} charges, "
+          f"{counts['items']:,} items, {counts['llm_cache']:,} cached model answers")
+    found = export.verify(args.out)
+    print(f"  reopened read-only: {found['located']} located files, {found['extractions']} extractions, "
+          f"{found['charges']:,} charges")
+    return 0
+
+
 def cmd_serve(args: argparse.Namespace) -> int:
     """The web page and the API. This process then owns the database file."""
     url = client.running_server()
@@ -304,7 +322,7 @@ def cmd_serve(args: argparse.Namespace) -> int:
         return 1
     from hpa import server  # imported here so the rest of the CLI does not need FastAPI
 
-    return server.serve(args.db, args.host, args.port)
+    return server.serve(args.db, args.host, args.port, args.url)
 
 
 def cmd_eval_discovery(args: argparse.Namespace) -> int:
@@ -432,11 +450,17 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("serve", help="the web page and its API; this process then owns the database")
     p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=8000)
+    p.add_argument("--url", help="the address to announce to the CLI (behind a proxy, the public one)")
+
+    p = sub.add_parser("export-demo", help="a compact copy of the store for the hosted demo")
+    p.add_argument("--out", default="data/demo.duckdb")
+    p.add_argument("zip", nargs="*", help=f"pre-scanned ZIPs (default {', '.join(demo.DEFAULT_ZIPS)})")
+    p.add_argument("--limit", type=positive_int, default=5, help="hospitals per ZIP (default 5)")
 
     args = parser.parse_args(argv)
     commands = {"setup": cmd_setup, "hospitals": cmd_hospitals, "catalog": cmd_catalog, "locate": cmd_locate,
                 "eval-discovery": cmd_eval_discovery, "scan": cmd_scan, "prices": cmd_prices,
-                "demo": cmd_demo, "eval": cmd_eval, "serve": cmd_serve}
+                "demo": cmd_demo, "eval": cmd_eval, "serve": cmd_serve, "export-demo": cmd_export_demo}
     try:
         return commands[args.command](args)
     except DatabaseBusy as e:

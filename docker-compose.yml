@@ -1,0 +1,37 @@
+# The hosted demo: the app, and Caddy in front of it for HTTPS.
+# Copy deploy/env.example to .env and fill it in before `docker compose up -d`.
+services:
+  hpa:
+    build: .
+    restart: unless-stopped
+    environment:
+      # Live scans need this PIN; the pre-scanned ZIPs answer without one.
+      HPA_LIVE_PIN: ${HPA_LIVE_PIN}
+      HPA_RUNS_PER_HOUR: ${HPA_RUNS_PER_HOUR:-4}
+      HPA_MAX_DOWNLOADS: ${HPA_MAX_DOWNLOADS:-3}
+      HPA_DAILY_CAP_USD: ${HPA_DAILY_CAP_USD:-2}
+      HPA_KEEP_DOWNLOADS: "0"   # the rows are in DuckDB; the multi-GB original is not kept
+      HPA_TRUST_PROXY: "1"      # the client address comes from Caddy's X-Forwarded-For
+      HPA_PUBLIC_URL: https://${HPA_DOMAIN}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    volumes:
+      - ${HPA_DATA_DIR:-/mnt/hpa}:/data
+    expose:
+      - "8000"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      HPA_DOMAIN: ${HPA_DOMAIN}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

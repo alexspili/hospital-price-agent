@@ -86,6 +86,15 @@ describe('the trace reducer', () => {
     expect(state.status).toBe('done')
   })
 
+  it('remembers whether the run went to the web, because it changes what the prices mean', () => {
+    const cached = replay([{ seq: 1, kind: 'result', zip: '77030', service, live: false, hospitals: [] }])
+    expect(cached.live).toBe(false)
+    const fresh = replay([{ seq: 1, kind: 'result', zip: '77030', service, live: true, hospitals: [] }])
+    expect(fresh.live).toBe(true)
+    // A recorded run says nothing about it, and nothing is assumed.
+    expect(replay([{ seq: 1, kind: 'result', zip: '77030', service, hospitals: [] }]).live).toBeNull()
+  })
+
   it('a failed run stays failed, and says why', () => {
     const state = replay([
       { seq: 1, kind: 'error', message: 'UnknownZip: 00000 is not a residential ZIP code' },

@@ -36,7 +36,7 @@ export type RunEvent =
   | { seq: number; kind: 'trace'; ccn?: string; text: string }
   | { seq: number; kind: 'progress'; ccn: string; name: string; phase: 'download' | 'extract'; done: number; total: number | null }
   | { seq: number; kind: 'hospital'; hospital: HospitalResult }
-  | { seq: number; kind: 'result'; zip: string; service: Service; hospitals: HospitalResult[] }
+  | { seq: number; kind: 'result'; zip: string; service: Service; live?: boolean; hospitals: HospitalResult[] }
   | { seq: number; kind: 'error'; message: string }
   | { seq: number; kind: 'end' }
 
@@ -48,7 +48,10 @@ export type Clarification = {
   candidates: Service[]
 }
 
-export type Started = { status: 'started'; run_id: string; service: Service }
+export type Started = { status: 'started'; run_id: string; service: Service; live: boolean }
+
+// What this deployment allows, so the page can say so before anyone tries.
+export type Config = { live_needs_pin: boolean; max_downloads: number | null; runs_per_hour: number | null }
 
 export type RecordedRun = {
   status: 'recorded'
@@ -86,12 +89,16 @@ async function detail(r: Response): Promise<string> {
   }
 }
 
+export const config = () => get<Config>('/api/config')
+
 export const demoIndex = () => get<DemoIndex>('/api/demo')
 
 export const recordedRun = (zip: string, service: string) =>
   get<RecordedRun>(`/api/demo?zip=${encodeURIComponent(zip)}&service=${encodeURIComponent(service)}`)
 
-export async function startRun(body: { zip: string; service?: string; service_id?: string }): Promise<Started | Clarification> {
+export type RunRequest = { zip: string; service?: string; service_id?: string; live?: boolean; pin?: string }
+
+export async function startRun(body: RunRequest): Promise<Started | Clarification> {
   const r = await fetch('/api/runs', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },

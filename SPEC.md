@@ -260,7 +260,11 @@ compare: Methodist vs Baylor: unknown (Baylor row has no billing class)
    pipeline itself moved to `hpa/pipeline.py`, which the CLI, the recorded demo and the
    server share. While the server runs, `hpa prices` reads through its API and writing
    commands say who holds the file.
-7. Deploy.
+7. Deploy. Built 2026-09-19, not yet live: a run is cache-first unless it asks to be
+   live, live scans need a shared PIN, and the per-IP rate limit, per-run download cap and
+   daily model budget are read from the environment (`hpa/settings.py`). `hpa export-demo`
+   writes the compact database the host runs on; Dockerfile, compose file with Caddy and
+   the runbook are in `docs/deploy.md`. Target: a small ARM VM on AWS with a mounted disk.
 
 ## Hosted demo constraints
 
@@ -269,7 +273,9 @@ Milestone 7 only. Do not build these earlier.
 - Scans take minutes. Run them as tasks in the writer process with progress over SSE,
   never inside a request cycle.
 - Landing state is pre-scanned Houston ZIPs; a live scan is an explicit opt-in.
-- Per-IP rate limit, a hard daily API spend cap, and the per-run download cap.
+- Per-IP rate limit, a hard daily API spend cap, and the per-run download cap. Spend is
+  measured from the tokens the API reports and recorded in `llm_spend`; past the cap the
+  deterministic pipeline carries on without Claude rather than failing.
 - Queue depth limit with an honest "busy, try again" message.
 - Keep a recorded run checked in as a fallback for demos on bad Wi-Fi.
 - No interim static demo on GitHub Pages (decided 2026-09-19). Pages could serve the
