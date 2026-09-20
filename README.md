@@ -3,8 +3,8 @@
 **The goal:** give it a ZIP code and one of the 70 services CMS asks hospitals to price
 ("knee MRI", "colonoscopy", "screening mammogram"), and it finds the nearest hospitals,
 tracks down their price transparency files on the live web, streams through files that can
-run to several gigabytes, and puts the cash prices side by side with a link to the exact
-source row for every number, showing each step as it happens.
+run to several gigabytes, and puts the cash prices side by side with the row number or JSON path
+of the source line for every number, showing each step as it happens.
 
 **Live: [prices.alexspi.com](https://prices.alexspi.com)** — the recorded Houston run loads
 on arrival, and any of the pre-scanned ZIPs (77030, 77380, 77339) answers from the
@@ -57,7 +57,7 @@ Townsen Memorial Hospital: price file csv, 3 MB, modified Thu, 05 Jan 2023 18:21
 ...
 
 $ hpa catalog "knee mri"
-selected: MRI scan of leg joint (CPT 73721)  [unreviewed]
+selected: MRI scan of leg joint (CPT 73721)  [reviewed]
   note: Without contrast. Knee MRI with contrast (73722) or with and without (73723) is not on the CMS list.
 
 $ hpa catalog "knee mri with contrast"
@@ -175,7 +175,7 @@ hpa hospitals 77030          # Texas Medical Center: nearest 5
 hpa hospitals 77494 --limit 8
 hpa locate 77339             # find each hospital's price file, live (Claude fallbacks need ANTHROPIC_API_KEY in .env)
 hpa scan 77339               # download + extract them (860 MB for HCA; files stay in data/mrf/)
-hpa prices "knee mri" 77339  # the four summary prices per hospital, with a comparability verdict
+hpa prices "knee mri" 77339  # the four summary prices per hospital, with a comparability verdict; --all for every line
 hpa demo                     # replay the recorded Houston run: no network, no database, no key
 hpa eval                     # the four accuracy numbers, from the database and the raw files
 hpa catalog                  # all 70 services
@@ -183,8 +183,10 @@ hpa catalog colonoscopy
 pytest                       # offline, no API key
 ```
 
-By default a search answers from what has already been scanned, with no network at all;
-"run live" is the opt-in that goes out and fetches the files.
+`hpa prices` only reads what `hpa scan` stored: no network, no model call, whatever is in
+`.env`. An unclear service name comes back as the resolver's candidates; `--ask-claude`
+is the opt-in that lets Claude pick among them (one call, cached in the database). On the
+page, "run live" is the opt-in that goes out and fetches the files.
 
 The page, once the front end is built:
 
@@ -198,8 +200,9 @@ npm test                     # the trace reducer
 ```
 
 For a public deployment there is a container, Caddy for HTTPS and a runbook in
-[docs/deploy.md](docs/deploy.md); the limits it turns on (PIN, rate limit, download cap,
-daily model budget) are all off unless the environment sets them.
+[docs/deploy.md](docs/deploy.md); `hpa export-demo` writes the compact database it runs
+on, and the limits it turns on (PIN, rate limit, download cap, daily model budget) are all
+off unless the environment sets them.
 
 While `hpa serve` is running it owns `data/hpa.duckdb`: `hpa prices` quietly asks the
 server for the answer, and `hpa locate` / `hpa scan` tell you to stop the server or use
@@ -230,7 +233,7 @@ Design rules, in force:
 - **Never invents a price.** A hospital that can't be resolved is listed as missing, with the reason.
 - **Every number has its source**: the file URL, the row or JSON path, and the date the hospital published it.
 - **Says when rows can't be compared.** Two rows with the same code but different billing
-  classes, settings, modifiers or units get a "not comparable, because …" verdict; if
+  classes, settings, modifiers or codes get a "not comparable, because …" verdict; if
   that context is missing, the verdict is "unknown", never a silent match.
 - **Blank, N/A and non-numeric values are reported as such**, never coerced into numbers.
 - **Never loads a whole file into memory.** Price files are parsed as streams.
@@ -253,7 +256,7 @@ Two separate checks apply:
   each. **Today: 5 of 70 reviewed** (knee MRI, colonoscopy, head CT, CBC, screening
   mammogram), each with reviewer, date and the per-hospital lines checked.
 - **Comparable** (per comparison, computed from the rows): the matched rows share billing
-  class, setting, modifiers and units. Reported with every result from milestone 4.
+  class, setting, modifiers and code. Reported with every result.
 
 ## Background: the rule, and who uses this data
 

@@ -59,3 +59,34 @@ def test_exporting_twice_replaces_the_file(con, tmp_path):
     export.export_demo(con, out, ["77030"])
     again = export.export_demo(con, out, ["77030"])
     assert again["charges"] == 1  # not doubled, and no "table already exists"
+
+
+def test_the_copy_keeps_the_keys_a_scan_relies_on(con, tmp_path):
+    """A CREATE TABLE AS copy has no primary keys, and the first scan on it died at
+    `files`. The copy is made from the schema, so a hosted live scan can store a file."""
+    out = tmp_path / "demo.duckdb"
+    export.export_demo(con, out)
+    copy = store.connect(out)  # read-write, as the server opens it
+    keyed = {r[0] for r in copy.execute(
+        "SELECT DISTINCT table_name FROM duckdb_constraints() WHERE constraint_type = 'PRIMARY KEY'").fetchall()}
+    assert keyed >= set(store.KEYED_TABLES)
+    copy.execute("INSERT OR REPLACE INTO files VALUES ('sum1', 'csv-wide', '3.0.0', 'X', '2026-01-01', '', 1, now())")
+    copy.execute("INSERT OR REPLACE INTO files VALUES ('sum1', 'csv-wide', '3.0.0', 'Y', '2026-01-01', '', 1, now())")
+    assert copy.execute("SELECT hospital_name FROM files WHERE checksum = 'sum1'").fetchall() == [("Y",)]
+    copy.close()
+
+
+def test_a_store_that_lost_its_keys_gets_them_back(tmp_path):
+    path = tmp_path / "old.duckdb"
+    con = store.connect(path)
+    con.execute("INSERT INTO llm_cache VALUES ('k', 'm', '1', 'in', 'out', now())")
+    # What an older export or rebuild left behind: the same rows, no key, a duplicate.
+    con.execute("CREATE TABLE keyless AS SELECT * FROM llm_cache")
+    con.execute("INSERT INTO keyless SELECT * FROM llm_cache")
+    con.execute("DROP TABLE llm_cache")
+    con.execute("ALTER TABLE keyless RENAME TO llm_cache")
+    con.close()
+    con = store.connect(path)  # migrate() restores the key and drops the duplicate
+    assert con.execute("SELECT count(*) FROM llm_cache").fetchone()[0] == 1
+    con.execute("INSERT OR REPLACE INTO llm_cache VALUES ('k', 'm', '1', 'in', 'out2', now())")
+    assert con.execute("SELECT output FROM llm_cache").fetchone() == ("out2",)

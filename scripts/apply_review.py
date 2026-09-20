@@ -36,8 +36,11 @@ def main(csv_in: Path = CSV_IN, catalog_path: Path = CATALOG) -> int:
             "date": next((a["date"] for a in answers if a.get("date")), ""),
             "alias_confirmed": bool(alias_yes),
             "hospitals": [
+                # The ref and the description together are the evidence reviewed: a
+                # reordered file moves the ref, and the review must not move with it.
                 {"hospital": a["hospital"], "headline_is_this_service": a["headline_is_this_service"].strip().lower() or None,
-                 "billing_class": a["billing_class_if_known"].strip() or None, "note": a["note"].strip() or None, "ref": a["ref"]}
+                 "billing_class": a["billing_class_if_known"].strip() or None, "note": a["note"].strip() or None,
+                 "ref": a["ref"], "description": a.get("headline_description", "").strip() or None}
                 for a in answers
             ],
         }

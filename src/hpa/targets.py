@@ -15,4 +15,4 @@ def located(con, zips, ccn, limit):
         if h is None:
             raise UnknownZip(f"no hospital with CCN {ccn}")
         hospitals[ccn] = h
-    return [(h, store.cached_discovery(con, h.ccn)) for h in hospitals.values()]
+    return [(h, store.cached_discovery(con, h.ccn, within_ttl=False)) for h in hospitals.values()]

@@ -7,12 +7,14 @@ import type { RunState } from './trace'
 // hospital that is still reading a file. The counters sit at the bottom and are replaced
 // in place, never appended (SPEC "Behaviour rules": a moving row counter, not a spinner).
 export function Trace({ run }: { run: RunState }) {
-  const bottom = useRef<HTMLDivElement>(null)
+  const box = useRef<HTMLDivElement>(null)
   const counters = Object.entries(run.counters)
 
-  // Follow a live run; a recorded one opens at its first line, where a reader starts.
+  // Follow a live run inside its own box (never by moving the page, which on a phone
+  // would drag the reader away from the prices); a recorded one opens at its first line.
   useEffect(() => {
-    if (run.status === 'running') bottom.current?.scrollIntoView({ block: 'end' })
+    const el = box.current
+    if (run.status === 'running' && el) el.scrollTop = el.scrollHeight
   }, [run.seq, run.status])
 
   return (
@@ -21,7 +23,7 @@ export function Trace({ run }: { run: RunState }) {
         trace
         {run.status === 'running' && <span className="pulse"> live</span>}
       </h2>
-      <div className="lines">
+      <div className="lines" ref={box} tabIndex={0}>
         {run.lines.map((line) => (
           <div key={line.seq} className="line">
             {line.text}
@@ -33,7 +35,6 @@ export function Trace({ run }: { run: RunState }) {
           </div>
         ))}
         {run.error && <div className="line failed">{run.error}</div>}
-        <div ref={bottom} />
       </div>
     </section>
   )

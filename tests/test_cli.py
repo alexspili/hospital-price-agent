@@ -57,3 +57,38 @@ def test_prices_asks_the_server_when_one_is_running(monkeypatch, capsys):
     assert asked == {"url": "http://127.0.0.1:8000", "service": "knee mri", "zips": ["77030"], "limit": 5}
     assert "MRI scan of leg joint (CPT 73721)  [reviewed]" in out
     assert "cash $2,735.80  gross $5,471.59  negotiated $431.06–$574.74  [outpatient, facility]  row 1570" in out
+
+
+def test_prices_without_setup_says_so(tmp_path, capsys):
+    """A missing file is not a lock: the answer is what builds one."""
+    assert main(["--db", str(tmp_path / "none.duckdb"), "prices", "knee mri", "77030"]) == 1
+    err = capsys.readouterr().err
+    assert "hpa setup" in err and "another process" not in err
+
+
+def test_a_zip_is_required(capsys):
+    for command in (["prices", "knee mri"], ["locate"], ["scan"]):
+        with pytest.raises(SystemExit) as e:
+            main(command)
+        assert e.value.code == 2
+    assert "ZIP" in capsys.readouterr().err
+
+
+def test_a_hospital_never_looked_for_says_so(capsys):
+    """"No price file located" alone reads as a finding; the detail says it was never looked for."""
+    cli.print_hospital({"name": "Cedars-Sinai Medical Center", "verdict": "no price file located",
+                        "detail": "run `hpa locate` first", "url": None, "file_date": None,
+                        "line_count": 0, "headline": None, "lines": []}, show_all=False)
+    assert capsys.readouterr().out.strip() == "Cedars-Sinai Medical Center: no price file located — run `hpa locate` first"
+
+
+def test_a_missing_negotiated_range_is_one_dash_and_hidden_lines_are_counted(capsys):
+    line = {"code_type": "CPT", "code": "73721", "other_codes": [], "cash": 1230.0, "gross": 2460.0, "min": None, "max": None,
+            "context": "both, facility", "ref": "item 13569/charge 1", "description": "HC MRI LOWER EXT JOINT W/O CONTRA", "note": None}
+    cli.print_hospital({"name": "Houston Methodist Hospital", "verdict": "comparable", "detail": "",
+                        "url": "https://example.test/f.json", "file_date": "2026-04-01",
+                        "line_count": 3, "headline": line, "lines": [line, line, line]}, show_all=False)
+    out = capsys.readouterr().out
+    assert "negotiated —  [both, facility]" in out and "—–—" not in out
+    assert "(file dated 2026-04-01; https://example.test/f.json)" in out  # no ellipsis on a short URL
+    assert "… 2 more lines (--all)" in out

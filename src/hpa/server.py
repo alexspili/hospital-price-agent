@@ -10,6 +10,7 @@ import asyncio
 import json
 import os
 import secrets
+import sys
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -67,6 +68,7 @@ class Run:
     loop: asyncio.AbstractEventLoop
     live: bool = False  # False: answered from what was already scanned, no network
     status: str = "running"  # running | done | failed
+    finished_at: float | None = None
     events: list[dict] = field(default_factory=list)
     result: dict | None = None
     error: str | None = None
@@ -110,9 +112,16 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
     app.state.con = con
     app.state.db = str(db)
     app.state.settings = settings or settings_module.from_env()
+    app.state.settings.check()
     app.state.limiter = RateLimit(app.state.settings.runs_per_hour)
     app.state.runs = {}
+    app.state.runs_lock = threading.Lock()  # the active-run count and the registration move together
     app.state.pool = ThreadPoolExecutor(max_workers=MAX_ACTIVE_RUNS, thread_name_prefix="run")
+
+    # One DuckDB connection is owned by this process; every thread that touches it gets
+    # its own cursor. Request handlers run on FastAPI's thread pool, runs on ours.
+    def db():
+        return app.state.con.cursor()
 
     @app.get("/api/health")
     def health() -> dict:
@@ -138,8 +147,9 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
             if wait is not None:
                 raise HTTPException(429, f"live runs are limited to {s.runs_per_hour} an hour from one address",
                                     headers={"Retry-After": str(wait)})
+        con = db()
         try:
-            find_hospitals(app.state.con, req.zip, 1)
+            find_hospitals(con, req.zip, 1)
         except UnknownZip as e:
             raise HTTPException(400, str(e))
         try:
@@ -148,7 +158,7 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
             # otherwise a stranger could spend the daily budget by typing ambiguous
             # service names at a page that asks them for nothing.
             service, r, note = pipeline.resolve_service(req.service or "", service_id=req.service_id,
-                                                        con=app.state.con, use_llm=req.live,
+                                                        con=con, use_llm=req.live,
                                                         daily_cap_usd=s.daily_cap_usd)
         except ValueError as e:
             raise HTTPException(400, str(e))
@@ -156,13 +166,15 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
             return {"status": "needs_clarification", "verdict": r.verdict,
                     "question": note or r.reason, "asked_claude": note is not None,
                     "candidates": [pipeline.service_dict(c) for c in r.candidates]}
-        active = sum(1 for run in app.state.runs.values() if run.status == "running")
-        if active >= MAX_ACTIVE_RUNS:
-            raise HTTPException(429, f"busy: {active} runs already in progress, try again in a minute",
-                                headers={"Retry-After": "60"})
         run = Run(id=secrets.token_hex(4), zip=req.zip, query=req.service or service.name,
                   service=pipeline.service_dict(service), loop=app.state.loop, live=req.live)
-        app.state.runs[run.id] = run
+        with app.state.runs_lock:
+            _forget_finished(app)
+            active = sum(1 for other in app.state.runs.values() if other.status == "running")
+            if active >= MAX_ACTIVE_RUNS:
+                raise HTTPException(429, f"busy: {active} runs already in progress, try again in a minute",
+                                    headers={"Retry-After": "60"})
+            app.state.runs[run.id] = run
         app.state.pool.submit(_execute, app, run, service, req.limit, r.corrections)
         return {"status": "started", "run_id": run.id, "service": run.service, "live": run.live,
                 "resolver": None if r.verdict == catalog.SELECTED else {"verdict": r.verdict, "reason": r.reason},
@@ -211,20 +223,31 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
                                  headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
 
     @app.get("/api/prices")
-    def prices(service: str, zip: Annotated[list[str] | None, Query()] = None,
+    def prices(service: str | None = None, service_id: str | None = None,
+               zip: Annotated[list[str] | None, Query()] = None,
                ccn: str | None = None, limit: int = 5, all: bool = False) -> dict:
         """Prices from what is already stored: the read path `hpa prices` uses while the
-        server holds the database.
+        server holds the database, and the page's "show every line" for a hospital.
 
         Deterministic only: this endpoint is public and unauthenticated, so it never
         spends money. An unclear service name comes back as the resolver's own verdict
         and candidates, which is an answer, not a failure."""
+        if not service and not service_id:
+            raise HTTPException(400, "give a service name or a service_id")
         try:
-            return pipeline.prices_payload(app.state.con, service, zip or [], ccn, limit,
+            return pipeline.prices_payload(db(), service or "", zip or [], ccn, limit,
+                                           service_id=service_id,
                                            shown_lines=None if all else pipeline.SHOWN_LINES,
                                            use_llm=False)
         except UnknownZip as e:
             raise HTTPException(400, str(e))
+        except ValueError as e:  # a service_id that is not in the catalog
+            raise HTTPException(400, str(e))
+
+    @app.get("/api/catalog")
+    def catalogue() -> list[dict]:
+        """The 70 services, so a visitor whose words matched nothing can pick one."""
+        return [pipeline.service_dict(s) for s in catalog.load()]
 
     @app.get("/api/demo")
     def recorded(zip: str | None = None, service: str | None = None) -> dict:
@@ -259,6 +282,18 @@ def _run(app: FastAPI, run_id: str) -> Run:
     return run
 
 
+# How long a finished run stays replayable (a page reconnecting after a wobble). After
+# that its events and result are dropped, so a long-lived server does not keep every run.
+RUN_RETENTION = 1800.0
+
+
+def _forget_finished(app: FastAPI, now: float | None = None) -> None:
+    now = time.time() if now is None else now
+    for run_id, run in list(app.state.runs.items()):
+        if run.finished_at is not None and now - run.finished_at > RUN_RETENTION:
+            del app.state.runs[run_id]
+
+
 def _sse(event: dict) -> str:
     return f"id: {event['seq']}\nevent: {event['kind']}\ndata: {json.dumps(event, default=str)}\n\n"
 
@@ -279,7 +314,7 @@ def _execute(app: FastAPI, run: Run, service, limit: int, corrections: tuple = (
     s = app.state.settings
     try:
         hospitals = pipeline.run_search(
-            app.state.con, run.zip, service, run.emit, query=run.query, limit=limit, live=run.live,
+            app.state.con.cursor(), run.zip, service, run.emit, query=run.query, limit=limit, live=run.live,
             max_downloads=s.max_downloads, daily_cap_usd=s.daily_cap_usd, keep_downloads=s.keep_downloads,
             corrections=corrections,
         )
@@ -291,12 +326,13 @@ def _execute(app: FastAPI, run: Run, service, limit: int, corrections: tuple = (
         run.status, run.error = "failed", f"{type(e).__name__}: {e}"
         run.emit("error", message=run.error)
     finally:
+        run.finished_at = time.time()
         run.emit("end")
         # To the process log, not the trace: the operator needs the running total, a
         # visitor does not. Nothing else can read the ledger while this process holds
         # the database (SPEC "Process model").
         if run.live and s.daily_cap_usd:
-            print(f"[spend] today ${llm.spend_today(app.state.con):.2f} of ${s.daily_cap_usd:.2f}", flush=True)
+            print(f"[spend] today ${llm.spend_today(app.state.con.cursor()):.2f} of ${s.daily_cap_usd:.2f}", flush=True)
 
 
 def demo_run(data: dict, zip_code: str, query: str) -> dict:
@@ -310,7 +346,7 @@ def demo_run(data: dict, zip_code: str, query: str) -> dict:
         events.append({"seq": len(events) + 1, "kind": kind, **fields})
 
     add("trace", text=f"recorded run from {data['recorded_on']} (no network, no database, no API key)")
-    add("trace", text=f"nearest {len(hospitals)} hospitals to the centre of {zip_code}")
+    add("trace", text=f"nearest {len(hospitals)} hospital{'s' if len(hospitals) != 1 else ''} to the centre of {zip_code}")
     for h in hospitals:
         miles = h["distance_km"] / KM_PER_MILE
         add("trace", ccn=h["ccn"], text=f"  {'~' if h['approximate'] else ''}{miles:.1f} mi  {h['name']}")
@@ -325,16 +361,22 @@ def demo_run(data: dict, zip_code: str, query: str) -> dict:
         # Older recordings carried `lines` as a count; newer ones carry the lines.
         lines = rec.get("lines") if isinstance(rec.get("lines"), list) else []
         count = rec.get("line_count", rec.get("lines") if isinstance(rec.get("lines"), int) else 0)
+        # Whose prices these are travels with the recording: a children's or psychiatric
+        # hospital on the landing page must say so, exactly as it would in a live run.
         row = {"ccn": h["ccn"], "name": h["name"], "distance_km": h["distance_km"],
-               "approximate": h["approximate"], "url": rec.get("url") or h.get("mrf_url"),
+               "approximate": h["approximate"], "hospital_type": h.get("hospital_type") or rec.get("hospital_type"),
+               "url": rec.get("url") or h.get("mrf_url"),
                "file_date": rec.get("file_date"), "verdict": rec.get("verdict", pipeline.NOT_SCANNED),
                "detail": rec.get("detail") or "", "line_count": count, "headline": rec.get("headline"), "lines": lines}
         rows.append(row)
         add("hospital", hospital=row)
 
     service = {"id": None, "name": entry["service"], "codes": entry["codes"],
-               "reviewed": bool(entry["reviewed"]), "notes": None}
-    result = {"zip": zip_code, "service": service, "hospitals": rows}
+               "reviewed": bool(entry["reviewed"]), "notes": entry.get("notes")}
+    # The same pairwise verdicts a live run ends with: the recording is what a visitor
+    # sees first, and two prices side by side without one would be a silent match.
+    result = {"zip": zip_code, "service": service, "hospitals": rows,
+              "comparisons": [vars(p) for p in compare.pairs(rows)]}
     add("result", **result)
     add("end")
     return {"status": "recorded", "recorded_on": data["recorded_on"], "zip": zip_code, "query": query,
@@ -352,7 +394,12 @@ def serve(db, host: str = "127.0.0.1", port: int = 8000, url: str | None = None)
         print(f"{db} is open in another process; stop it before serving ({e})")
         return 1
     url = url or f"http://{host}:{port}"
-    app = create_app(con, db)
+    try:
+        app = create_app(con, db)
+    except ValueError as e:  # the settings refuse to be served (a public host with no PIN)
+        print(e, file=sys.stderr)
+        con.close()
+        return 1
     s = app.state.settings
     print(f"live scans: {'PIN required' if s.live_needs_pin else 'open to anyone who can reach this server'}"
           + (f", {s.runs_per_hour}/hour per address" if s.runs_per_hour else "")

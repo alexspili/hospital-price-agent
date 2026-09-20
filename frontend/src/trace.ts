@@ -21,7 +21,8 @@ export type RunState = {
   error: string | null
   recordedOn: string | null
   // Did this run go to the web, or answer from files scanned earlier? The page says so,
-  // because it changes what the numbers mean.
+  // because it changes what the numbers mean. Known from the moment the run starts (the
+  // server says so when it accepts the request); null only for a recorded run.
   live: boolean | null
 }
 
@@ -38,8 +39,8 @@ export const idle: RunState = {
   live: null,
 }
 
-export function starting(recordedOn: string | null = null): RunState {
-  return { ...idle, status: 'running', recordedOn }
+export function starting(recordedOn: string | null = null, live: boolean | null = null): RunState {
+  return { ...idle, status: 'running', recordedOn, live }
 }
 
 export function reduce(state: RunState, event: RunEvent): RunState {
@@ -68,6 +69,25 @@ export function reduce(state: RunState, event: RunEvent): RunState {
   }
 }
 
+// The stream ended without the run's own end: a reconnect that found no run to resume.
+export function lost(state: RunState, message: string): RunState {
+  if (state.status !== 'running') return state
+  return { ...state, status: 'failed', error: message, counters: {} }
+}
+
+// Every matching line for the hospitals that asked for them, from /api/prices?all=true.
+// Only the lines change: the verdict and the headline were computed once and stay.
+export function withAllLines(state: RunState, full: HospitalResult[]): RunState {
+  const byCcn = new Map(full.map((h) => [h.ccn, h]))
+  return {
+    ...state,
+    hospitals: state.hospitals.map((h) => {
+      const f = byCcn.get(h.ccn)
+      return f ? { ...h, lines: f.lines, line_count: f.line_count } : h
+    }),
+  }
+}
+
 function upsert(hospitals: HospitalResult[], h: HospitalResult): HospitalResult[] {
   const at = hospitals.findIndex((x) => x.ccn === h.ccn)
   if (at < 0) return [...hospitals, h]
@@ -77,6 +97,23 @@ function upsert(hospitals: HospitalResult[], h: HospitalResult): HospitalResult[
 }
 
 export const replay = (events: RunEvent[], from: RunState = starting()): RunState => events.reduce(reduce, from)
+
+/** Where the numbers on screen came from — said plainly, because it changes what they
+ * mean. Never claims a live scan for a run that has not finished one. */
+export function sourceLine(recorded: boolean, recordedOn: string | undefined, run: RunState): string {
+  if (recorded) return `A recorded run from ${recordedOn ?? 'earlier'}: no network, no database.`
+  if (run.live === false) {
+    return run.status === 'running'
+      ? 'Reading files scanned earlier — nothing is being fetched.'
+      : 'Answered from files scanned earlier — nothing was fetched just now.'
+  }
+  if (run.live === true) {
+    if (run.status === 'running') return 'Scanning live: reading each hospital’s own file now.'
+    if (run.status === 'failed') return 'The live scan stopped early; anything shown was read before it failed.'
+    return 'Scanned live from each hospital’s own file.'
+  }
+  return run.status === 'failed' ? 'The run failed before it read anything.' : 'Starting…'
+}
 
 export function money(v: number | null): string {
   return v === null ? '—' : v.toLocaleString('en-US', { style: 'currency', currency: 'USD' })

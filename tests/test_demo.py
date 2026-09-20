@@ -16,7 +16,7 @@ def test_replay_needs_nothing_but_the_json():
     lines = []
     demo.replay(data, out=lines.append)
     text = "\n".join(lines)
-    assert "nearest 1 hospitals to the centre of 77339" in text
+    assert "nearest 1 hospital to the centre of 77339" in text
     assert "HCA Houston Healthcare Kingwood: cms-hpt.txt found" in text
     assert "cash $2,735.80  gross $5,471.59  [both]  row 1570" in text
     assert "modifier-specific lines only" in text

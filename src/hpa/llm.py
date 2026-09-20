@@ -17,6 +17,9 @@ from hpa.discovery import HptEntry
 from hpa.hospitals import Hospital
 
 MODEL = "claude-opus-5"
+# What one service-name confirmation costs at list price, so a CLI user is told before
+# a call is made (a whole-catalog fallback is the dearest of the three calls).
+CONFIRM_COST_USD = 0.043
 # Per call, so changing one prompt does not throw away the answers already bought for the
 # other two (SPEC "Caching": cache keys include versions).
 PROMPT_VERSIONS = {"website": "1", "pick": "1", "confirm": "2"}
@@ -79,10 +82,21 @@ class SpendCapReached(RuntimeError):
     """Today's model budget is gone. The deterministic pipeline carries on without Claude."""
 
 
+def _price_for(model: str) -> tuple[float, float]:
+    """The list price for a model id. A dated snapshot of a known model ("claude-opus-5-2026…")
+    costs what the model costs; an id nobody priced is charged at the dearest known rate,
+    so a fallback can only overstate spend against the cap, never hide it."""
+    if model in PRICES:
+        return PRICES[model]
+    for known, price in PRICES.items():
+        if model.startswith(known):
+            return price
+    return max(PRICES.values())
+
+
 def cost_usd(model: str, usage) -> float:
-    """What one call cost, from the usage the API reports. Unknown model: zero, and the
-    call is still recorded, so an unpriced model shows up as calls rather than vanishing."""
-    in_rate, out_rate = PRICES.get(model, (0.0, 0.0))
+    """What one call cost, from the usage the API reports."""
+    in_rate, out_rate = _price_for(model)
     read = getattr(usage, "cache_read_input_tokens", 0) or 0
     write = getattr(usage, "cache_creation_input_tokens", 0) or 0
     return (

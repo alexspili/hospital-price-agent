@@ -15,8 +15,10 @@ COMPARABLE = "comparable"
 NOT_COMPARABLE = "not comparable"
 UNKNOWN_PAIR = "unknown"
 UNKNOWN_CLASS = "unknown: no billing class stated"
+UNKNOWN_SETTING = "unknown: no setting stated"
 MODIFIERS_ONLY = "modifier-specific lines only"
 NEGOTIATED_ONLY = "negotiated rates only, no cash or gross price"
+PROFESSIONAL_ONLY = "professional charge only, no facility line"
 CONFLICTING = "conflicting"
 INPATIENT_ONLY = "inpatient line only"
 NOT_FOUND = "not found"
@@ -100,6 +102,11 @@ def pair(a: dict, b: dict) -> Pair:
         return Pair(*names, UNKNOWN_PAIR, "; ".join(unstated))
 
     differences = []
+    # One catalog entry can carry two codes (PSA: 84153 and 84154). Two hospitals' lines
+    # are the same service only when they carry the same code.
+    ca, cb = (la.get("code_type"), la.get("code")), (lb.get("code_type"), lb.get("code"))
+    if ca != cb and all(ca) and all(cb):
+        differences.append(f"different codes ({ca[0]} {ca[1]} vs {cb[0]} {cb[1]})")
     if not _same_setting(la.get("setting"), lb.get("setting")):
         differences.append(f"{la['setting']} vs {lb['setting']}")
     if la.get("billing_class") != lb.get("billing_class"):
@@ -119,17 +126,38 @@ def pairs(hospitals: list[dict]) -> list[Pair]:
 
 
 def apply_review(lines: list[Line], review: dict | bool, hospital: str) -> list[Line]:
-    """Fill in a billing class a reviewer confirmed for this hospital's line (matched by
-    source ref), marking it as coming from the review. The file's own value always wins."""
+    """Fill in a billing class a reviewer confirmed for this hospital's line, marking it as
+    coming from the review. The file's own value always wins.
+
+    A review is bound to the evidence it looked at: the source ref *and* the line's
+    description, when the review recorded one. A hospital that reorders its file moves
+    the ref to some other line, and the review must not travel with it. An answer that
+    did not confirm the headline ("no", "unsure") is not evidence and is not applied.
+    """
     if not review or not isinstance(review, dict):
         return lines
-    answers = {h["ref"]: h["billing_class"] for h in review.get("hospitals", [])
-               if h.get("hospital") == hospital and h.get("billing_class") and h.get("ref")}
+    answers: dict[str, tuple[str, str]] = {}
+    for h in review.get("hospitals", []):
+        if h.get("hospital") != hospital or not h.get("billing_class") or not h.get("ref"):
+            continue
+        if (h.get("headline_is_this_service") or "yes") != "yes":
+            continue
+        answers[h["ref"]] = (h["billing_class"], _norm(h.get("description")))
     if not answers:
         return lines
     from dataclasses import replace
-    return [replace(l, billing_class=answers[l.source_ref], class_from_review=True)
-            if l.billing_class is None and l.source_ref in answers else l for l in lines]
+
+    def confirmed(l: Line) -> str | None:
+        a = answers.get(l.source_ref)
+        if a is None or l.billing_class is not None:
+            return None
+        return a[0] if not a[1] or a[1] == _norm(l.description) else None
+
+    return [replace(l, billing_class=bc, class_from_review=True) if (bc := confirmed(l)) else l for l in lines]
+
+
+def _norm(text: str | None) -> str:
+    return " ".join((text or "").split()).lower()
 
 
 def summarise(lines: list[Line]) -> Summary:
@@ -140,6 +168,12 @@ def summarise(lines: list[Line]) -> Summary:
     with_mods = [l for l in lines if l.modifiers is not None and l.has_price]
     if not plain and not with_mods:
         n = len(lines)
+        professional = [l for l in lines if l.has_price and l.billing_class == "professional"]
+        if professional:
+            # A doctor's fee, not the hospital's: priced, but not the thing being compared.
+            s.verdict = PROFESSIONAL_ONLY
+            s.detail = f"{len(professional)} priced line{'s' if len(professional) != 1 else ''} carr{'y' if len(professional) != 1 else 'ies'} the professional charge only"
+            return s
         s.verdict, s.detail = NEGOTIATED_ONLY, f"{n} line{'s' if n != 1 else ''}, each with negotiated min/max only"
         return s
     if not plain:
@@ -162,6 +196,10 @@ def summarise(lines: list[Line]) -> Summary:
     if headline.billing_class is None:
         s.verdict = UNKNOWN_CLASS
         s.detail = "the file does not say whether this is a facility or professional charge"
+    elif headline.setting is None:
+        # The pair verdict would say "unknown" for this row; the card must not say more.
+        s.verdict = UNKNOWN_SETTING
+        s.detail = "the file does not say whether this is an inpatient or outpatient charge"
     else:
         s.verdict = COMPARABLE
     if not outpatient:

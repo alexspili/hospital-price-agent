@@ -63,7 +63,9 @@ def verify_sample(con, extraction_id: str, path: Path, n: int, rng: random.Rando
                                "stored": list(stored[1:7])})
         if checked == len(wanted):
             break
-    return {"sampled": len(wanted), "checked": checked, "matched": matched, "mismatches": mismatches}
+    # A stored charge whose ref is not in the file is a fidelity failure, not a skip.
+    return {"sampled": len(wanted), "checked": checked, "matched": matched, "missing": len(wanted) - checked,
+            "mismatches": mismatches}
 
 
 def _eq(a, b) -> bool:
@@ -110,7 +112,7 @@ def run(con, sample: int = 25, seed: int = 0) -> dict:
             continue
         v = verify_sample(con, ext["extraction_id"], paths[0], sample, rng)
         fidelity["files"] += 1
-        fidelity["sampled"] += v["checked"]
+        fidelity["sampled"] += v["sampled"]
         fidelity["matched"] += v["matched"]
         fidelity["per_file"][short_name(h)] = v
     report["fidelity"] = fidelity
@@ -157,7 +159,9 @@ def print_report(r: dict) -> None:
     print(f"2. extraction fidelity: {f['matched']} of {f['sampled']} sampled charges across {f['files']} files re-read from source and matched")
     for name, v in f["per_file"].items():
         flag = "" if v["matched"] == v["checked"] else f"  MISMATCH {v['mismatches']}"
-        print(f"   {name:<42} {v['matched']}/{v['checked']}{flag}")
+        if v.get("missing"):
+            flag += f"  MISSING {v['missing']} ref{'s' if v['missing'] != 1 else ''} not found in the file"
+        print(f"   {name:<42} {v['matched']}/{v['sampled']}{flag}")
     c = r["comparison"]
     print(f"3. comparison eligibility: {c['pairs']} service x hospital pairs; {c['by_verdict']}")
     print(f"   comparable share: {c['comparable_share']}")

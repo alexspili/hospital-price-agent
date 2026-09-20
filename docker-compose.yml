@@ -5,8 +5,10 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      # Live scans need this PIN; the pre-scanned ZIPs answer without one.
+      # Live scans need this PIN; the pre-scanned ZIPs answer without one. A public host
+      # refuses to start without it rather than opening live scans to everyone.
       HPA_LIVE_PIN: ${HPA_LIVE_PIN}
+      HPA_REQUIRE_PIN: "1"
       HPA_RUNS_PER_HOUR: ${HPA_RUNS_PER_HOUR:-4}
       HPA_MAX_DOWNLOADS: ${HPA_MAX_DOWNLOADS:-3}
       HPA_DAILY_CAP_USD: ${HPA_DAILY_CAP_USD:-2}
@@ -15,6 +17,8 @@ services:
       HPA_PUBLIC_URL: https://${HPA_DOMAIN}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     volumes:
+      # The host directory (HPA_DATA_DIR in .env) is mounted at /data, which is where the
+      # container's own HPA_DATA_DIR points: database, price files and marker all live there.
       - ${HPA_DATA_DIR:-/mnt/hpa}:/data
     expose:
       - "8000"

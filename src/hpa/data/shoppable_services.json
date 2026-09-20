@@ -493,77 +493,88 @@
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Baylor St Lukes Medical Center",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 10588/charge 1"
+      "ref": "item 10588/charge 1",
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
      },
      {
       "hospital": "Houston Methodist Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 10713/charge 1"
+      "ref": "item 10713/charge 1",
+      "description": "HC COMPLETE BLOOD COUNT CBC"
      },
      {
       "hospital": "Harris Health",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 36051"
+      "ref": "row 36051",
+      "description": "CBC/PLATELET"
      },
      {
       "hospital": "Houston Methodist The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 10719/charge 1"
+      "ref": "item 10719/charge 1",
+      "description": "HC COMPLETE BLOOD COUNT CBC"
      },
      {
       "hospital": "CHI St Lukes Lakeside Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 10630/charge 1"
+      "ref": "item 10630/charge 1",
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
      },
      {
       "hospital": "St Luke's The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 10630/charge 1"
+      "ref": "item 10630/charge 1",
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
      },
      {
       "hospital": "Woodland Springs",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Elite Hospital Kingwood",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 229"
+      "ref": "row 229",
+      "description": "Blood count; complete (CBC) automated (Hgb Hct RBC WBC and platelet count)"
      },
      {
       "hospital": "Kingwood Pines Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "HCA Houston Healthcare Kingwood",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "item 308567/charge 1"
+      "ref": "item 308567/charge 1",
+      "description": "CBC AUTOMATED"
      }
     ]
    },
@@ -636,77 +647,88 @@
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "row 26951"
+      "ref": "row 26951",
+      "description": "TC CT, BRAIN WITHOUT CONTRAST"
      },
      {
       "hospital": "Baylor St Lukes Medical Center",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 8783/charge 1"
+      "ref": "item 8783/charge 1",
+      "description": "HC CT BRAIN"
      },
      {
       "hospital": "Houston Methodist Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 11945/charge 1"
+      "ref": "item 11945/charge 1",
+      "description": "HC CT HEAD/BRAIN SCAN WO CONTRA"
      },
      {
       "hospital": "Harris Health",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 34428"
+      "ref": "row 34428",
+      "description": "CT HEAD W/O CONTRAST (MOD CT \ufffd MCARE ONLY)"
      },
      {
       "hospital": "Houston Methodist The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 11959/charge 1"
+      "ref": "item 11959/charge 1",
+      "description": "HC CT HEAD/BRAIN SCAN WO CONTRA"
      },
      {
       "hospital": "CHI St Lukes Lakeside Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 8825/charge 1"
+      "ref": "item 8825/charge 1",
+      "description": "HC CT BRAIN"
      },
      {
       "hospital": "St Luke's The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 8825/charge 1"
+      "ref": "item 8825/charge 1",
+      "description": "HC CT BRAIN"
      },
      {
       "hospital": "Woodland Springs",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Elite Hospital Kingwood",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 508"
+      "ref": "row 508",
+      "description": "Computed tomography head or brain; without contrast material"
      },
      {
       "hospital": "Kingwood Pines Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "HCA Houston Healthcare Kingwood",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      }
     ]
    },
@@ -823,77 +845,88 @@
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "row 28173"
+      "ref": "row 28173",
+      "description": "TC MRI, EXTREMITY ANY JOINT, LOWER EXTREMITY W/O CONTR"
      },
      {
       "hospital": "Baylor St Lukes Medical Center",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9144/charge 1"
+      "ref": "item 9144/charge 1",
+      "description": "HC MR LOWER EXTREM JNT WO CONT"
      },
      {
       "hospital": "Houston Methodist Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 13569/charge 1"
+      "ref": "item 13569/charge 1",
+      "description": "HC MRI LOWER EXT JOINT W/O CONTRA"
      },
      {
       "hospital": "Harris Health",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 33175"
+      "ref": "row 33175",
+      "description": "MRI LOWER EXTREMITY JOINT W/O CONTRAST"
      },
      {
       "hospital": "Houston Methodist The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 13552/charge 1"
+      "ref": "item 13552/charge 1",
+      "description": "HC MRI LOWER EXT JOINT W/O CONTRA"
      },
      {
       "hospital": "CHI St Lukes Lakeside Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9186/charge 1"
+      "ref": "item 9186/charge 1",
+      "description": "HC MR LOWER EXTREM JNT WO CONT"
      },
      {
       "hospital": "St Luke's The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9186/charge 1"
+      "ref": "item 9186/charge 1",
+      "description": "HC MR LOWER EXTREM JNT WO CONT"
      },
      {
       "hospital": "Woodland Springs",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Elite Hospital Kingwood",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 1570"
+      "ref": "row 1570",
+      "description": "Magnetic resonance (eg proton) imaging any joint of lower extremity; without contrast material"
      },
      {
       "hospital": "Kingwood Pines Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "HCA Houston Healthcare Kingwood",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      }
     ]
    },
@@ -1044,77 +1077,88 @@
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Baylor St Lukes Medical Center",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9582/charge 1"
+      "ref": "item 9582/charge 1",
+      "description": "HC MAMMO SCRN BIL & CAD"
      },
      {
       "hospital": "Houston Methodist Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 13151/charge 1"
+      "ref": "item 13151/charge 1",
+      "description": "HC MAMMOGRAM SCREENING INCL CAD BIL"
      },
      {
       "hospital": "Harris Health",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 32991"
+      "ref": "row 32991",
+      "description": "SCREENING MAMMOGRAPHY BILATERAL INCL CAD WHEN PEFORMED"
      },
      {
       "hospital": "Houston Methodist The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 13155/charge 1"
+      "ref": "item 13155/charge 1",
+      "description": "HC MAMMOGRAM SCREENING INCL CAD BIL"
      },
      {
       "hospital": "CHI St Lukes Lakeside Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9624/charge 1"
+      "ref": "item 9624/charge 1",
+      "description": "HC MAMMO SCRN BIL & CAD"
      },
      {
       "hospital": "St Luke's The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9624/charge 1"
+      "ref": "item 9624/charge 1",
+      "description": "HC MAMMO SCRN BIL & CAD"
      },
      {
       "hospital": "Woodland Springs",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Elite Hospital Kingwood",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 2080"
+      "ref": "row 2080",
+      "description": "Screening mammography bilateral (2-view study of each breast) including computer-aided detection (CAD) when performed"
      },
      {
       "hospital": "Kingwood Pines Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "HCA Houston Healthcare Kingwood",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      }
     ]
    },
@@ -1362,77 +1406,88 @@
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Baylor St Lukes Medical Center",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Houston Methodist Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 12398/charge 1"
+      "ref": "item 12398/charge 1",
+      "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD"
      },
      {
       "hospital": "Harris Health",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 32341"
+      "ref": "row 32341",
+      "description": "ECHG GI PROC COLONOSCOPY, FLEX ; DX"
      },
      {
       "hospital": "Houston Methodist The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 12425/charge 1"
+      "ref": "item 12425/charge 1",
+      "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD"
      },
      {
       "hospital": "CHI St Lukes Lakeside Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "St Luke's The Woodlands Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Woodland Springs",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Elite Hospital Kingwood",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Kingwood Pines Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "HCA Houston Healthcare Kingwood",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      }
     ]
    },

@@ -129,7 +129,8 @@ from the file with no network. Tick **run live**, enter the PIN, and watch the t
 | Files downloaded per run | `HPA_MAX_DOWNLOADS` | Hospitals past the cap are reported as capped, not dropped |
 | Model spend per day | `HPA_DAILY_CAP_USD` | Claude stops being called; the deterministic pipeline carries on |
 | Two runs at a time | built in | The third gets "busy, try again" |
-| Disk | `HPA_KEEP_DOWNLOADS=0` | The raw price file is deleted once its rows are in DuckDB |
+| Disk | `HPA_KEEP_DOWNLOADS=0` | The raw price file is deleted after extraction, whether it succeeded or not; a partial download is removed on failure |
+| A PIN is mandatory | `HPA_REQUIRE_PIN=1` (set in `docker-compose.yml`) | The server refuses to start with an empty `HPA_LIVE_PIN`, rather than serving live scans to anyone |
 
 `HPA_TRUST_PROXY=1` tells the server the client address is Caddy's `X-Forwarded-For`
 rather than the socket, which is what makes the per-IP limit mean anything behind a proxy.
@@ -163,11 +164,18 @@ print(con.execute('SELECT fn, count(*), round(sum(usd), 4) FROM llm_spend GROUP 
 docker compose start hpa
 ```
 
-Back it up by copying the file off; nothing else on the disk matters:
+Back it up with the server stopped: while it runs, DuckDB keeps a write-ahead log
+(`hpa.duckdb.wal`) beside the file, and a copy of the `.duckdb` alone can be missing
+recent rows or fail to open.
 
 ```bash
+docker compose stop hpa
 scp admin@<ip>:/mnt/hpa/hpa.duckdb ./backup-$(date +%F).duckdb
+docker compose start hpa
 ```
+
+Nothing else on the disk needs backing up: `/mnt/hpa/mrf/` holds price files a scan may
+reuse, and `HPA_KEEP_DOWNLOADS=0` keeps it empty.
 
 To rotate the PIN, change it in `.env` and `docker compose up -d` — no rebuild needed.
 
@@ -181,6 +189,7 @@ To rotate the PIN, change it in `.env` and `docker compose up -d` — no rebuild
 - **A live scan is killed part-way.** Almost certainly memory: check `docker compose logs`
   for an OOM kill, and remember the 1 GB plans cannot extract the largest files.
 - **The disk fills.** `HPA_KEEP_DOWNLOADS=0` should prevent it; if it happens anyway, look
-  for leftovers in `/mnt/hpa/mrf/` from an interrupted scan.
+  for leftovers in `/mnt/hpa/mrf/` (the container's `/data/mrf`) from a scan that was
+  killed outright, and delete any `download.*.part`.
 - **The CLI says the server owns the database.** It does, by design: stop the container, or
   read through the API (SPEC "Process model").

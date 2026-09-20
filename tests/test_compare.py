@@ -125,3 +125,43 @@ def test_every_pair_appears_once():
     names = [priced(n) for n in ("A", "B", "C", "D")]
     got = [(p.a, p.b) for p in compare.pairs(names)]
     assert got == [("A", "B"), ("A", "C"), ("A", "D"), ("B", "C"), ("B", "D"), ("C", "D")]
+
+
+# --- what the review pointed out: verdicts must not promise more than was checked ---------
+
+def test_a_priced_professional_line_alone_is_not_called_negotiated_only():
+    from hpa.compare import PROFESSIONAL_ONLY
+    s = summarise([line(billing_class="professional", gross=450.0, discounted_cash=225.0)])
+    assert s.verdict == PROFESSIONAL_ONLY and s.headline is None
+    assert "professional" in s.detail and "negotiated" not in s.detail
+
+
+def test_a_line_with_no_setting_is_unknown_on_the_card_as_it_is_in_the_pair():
+    from hpa.compare import UNKNOWN_SETTING
+    s = summarise([line(setting=None, billing_class="facility", gross=100.0, discounted_cash=50.0)])
+    assert s.verdict == UNKNOWN_SETTING and s.headline.discounted_cash == 50.0
+
+
+def test_two_codes_of_one_entry_are_not_the_same_service():
+    a = {"name": "A", "headline": {"code_type": "CPT", "code": "84153", "setting": "outpatient", "billing_class": "facility", "modifiers": None}}
+    b = {"name": "B", "headline": {"code_type": "CPT", "code": "84154", "setting": "outpatient", "billing_class": "facility", "modifiers": None}}
+    p = compare.pair(a, b)
+    assert p.verdict == compare.NOT_COMPARABLE and "84153 vs CPT 84154" in p.detail
+    b["headline"]["code"] = "84153"
+    assert compare.pair(a, b).verdict == compare.COMPARABLE
+
+
+def test_a_review_is_bound_to_the_line_it_looked_at():
+    from hpa.compare import apply_review
+    review = {"hospitals": [
+        {"hospital": "Harris Health", "billing_class": "facility", "ref": "row 1", "description": "MRI  Lower Extremity Joint", "headline_is_this_service": "yes"},
+        {"hospital": "Harris Health", "billing_class": "facility", "ref": "row 2", "description": "CT HEAD", "headline_is_this_service": "no"},
+    ]}
+    lines = [line(source_ref="row 1", description="mri lower extremity joint", gross=1.0),  # same line, spacing and case aside
+             line(source_ref="row 2", description="CT HEAD", gross=2.0)]
+    out = apply_review(lines, review, "Harris Health")
+    assert out[0].billing_class == "facility" and out[0].class_from_review
+    assert out[1].billing_class is None  # the reviewer did not confirm this one
+    # The file was reordered: row 1 is now something else, and the review does not follow the ref.
+    moved = [line(source_ref="row 1", description="CT HEAD", gross=1.0)]
+    assert apply_review(moved, review, "Harris Health")[0].billing_class is None

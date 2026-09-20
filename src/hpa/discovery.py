@@ -421,7 +421,9 @@ def _entry_from_site(hospital: Hospital, site: SiteResult, tie_breaker: TieBreak
 
 
 def short_name(hospital: Hospital) -> str:
-    return " ".join(w if w in {"HCA", "CHI", "LLC", "LP"} else w.capitalize() for w in hospital.name.split())
+    def word(w: str) -> str:
+        return w if w in {"HCA", "CHI", "LLC", "LP"} else "-".join(p.capitalize() for p in w.split("-"))
+    return " ".join(word(w) for w in hospital.name.split())
 
 
 def locate_price_file(

@@ -64,7 +64,7 @@ def store_extraction(con, url: str, ccn: str, cash: float | None, billing_class:
                 [ext, billing_class, cash])
 
 
-def fake_scan(con, client, ccn, url, trace, force=False, progress=None, keep_download=True):
+def fake_scan(con, client, ccn, url, trace, force=False, progress=None, keep_download=True, may_download=None):
     from hpa.scan import ScanResult
 
     trace("downloading 1 MB (50%)")
@@ -159,7 +159,7 @@ def test_a_run_streams_its_trace_and_ends_with_the_result(api):
 
 
 def test_a_missing_billing_class_is_unknown_not_a_guess(api, con, monkeypatch):
-    def unlabelled(con_, client, ccn, url, trace, force=False, progress=None, keep_download=True):
+    def unlabelled(con_, client, ccn, url, trace, force=False, progress=None, keep_download=True, may_download=None):
         from hpa.scan import ScanResult
 
         store_extraction(con_, url, ccn, cash=2735.80, billing_class=None)
@@ -227,7 +227,7 @@ def test_prices_reads_what_is_stored_without_scanning(api, con):
     assert harris["verdict"] == "comparable" and harris["headline"]["cash"] == 1500.0
     # The others were never located, and nothing is invented for them.
     others = [h for h in body["hospitals"] if h["ccn"] != "450289"]
-    assert [h["verdict"] for h in others] == [pipeline.NO_FILE] * len(others)
+    assert [h["verdict"] for h in others] == [pipeline.NOT_LOOKED] * len(others)
     assert all(h["headline"] is None for h in others)
 
 
@@ -274,7 +274,7 @@ def test_the_default_run_reads_only_what_is_stored(api, con, monkeypatch):
     harris = next(h for h in result["hospitals"] if h["ccn"] == "450289")
     assert harris["verdict"] == "comparable" and harris["headline"]["cash"] == 1500.0
     others = [h for h in result["hospitals"] if h["ccn"] != "450289"]
-    assert all(h["verdict"] == pipeline.NO_FILE and h["headline"] is None for h in others)
+    assert all(h["verdict"] == pipeline.NOT_LOOKED and h["headline"] is None for h in others)
     assert any("no downloads, no model calls" in e.get("text", "") for e in events)
     assert any("run live" in e.get("text", "") for e in events)
 
@@ -349,3 +349,56 @@ def test_a_cache_first_run_never_calls_claude(con, monkeypatch):
 
         priced = api.get("/api/prices", params={"service": "knee mri with contrast", "zip": "77030"}).json()
         assert priced["status"] == "needs_clarification" and priced["note"] is None
+
+
+def test_the_recorded_run_says_whose_prices_and_whether_they_compare(api):
+    """The landing page is the recording, so it must carry what a live run carries: the
+    hospital's type (a children's hospital's price says so) and a verdict on every pair."""
+    index = api.get("/api/demo").json()
+    body = api.get("/api/demo", params={"zip": index["zips"][0], "service": index["services"][0]["query"]}).json()
+    hospitals = body["result"]["hospitals"]
+    assert all(h.get("hospital_type") for h in hospitals)
+    assert any(h["hospital_type"] != "Acute Care Hospitals" for h in hospitals)  # Texas Children's, at 77030
+    n = len(hospitals)
+    pairs = body["result"]["comparisons"]
+    assert len(pairs) == n * (n - 1) // 2
+    assert {p["verdict"] for p in pairs} <= {"comparable", "not comparable", "unknown"}
+    assert body["events"][-2]["comparisons"] == pairs  # the result event carries the same
+
+
+def test_the_catalog_is_served_for_a_query_that_matched_nothing(api):
+    services = api.get("/api/catalog").json()
+    assert len(services) == 70
+    assert all({"id", "name", "codes", "reviewed"} <= set(s) for s in services)
+    assert any(s["id"] == "cpt-73721" for s in services)
+
+
+def test_prices_by_service_id_returns_every_line(api, con):
+    store_extraction(con, URL.format(ccn="450289"), "450289", cash=1500.0)
+    con.execute("INSERT INTO hospital_files VALUES ('450289', 'HARRIS', now(), true, 'cms-hpt', 'example.test', NULL, NULL, NULL, ?, 'csv-wide', 1000, NULL, NULL, NULL, '', '[]', 1.0)",
+                [URL.format(ccn="450289")])
+    body = api.get("/api/prices", params={"service_id": "cpt-73721", "zip": "77030", "all": "true"}).json()
+    assert body["status"] == "ok" and body["service"]["id"] == "cpt-73721"
+    harris = next(h for h in body["hospitals"] if h["ccn"] == "450289")
+    assert len(harris["lines"]) == harris["line_count"] == 1
+    assert api.get("/api/prices", params={"zip": "77030"}).status_code == 400
+    assert api.get("/api/prices", params={"service_id": "cpt-00000", "zip": "77030"}).status_code == 400
+
+
+def test_a_public_host_refuses_to_serve_without_its_pin(con):
+    import pytest as _pytest
+
+    with _pytest.raises(ValueError, match="HPA_REQUIRE_PIN"):
+        server.create_app(con, ":memory:", settings_module.Settings(require_pin=True))
+    assert settings_module.from_env({"HPA_REQUIRE_PIN": "1", "HPA_LIVE_PIN": ""}).require_pin
+    settings_module.from_env({"HPA_REQUIRE_PIN": "1", "HPA_LIVE_PIN": "s3cret"}).check()
+
+
+def test_finished_runs_are_forgotten_after_the_replay_window(api):
+    body = api.post("/api/runs", json={"zip": "77030", "service": "knee mri"}).json()
+    events_of(api, body["run_id"])
+    drain(api)
+    assert api.get(f"/api/runs/{body['run_id']}").status_code == 200
+    run = api.app.state.runs[body["run_id"]]
+    server._forget_finished(api.app, now=run.finished_at + server.RUN_RETENTION + 1)
+    assert api.get(f"/api/runs/{body['run_id']}").status_code == 404

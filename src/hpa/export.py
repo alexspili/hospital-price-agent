@@ -40,28 +40,24 @@ def export_demo(con, out: Path | str, zips=demo.DEFAULT_ZIPS, limit: int = 5) ->
     # source is opened read-only and an attached database would otherwise inherit that.
     con.execute(f"""ATTACH '{str(out).replace("'", "''")}' AS export (READ_WRITE)""")
     try:
-        for table in REFERENCE:
+        # Reference tables carry no keys and are copied whole; everything else is created
+        # from the schema first, so the copy keeps the primary keys a scan relies on.
+        for table in ("zcta", "hospitals"):
             con.execute(f"CREATE TABLE export.{table} AS SELECT * FROM {table}")
-        con.execute("CREATE TABLE export.hospital_files AS SELECT * FROM hospital_files WHERE list_contains(?, ccn)", [ccns])
-        con.execute("CREATE TABLE export.llm_cache AS SELECT * FROM llm_cache")
-        # Tables the copy does not need (the spend ledger, say) are not created here: the
-        # server applies store.SCHEMA when it first opens the file for writing.
+        store.create_schema(con, "export")
+        store.copy_table(con, "export.sources", "sources")
+        store.copy_table(con, "export.hospital_files", "hospital_files", "list_contains(?, ccn)", [ccns])
+        store.copy_table(con, "export.llm_cache", "llm_cache")
 
         # The chain from a located file to its rows: url -> checksum -> extraction.
-        con.execute("""
-            CREATE TABLE export.fetches AS SELECT * FROM fetches
-             WHERE url IN (SELECT mrf_url FROM export.hospital_files WHERE mrf_url IS NOT NULL)
-        """)
-        con.execute("CREATE TABLE export.files AS SELECT * FROM files WHERE checksum IN (SELECT checksum FROM export.fetches)")
-        con.execute("""
-            CREATE TABLE export.extractions AS SELECT * FROM extractions
-             WHERE checksum IN (SELECT checksum FROM export.fetches WHERE checksum IS NOT NULL)
-        """)
+        store.copy_table(con, "export.fetches", "fetches",
+                         "url IN (SELECT mrf_url FROM export.hospital_files WHERE mrf_url IS NOT NULL)")
+        store.copy_table(con, "export.files", "files", "checksum IN (SELECT checksum FROM export.fetches)")
+        store.copy_table(con, "export.extractions", "extractions",
+                         "checksum IN (SELECT checksum FROM export.fetches WHERE checksum IS NOT NULL)")
         for table in ("items", "item_codes", "charges"):
-            con.execute(f"""
-                CREATE TABLE export.{table} AS SELECT * FROM {table}
-                 WHERE extraction_id IN (SELECT extraction_id FROM export.extractions)
-            """)
+            store.copy_table(con, f"export.{table}", table,
+                             "extraction_id IN (SELECT extraction_id FROM export.extractions)")
         counts = {t: con.execute(f"SELECT count(*) FROM export.{t}").fetchone()[0]
                   for t in (*REFERENCE, "hospital_files", "fetches", "files", "extractions",
                             "items", "item_codes", "charges", "llm_cache")}

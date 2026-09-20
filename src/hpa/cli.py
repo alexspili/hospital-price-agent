@@ -1,4 +1,4 @@
-"""Command line entry point: `hpa setup`, `hpa hospitals ZIP`, `hpa catalog [QUERY]`, `hpa locate ZIP`."""
+"""Command line entry point: one `cmd_*` function per `hpa` command, wired up in `main`."""
 
 import argparse
 import json
@@ -20,6 +20,10 @@ class DatabaseBusy(RuntimeError):
     """Someone else holds the database file. Says who, and what to do about it."""
 
 
+class NoDatabase(RuntimeError):
+    """There is no database file yet, so the answer is what builds one, not a lock error."""
+
+
 def open_db(args: argparse.Namespace, read_only: bool = False):
     """The store, or a clear reason why not.
 
@@ -30,6 +34,8 @@ def open_db(args: argparse.Namespace, read_only: bool = False):
     url = client.running_server()
     if url:
         raise DatabaseBusy(f"the server at {url} owns the database; stop it, or use the web page")
+    if not Path(args.db).exists():
+        raise NoDatabase("no database yet; run `hpa setup` first")
     try:
         return store.connect(args.db, read_only=read_only)
     except duckdb.IOException as e:
@@ -111,7 +117,7 @@ def cmd_hospitals(args: argparse.Namespace) -> int:
         return 1
     if args.verbose:
         print_sources(store.sources(con))
-    print(f"nearest {len(found)} hospitals to the centre of {args.zip}")
+    print(f"nearest {plural(len(found), 'hospital')} to the centre of {args.zip}")
     for h in found:
         miles = h.distance_km / KM_PER_MILE
         shown = f"~{miles:.1f} mi" if h.approximate else f"{miles:.1f} mi"
@@ -169,12 +175,14 @@ def cmd_locate(args: argparse.Namespace) -> int:
     print(f"locating price files for {len(hospitals)} hospitals")
 
     claude = None
-    if llm.have_api_key() and not args.no_llm:
+    if args.no_llm:
+        print("  (--no-llm: web-search and tie-break fallbacks disabled)")
+    elif llm.have_api_key():
         # A DuckDB connection is not thread-safe; a cursor is a separate connection the
         # worker threads can use while the main thread writes results.
         claude = llm.Claude(llm.make_client(), con.cursor())
     else:
-        print("  (no ANTHROPIC_API_KEY: web-search and tie-break fallbacks disabled)")
+        print("  (no ANTHROPIC_API_KEY in .env: web-search and tie-break fallbacks disabled)")
     lock = threading.Lock()
 
     def trace(line: str) -> None:
@@ -257,29 +265,54 @@ def cmd_scan(args: argparse.Namespace) -> int:
 
 
 def cmd_prices(args: argparse.Namespace) -> int:
-    """Read-only, so it keeps working while the server holds the database: the answer
-    then comes from the server's API instead of the file (SPEC "Process model")."""
+    """Answers from what is already stored, and asks nothing of the network or the model
+    unless `--ask-claude` says so: the same rule the public endpoint follows.
+
+    Read-only, so it keeps working while the server holds the database: the answer then
+    comes from the server's API instead of the file (SPEC "Process model"). With
+    `--ask-claude` the file is opened for writing, because the answer is cached in it.
+    """
     shown = None if args.all else pipeline.SHOWN_LINES
     url = client.running_server()
     if url:
+        if args.ask_claude:
+            print("the running server answers deterministically; stop it to use --ask-claude", file=sys.stderr)
+            return 1
         try:
             payload = client.get_prices(url, args.service, args.zip, args.ccn, args.limit, args.all)
         except (httpx.HTTPError, RuntimeError) as e:
             print(e, file=sys.stderr)
             return 1
     else:
-        con = open_db(args, read_only=True)
+        ask = args.ask_claude and llm.have_api_key()
+        if args.ask_claude and not ask:
+            print("no ANTHROPIC_API_KEY in .env; answering without Claude", file=sys.stderr)
+        if ask and catalog.resolve(args.service).verdict != catalog.SELECTED:
+            print(f"asking Claude to settle {args.service!r} (about ${llm.CONFIRM_COST_USD:.2f}; the answer is cached)")
+        con = open_db(args, read_only=not ask)
         try:
             payload = pipeline.prices_payload(con, args.service, args.zip, args.ccn, args.limit,
-                                              shown_lines=shown, use_llm=not args.no_llm)
+                                              shown_lines=shown, use_llm=ask, llm_con=con if ask else None)
         except UnknownZip as e:
             print(e, file=sys.stderr)
             return 1
-    return print_prices(payload, args.all)
+    code = print_prices(payload, args.all)
+    if code and not url and not args.ask_claude and llm.have_api_key():
+        print("  (--ask-claude lets Claude settle it, among these candidates only)")
+    return code
 
 
 def money(v) -> str:
     return f"${v:,.2f}" if v is not None else "—"
+
+
+def negotiated(lo, hi) -> str:
+    """The min–max range, or one dash when the file gives neither end."""
+    return "—" if lo is None and hi is None else f"{money(lo)}–{money(hi)}"
+
+
+def plural(n: int, word: str) -> str:
+    return f"{n} {word}{'' if n == 1 else 's'}"
 
 
 def print_prices(payload: dict, show_all: bool) -> int:
@@ -309,28 +342,34 @@ def print_prices(payload: dict, show_all: bool) -> int:
 
 
 def print_hospital(h: dict, show_all: bool) -> None:
-    if h["verdict"] == pipeline.NO_FILE:
-        print(f"\n{h['name']}: no price file located")
+    # A hospital with nothing to show still says why: "never looked" and "looked and
+    # failed" are different findings, and only the detail tells them apart.
+    why = f" — {h['detail']}" if h.get("detail") else ""
+    if h["verdict"] in (pipeline.NO_FILE, pipeline.NOT_LOOKED):
+        print(f"\n{h['name']}: {h['verdict']}{why}")
         return
     if h["verdict"] == pipeline.NOT_SCANNED:
-        print(f"\n{h['name']}: file located but not scanned yet (hpa scan)")
+        print(f"\n{h['name']}: file located but not scanned yet (hpa scan){why}")
         return
     kind = h.get("hospital_type")
     label = f"  [{kind}]" if kind and kind != hospitals_module.GENERAL else ""
-    print(f"\n{h['name']}{label}  (file dated {h['file_date'] or '?'}; {(h['url'] or '')[:60]}…)")
-    print(f"  verdict: {h['verdict']}" + (f" — {h['detail']}" if h["detail"] else ""))
+    url = h["url"] or "?"
+    shown_url = url[:60] + ("…" if len(url) > 60 else "")
+    print(f"\n{h['name']}{label}  (file dated {h['file_date'] or '?'}; {shown_url})")
+    print(f"  verdict: {h['verdict']}{why}")
     hl = h["headline"]
     if hl:
-        print(f"  cash {money(hl['cash'])}  gross {money(hl['gross'])}  negotiated {money(hl['min'])}–{money(hl['max'])}  [{hl['context']}]  {hl['ref']}")
+        print(f"  cash {money(hl['cash'])}  gross {money(hl['gross'])}  negotiated {negotiated(hl['min'], hl['max'])}  [{hl['context']}]  {hl['ref']}")
         print(f"      {hl['description'][:100]}")
     if show_all or not hl:
         for l in h["lines"]:
             extra = f" + {', '.join(l['other_codes'])}" if l["other_codes"] else ""
-            print(f"    {l['code_type']} {l['code']}{extra}  cash {money(l['cash'])}  gross {money(l['gross'])}  negotiated {money(l['min'])}–{money(l['max'])}  [{l['context']}]  {l['ref']}"
+            print(f"    {l['code_type']} {l['code']}{extra}  cash {money(l['cash'])}  gross {money(l['gross'])}  negotiated {negotiated(l['min'], l['max'])}  [{l['context']}]  {l['ref']}"
                   + (f"  note: {l['note']}" if l["note"] else ""))
-        hidden = h["line_count"] - len(h["lines"])
+    if not show_all:
+        hidden = h["line_count"] - (1 if hl else len(h["lines"]))
         if hidden > 0:
-            print(f"    … {hidden} more lines (--all)")
+            print(f"    … {plural(hidden, 'more line')} (--all)")
 
 
 def cmd_export_demo(args: argparse.Namespace) -> int:
@@ -465,43 +504,48 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("eval-discovery", help="compare located file domains with the external index in eval/")
 
     p = sub.add_parser("scan", help="download and extract the located price files for hospitals near ZIP codes")
-    p.add_argument("zip", nargs="*")
-    p.add_argument("--ccn")
-    p.add_argument("--limit", type=positive_int, default=5)
+    p.add_argument("zip", nargs="*", help="one or more ZIP codes, located first with `hpa locate`")
+    p.add_argument("--ccn", help="a single hospital by CMS certification number")
+    p.add_argument("--limit", type=positive_int, default=5, help="hospitals per ZIP (default 5)")
     p.add_argument("--force", action="store_true", help="re-download and re-extract even if unchanged")
 
-    p = sub.add_parser("prices", help="show the four summary prices for a catalog service at nearby hospitals")
+    p = sub.add_parser("prices", help="the four summary prices for a catalog service at nearby hospitals, "
+                                      "from files already scanned; no network, no model")
     p.add_argument("service", help='e.g. "knee mri" or 45378')
-    p.add_argument("zip", nargs="*")
-    p.add_argument("--ccn")
-    p.add_argument("--limit", type=positive_int, default=5)
+    p.add_argument("zip", nargs="*", help="one or more ZIP codes, scanned first with `hpa scan`")
+    p.add_argument("--ccn", help="a single hospital by CMS certification number")
+    p.add_argument("--limit", type=positive_int, default=5, help="hospitals per ZIP (default 5)")
     p.add_argument("--all", action="store_true", help="list every matching line, not just the headline")
-    p.add_argument("--no-llm", action="store_true", help="never ask Claude to settle an unclear service name")
+    p.add_argument("--ask-claude", action="store_true",
+                   help="let Claude settle an unclear service name, among the resolver's candidates only "
+                        "(needs ANTHROPIC_API_KEY; one call, cached)")
 
     p = sub.add_parser("demo", help="replay the recorded Houston run offline (or --record it from the local database)")
-    p.add_argument("--record", action="store_true")
+    p.add_argument("--record", action="store_true", help="re-record demo/houston.json from the local database")
     p.add_argument("--delay", type=float, default=0.0, help="seconds between trace lines when replaying")
 
     p = sub.add_parser("eval", help="the four accuracy numbers, computed from the local database and the raw files")
     p.add_argument("--sample", type=int, default=25, help="charges re-read from each raw file")
 
     p = sub.add_parser("serve", help="the web page and its API; this process then owns the database")
-    p.add_argument("--host", default="127.0.0.1")
-    p.add_argument("--port", type=int, default=8000)
+    p.add_argument("--host", default="127.0.0.1", help="interface to listen on (default 127.0.0.1)")
+    p.add_argument("--port", type=int, default=8000, help="port to listen on (default 8000)")
     p.add_argument("--url", help="the address to announce to the CLI (behind a proxy, the public one)")
 
     p = sub.add_parser("export-demo", help="a compact copy of the store for the hosted demo")
-    p.add_argument("--out", default="data/demo.duckdb")
+    p.add_argument("--out", default="data/demo.duckdb", help="where to write it (default data/demo.duckdb)")
     p.add_argument("zip", nargs="*", help=f"pre-scanned ZIPs (default {', '.join(demo.DEFAULT_ZIPS)})")
     p.add_argument("--limit", type=positive_int, default=5, help="hospitals per ZIP (default 5)")
 
     args = parser.parse_args(argv)
+    if args.command in ("locate", "scan", "prices") and not args.zip and not args.ccn:
+        parser.error(f"{args.command} needs at least one ZIP code, or --ccn")
     commands = {"setup": cmd_setup, "hospitals": cmd_hospitals, "catalog": cmd_catalog, "locate": cmd_locate,
                 "eval-discovery": cmd_eval_discovery, "scan": cmd_scan, "prices": cmd_prices,
                 "demo": cmd_demo, "eval": cmd_eval, "serve": cmd_serve, "export-demo": cmd_export_demo}
     try:
         return commands[args.command](args)
-    except DatabaseBusy as e:
+    except (DatabaseBusy, NoDatabase) as e:
         print(e, file=sys.stderr)
         return 1
 

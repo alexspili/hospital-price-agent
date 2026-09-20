@@ -8,7 +8,9 @@ COPY frontend/ ./
 RUN npm run build
 
 FROM python:3.13-slim
-ENV PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 HPA_DB=/data/hpa.duckdb
+# HPA_DATA_DIR puts the database, price files and the server marker on the mounted disk,
+# so a rebuild of the container never loses a downloaded file or a scanned row.
+ENV PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 HPA_DATA_DIR=/data HPA_DB=/data/hpa.duckdb
 WORKDIR /app
 COPY requirements-lock.txt pyproject.toml README.md ./
 COPY src/ ./src/

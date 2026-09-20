@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
 import type { HospitalResult, RunEvent, Service } from './api'
-import type { Counter } from './trace'
-import { counterText, idle, money, reduce, replay, starting } from './trace'
+import type { Counter, RunState } from './trace'
+import { counterText, idle, lost, money, reduce, replay, sourceLine, starting, withAllLines } from './trace'
 
 const service: Service = { id: 'cpt-73721', name: 'MRI scan of leg joint', codes: 'CPT 73721', reviewed: true }
 
@@ -125,3 +125,45 @@ describe('formatting', () => {
     expect(counterText(at({ phase: 'download', done: 5_000_000 }))).toBe('downloading 5 MB')
   })
 })
+
+describe('what the banner says the numbers are', () => {
+  const run = (over: Partial<RunState>): RunState => ({ ...starting(), ...over })
+
+  it('never claims a live scan for a run that has not finished one', () => {
+    expect(sourceLine(false, undefined, run({ live: false, status: 'running' }))).toMatch(/scanned earlier/)
+    expect(sourceLine(false, undefined, run({ live: true, status: 'running' }))).toMatch(/^Scanning live/)
+    expect(sourceLine(false, undefined, run({ live: true, status: 'failed' }))).toMatch(/stopped early/)
+    expect(sourceLine(false, undefined, run({ live: null, status: 'failed' }))).not.toMatch(/Scanned live/)
+    expect(sourceLine(false, undefined, run({ live: true, status: 'done' }))).toBe('Scanned live from each hospital’s own file.')
+    expect(sourceLine(true, '2026-09-19', run({}))).toContain('2026-09-19')
+  })
+
+  it('knows from the start whether a run goes to the web', () => {
+    expect(starting(null, false).live).toBe(false)
+    expect(starting(null, true).live).toBe(true)
+    expect(starting('2026-09-19').live).toBeNull()
+  })
+
+  it('a stream that cannot be resumed fails the run instead of leaving it running', () => {
+    const gone = lost(starting(null, true), 'lost the connection')
+    expect(gone.status).toBe('failed')
+    expect(gone.error).toBe('lost the connection')
+    const done = replay([{ seq: 1, kind: 'result', zip: '77030', service, live: true, hospitals: [] }])
+    expect(lost(done, 'late')).toBe(done) // a finished run is not un-finished by a late error
+  })
+
+  it('takes every line for a hospital without touching its verdict', () => {
+    const shown = { ...hospital('450289'), line_count: 12, lines: [] }
+    const state = replay([{ seq: 1, kind: 'hospital', hospital: shown }])
+    const full = { ...shown, verdict: 'something else', lines: Array(12).fill(null).map((_, i) => line(`row ${i}`)), line_count: 12 }
+    const after = withAllLines(state, [full, { ...hospital('999999'), lines: [line('row 1')] }])
+    expect(after.hospitals).toHaveLength(1)
+    expect(after.hospitals[0].lines).toHaveLength(12)
+    expect(after.hospitals[0].verdict).toBe('comparable')
+  })
+})
+
+function line(ref: string) {
+  return { code_type: 'CPT', code: '73721', other_codes: [], description: 'MRI', context: 'outpatient', cash: 1, gross: 2,
+           min: null, max: null, setting: 'outpatient', billing_class: null, modifiers: null, ref, note: null }
+}

@@ -22,6 +22,7 @@ SHOWN_LINES = 8
 # Statuses that are not comparability verdicts: they say why there is nothing to compare.
 # The verdict vocabulary itself lives in compare.py and is not extended here.
 NO_FILE = "no price file located"
+NOT_LOOKED = "price file not looked for yet"  # discovery never ran: not a finding about the hospital
 NOT_SCANNED = "not scanned"
 SCAN_FAILED = "file could not be read"
 
@@ -102,8 +103,12 @@ def hospital_prices(con, service: catalog.Service, h: Hospital, disc: dict | Non
     }
     if status:
         return out
-    if not (disc and disc["ok"]):
-        out["detail"] = (disc or {}).get("reason") or "run `hpa locate` first"
+    if disc is None:
+        # Never looked for is not the same finding as looked for and not found.
+        out.update(verdict=NOT_LOOKED, detail="run `hpa locate` first")
+        return out
+    if not disc["ok"]:
+        out["detail"] = disc.get("reason") or ""
         return out
     ext = scan.latest_extraction(con, disc["mrf_url"])
     if not ext:
@@ -204,7 +209,8 @@ def run_search(con, zip_code: str, service: catalog.Service, emit: Emit, *, quer
     before, which is how the hosted demo's pre-scanned ZIPs come back instantly.
     """
     hospitals = find_hospitals(con, zip_code, limit)
-    emit("trace", text=f"nearest {len(hospitals)} hospitals to the centre of {zip_code}")
+    n = len(hospitals)
+    emit("trace", text=f"nearest {n} hospital{'s' if n != 1 else ''} to the centre of {zip_code}")
     for h in hospitals:
         miles = h.distance_km / KM_PER_MILE
         emit("trace", ccn=h.ccn, text=f"  {'~' if h.approximate else ''}{miles:.1f} mi  {discovery.short_name(h)}")
@@ -263,14 +269,16 @@ def _one_hospital(con, client, h: Hospital, service, emit: Emit, claude, claude_
     def progress(phase: str, done: int, total: int | None) -> None:
         emit("progress", ccn=h.ccn, name=who, phase=phase, done=done, total=total)
 
-    disc = None if (fresh and live) else store.cached_discovery(con, h.ccn)
+    # A live run looks again once a result is past its TTL; a cache-first run reads
+    # whatever was found, and the trace says how old it is.
+    disc = None if (fresh and live) else store.cached_discovery(con, h.ccn, within_ttl=live)
     if disc:
         trace(f"cached result from {disc['discovered_at']:%Y-%m-%d}: "
               + (f"{disc['shape']} file at {disc['domain']}" if disc["ok"] else disc["reason"]))
     elif not live:
-        trace("no file located in this copy — tick “run live” to go and find it")
+        trace("not looked for in this copy — tick “run live” to go and find it")
         return hospital_prices(con, service, h, None, shown_lines=shown_lines,
-                               status=NO_FILE, detail="not looked for in this copy")
+                               status=NOT_LOOKED, detail="not looked for in this copy")
     else:
         # A Claude fallback that hits the daily budget is not a failure: the deterministic
         # search carries on and the trace says the model was not consulted.
@@ -304,9 +312,14 @@ def _one_hospital(con, client, h: Hospital, service, emit: Emit, claude, claude_
         return hospital_prices(con, service, h, disc, shown_lines=shown_lines,
                                status=NOT_SCANNED, detail=f"this run's download cap of {budget.limit} files was reached")
 
+    # A file that was extracted before but has changed on the server is a download too:
+    # the scan asks the budget at the moment it would fetch, and an unchanged file costs nothing.
+    may_download = None if extracted is False or budget is None else budget.take
     with url_lock(disc["mrf_url"]):
         r = scan.scan(con, client, h.ccn, disc["mrf_url"], trace, force=force, progress=progress,
-                      keep_download=keep_downloads)
+                      keep_download=keep_downloads, may_download=may_download)
     if not r.ok:
-        return hospital_prices(con, service, h, disc, shown_lines=shown_lines, status=SCAN_FAILED, detail=r.reason)
+        status = NOT_SCANNED if r.capped else SCAN_FAILED
+        detail = f"this run's download cap of {budget.limit} files was reached" if r.capped else r.reason
+        return hospital_prices(con, service, h, disc, shown_lines=shown_lines, status=status, detail=detail)
     return hospital_prices(con, service, h, disc, shown_lines=shown_lines)

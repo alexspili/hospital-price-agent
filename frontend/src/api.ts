@@ -1,4 +1,4 @@
-// What the API sends, and the three calls the page makes. The shapes come from
+// What the API sends, and the calls the page makes. The shapes come from
 // hpa/pipeline.py: a hospital result is computed there, never here. The page formats
 // numbers; it never derives one.
 
@@ -34,7 +34,9 @@ export type HospitalResult = {
   lines: Line[]
 }
 
-export type Service = { id: string | null; name: string; codes: string; reviewed: boolean }
+// `notes` is the catalog's own caveat for the entry ("Without contrast. …"): what the
+// service name alone does not say, and what a visitor asking for a variant needs to see.
+export type Service = { id: string | null; name: string; codes: string; reviewed: boolean; notes?: string | null }
 
 // Whether two hospitals' headline prices can honestly sit side by side.
 export type Pair = { a: string; b: string; verdict: string; detail: string }
@@ -55,7 +57,14 @@ export type Clarification = {
   candidates: Service[]
 }
 
-export type Started = { status: 'started'; run_id: string; service: Service; live: boolean }
+export type Started = {
+  status: 'started'
+  run_id: string
+  service: Service
+  live: boolean
+  resolver?: { verdict: string; reason: string } | null
+  note?: string | null // what Claude said when it settled the name
+}
 
 // What this deployment allows, so the page can say so before anyone tries.
 export type Config = { live_needs_pin: boolean; max_downloads: number | null; runs_per_hour: number | null }
@@ -75,6 +84,11 @@ export type DemoIndex = {
   services: { query: string; name: string; codes: string }[]
 }
 
+// /api/prices: the stored answer for a service, with every matching line when asked.
+export type Prices =
+  | { status: 'ok'; service: Service; hospitals: HospitalResult[]; comparisons?: Pair[] }
+  | { status: 'needs_clarification'; candidates: Service[] }
+
 export class ApiError extends Error {
   constructor(readonly status: number, message: string) {
     super(message)
@@ -87,12 +101,23 @@ async function get<T>(path: string): Promise<T> {
   return (await r.json()) as T
 }
 
+// FastAPI sends a string for its own errors and a list of {loc, msg} for a request that
+// failed validation (a one-digit ZIP); a visitor reads a sentence either way.
 async function detail(r: Response): Promise<string> {
   try {
-    const body = await r.json()
-    return body.detail ?? r.statusText
+    const body = (await r.json()) as { detail?: unknown }
+    const d = body.detail
+    if (typeof d === 'string') return d
+    if (Array.isArray(d)) {
+      const msgs = d.map((x) => {
+        const field = Array.isArray(x?.loc) ? String(x.loc[x.loc.length - 1]) : ''
+        return field ? `${field}: ${x?.msg ?? 'invalid'}` : String(x?.msg ?? 'invalid')
+      })
+      if (msgs.length) return msgs.join('; ')
+    }
+    return r.statusText || `request failed (${r.status})`
   } catch {
-    return r.statusText
+    return r.statusText || `request failed (${r.status})`
   }
 }
 
@@ -102,6 +127,13 @@ export const demoIndex = () => get<DemoIndex>('/api/demo')
 
 export const recordedRun = (zip: string, service: string) =>
   get<RecordedRun>(`/api/demo?zip=${encodeURIComponent(zip)}&service=${encodeURIComponent(service)}`)
+
+// The 70 services, for a visitor whose words matched none of them.
+export const catalogue = () => get<Service[]>('/api/catalog')
+
+// Every matching line for one run's ZIP and service, from what is stored (no scanning).
+export const allLines = (zip: string, serviceId: string) =>
+  get<Prices>(`/api/prices?zip=${encodeURIComponent(zip)}&service_id=${encodeURIComponent(serviceId)}&all=true`)
 
 export type RunRequest = { zip: string; service?: string; service_id?: string; live?: boolean; pin?: string }
 
@@ -117,16 +149,27 @@ export async function startRun(body: RunRequest): Promise<Started | Clarificatio
 
 // Every event kind arrives as its own SSE event name, so each one gets a listener. The
 // browser reconnects on its own and sends Last-Event-ID; the server replays from there.
+// When it gives up for good (the run is gone: the server restarted), the page is told,
+// rather than left saying "running" forever.
 const KINDS = ['trace', 'progress', 'hospital', 'result', 'error', 'end'] as const
 
-export function streamRun(runId: string, onEvent: (event: RunEvent) => void): () => void {
+export function streamRun(runId: string, onEvent: (event: RunEvent) => void, onLost: (message: string) => void): () => void {
   const source = new EventSource(`/api/runs/${runId}/events`)
   for (const kind of KINDS) {
     source.addEventListener(kind, (e) => {
-      const event = JSON.parse((e as MessageEvent).data) as RunEvent
+      // The run's own "error" event shares its name with EventSource's transport error,
+      // which carries no data; only a message with data is one of ours.
+      const data = (e as MessageEvent).data
+      if (typeof data !== 'string') return
+      const event = JSON.parse(data) as RunEvent
       onEvent(event)
       if (event.kind === 'end') source.close()
     })
+  }
+  source.onerror = () => {
+    if (source.readyState === EventSource.CLOSED) {
+      onLost('lost the connection to this run and could not resume it (the server may have restarted); run it again')
+    }
   }
   return () => source.close()
 }

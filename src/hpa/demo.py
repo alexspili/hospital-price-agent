@@ -27,10 +27,11 @@ def record(con, zips=DEFAULT_ZIPS, services=DEFAULT_SERVICES) -> dict:
         out["zips"][z] = []
         for h in found:
             hospitals.setdefault(h.ccn, h)
-            c = store.cached_discovery(con, h.ccn)
+            c = store.cached_discovery(con, h.ccn, within_ttl=False)
             out["zips"][z].append({
                 "ccn": h.ccn, "name": short_name(h), "distance_km": round(h.distance_km, 1),
-                "approximate": h.approximate, "steps": (c or {}).get("steps", []), "ok": bool(c and c["ok"]),
+                "approximate": h.approximate, "hospital_type": h.hospital_type,
+                "steps": (c or {}).get("steps", []), "ok": bool(c and c["ok"]),
                 "reason": (c or {}).get("reason"), "mrf_url": (c or {}).get("mrf_url"),
             })
     for q in services:
@@ -40,8 +41,8 @@ def record(con, zips=DEFAULT_ZIPS, services=DEFAULT_SERVICES) -> dict:
         svc = r.service
         # The same function the live page and `hpa prices` use, so a recorded run and a
         # live one are the same shape and say the same things.
-        entry = {"service": svc.name, "codes": svc.code_list, "reviewed": svc.reviewed,
-                 "hospitals": [pipeline.hospital_prices(con, svc, h, store.cached_discovery(con, h.ccn))
+        entry = {"service": svc.name, "codes": svc.code_list, "reviewed": svc.reviewed, "notes": svc.notes,
+                 "hospitals": [pipeline.hospital_prices(con, svc, h, store.cached_discovery(con, h.ccn, within_ttl=False))
                                for h in hospitals.values()]}
         out["services"][q] = entry
     return out
@@ -51,7 +52,7 @@ def replay(data: dict, out=print, delay: float = 0.0) -> None:
     money = lambda v: f"${v:,.2f}" if v is not None else "—"
     out(f"recorded run from {data['recorded_on']} (no network, no database, no API key)")
     for z, hospitals in data["zips"].items():
-        out(f"\nnearest {len(hospitals)} hospitals to the centre of {z}")
+        out(f"\nnearest {len(hospitals)} hospital{'s' if len(hospitals) != 1 else ''} to the centre of {z}")
         for h in hospitals:
             out(f"  {'~' if h['approximate'] else ''}{h['distance_km'] / 1.609344:.1f} mi  {h['name']}")
         for h in hospitals:

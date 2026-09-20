@@ -123,10 +123,17 @@ def _carry_over(con, old_db: Path) -> list[str]:
             "SELECT table_name FROM duckdb_tables() WHERE database_name = 'old'"
         ).fetchall()]
         carried = []
+        known = store.schema_tables()
         for name in names:
             if name in REFERENCE_TABLES:
                 continue
-            con.execute(f'CREATE OR REPLACE TABLE "{name}" AS SELECT * FROM old."{name}"')
+            if name in known:
+                # The new store already has this table from the schema, keys included;
+                # the rows come across, the shape does not.
+                con.execute(f'DELETE FROM "{name}"')
+                store.copy_table(con, f'"{name}"', f'old."{name}"')
+            else:
+                con.execute(f'CREATE OR REPLACE TABLE "{name}" AS SELECT * FROM old."{name}"')
             carried.append(name)
         return carried
     finally:

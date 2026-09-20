@@ -6,15 +6,21 @@ carried across rebuilds. The price tables arrive with milestone 3 and follow the
 """
 
 import json
+import os
 from dataclasses import asdict
 from datetime import datetime, timedelta
 from pathlib import Path
 
 import duckdb
 
-DATA_DIR = Path(__file__).resolve().parents[2] / "data"
+# Everything on disk lives under one directory: the database, raw reference downloads,
+# price files and the server's marker. The container points it at the mounted disk.
+DATA_DIR = Path(os.environ.get("HPA_DATA_DIR") or Path(__file__).resolve().parents[2] / "data")
 DEFAULT_DB = DATA_DIR / "hpa.duckdb"
 REFERENCE_TABLES = ("zcta", "hospitals")
+# Tables whose primary key the code relies on (INSERT OR REPLACE, one row per key). A
+# copy made with CREATE TABLE AS loses it, so copies are made from the schema instead.
+KEYED_TABLES = ("files", "extractions", "llm_cache")
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS sources (
@@ -91,6 +97,54 @@ def connect(path: Path | str = DEFAULT_DB, read_only: bool = False) -> duckdb.Du
 def migrate(con) -> None:
     """Bring an existing store up to the current shape. Safe to run repeatedly."""
     con.execute(MIGRATIONS)
+    restore_constraints(con)
+
+
+def schema_tables() -> dict[str, str]:
+    """{table name: its CREATE statement}, from SCHEMA."""
+    out = {}
+    for stmt in SCHEMA.split(";"):
+        stmt = stmt.strip()
+        if stmt.startswith("CREATE TABLE IF NOT EXISTS "):
+            out[stmt.split()[5]] = stmt
+    return out
+
+
+def create_schema(con, catalog: str) -> None:
+    """Apply SCHEMA and MIGRATIONS to an attached database, so a copy has the same
+    tables, columns and keys as the original rather than a keyless CREATE TABLE AS."""
+    con.execute(SCHEMA.replace("CREATE TABLE IF NOT EXISTS ", f"CREATE TABLE IF NOT EXISTS {catalog}."))
+    con.execute(MIGRATIONS.replace("ALTER TABLE ", f"ALTER TABLE {catalog}."))
+
+
+def copy_table(con, name: str, source: str, where: str = "", params: list | None = None) -> None:
+    """Rows of `source` into the schema-shaped table `name`, keeping one row per key."""
+    verb = "INSERT OR IGNORE" if name.split(".")[-1] in KEYED_TABLES else "INSERT"
+    con.execute(f"{verb} INTO {name} SELECT * FROM {source}{(' WHERE ' + where) if where else ''}", params or [])
+
+
+def restore_constraints(con) -> None:
+    """A store whose keyed tables lost their primary key (an older export or rebuild
+    copied them with CREATE TABLE AS) gets the key back, with duplicates dropped."""
+    keyed = con.execute(
+        "SELECT DISTINCT table_name FROM duckdb_constraints() WHERE constraint_type = 'PRIMARY KEY'"
+    ).fetchall()
+    have = {r[0] for r in keyed}
+    creates = schema_tables()
+    for table in KEYED_TABLES:
+        if table in have:
+            continue
+        con.execute("BEGIN TRANSACTION")
+        try:
+            con.execute(f"CREATE TEMPORARY TABLE _rekey AS SELECT * FROM {table}")
+            con.execute(f"DROP TABLE {table}")
+            con.execute(creates[table])
+            con.execute(f"INSERT OR IGNORE INTO {table} SELECT * FROM _rekey")
+            con.execute("DROP TABLE _rekey")
+            con.execute("COMMIT")
+        except Exception:
+            con.execute("ROLLBACK")
+            raise
 
 
 def save_sources(con, records: list[dict]) -> None:
@@ -140,8 +194,13 @@ def save_discovery(con, d) -> None:
     )
 
 
-def cached_discovery(con, ccn: str):
-    """The latest stored result for a hospital, if still fresh. Returns the row as a dict."""
+def cached_discovery(con, ccn: str, within_ttl: bool = True):
+    """The latest stored result for a hospital, as a dict.
+
+    With `within_ttl` (a live run deciding whether to look again) a result past its TTL
+    is None. A read path passes False: what was found and scanned is still the evidence
+    on hand, however old the discovery, and the row says so with `stale`.
+    """
     row = con.execute(
         "SELECT * FROM hospital_files WHERE ccn = ? ORDER BY discovered_at DESC LIMIT 1", [ccn]
     ).fetchone()
@@ -150,7 +209,8 @@ def cached_discovery(con, ccn: str):
     cols = [c[0] for c in con.description]
     rec = dict(zip(cols, row))
     age = datetime.now() - rec["discovered_at"]
-    if age > (SUCCESS_TTL if rec["ok"] else FAILURE_TTL):
+    rec["stale"] = age > (SUCCESS_TTL if rec["ok"] else FAILURE_TTL)
+    if rec["stale"] and within_ttl:
         return None
     rec["steps"] = json.loads(rec["steps"] or "[]")
     return rec

@@ -99,3 +99,15 @@ def test_an_unmatched_query_asks_nothing_when_no_catalogue_is_offered():
     fake = FakeClient({"id": None, "question": "which service?", "why": ""})
     chosen, why = Claude(fake).confirm_service("xyzzy", catalog.resolve("xyzzy"))
     assert chosen is None and fake.calls == []  # the model was never asked
+
+
+def test_an_unpriced_model_id_is_never_free():
+    from types import SimpleNamespace
+
+    from hpa import llm
+
+    usage = SimpleNamespace(input_tokens=1_000_000, output_tokens=0)
+    known = llm.cost_usd("claude-opus-5", usage)
+    assert known == llm.PRICES["claude-opus-5"][0]
+    assert llm.cost_usd("claude-opus-5-20260601", usage) == known  # a dated snapshot of the same model
+    assert llm.cost_usd("some-fallback-model", usage) >= known  # charged at the dearest known rate

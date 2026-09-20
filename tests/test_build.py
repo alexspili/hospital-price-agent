@@ -153,3 +153,21 @@ def test_a_database_built_before_provenance_existed_still_reads(tmp_path):
     store.connect(db).close()  # opening for writing migrates it
     migrated = store.sources(duckdb.connect(str(db), read_only=True))
     assert migrated[0]["note"] == "old row" and "release_date" in migrated[0]
+
+
+def test_a_rebuild_carries_rows_over_with_their_keys(tmp_path):
+    from hpa import build, store
+
+    old = store.connect(tmp_path / "old.duckdb")
+    old.execute("INSERT INTO llm_cache VALUES ('k', 'm', '1', 'in', 'out', now())")
+    old.execute("INSERT INTO files VALUES ('sum1', 'csv-wide', '3.0.0', 'X', '2026-01-01', '', 1, now())")
+    old.close()
+    new = store.connect(tmp_path / "new.duckdb")
+    carried = build._carry_over(new, tmp_path / "old.duckdb")
+    assert "llm_cache" in carried and "files" in carried
+    keyed = {r[0] for r in new.execute(
+        "SELECT DISTINCT table_name FROM duckdb_constraints() WHERE constraint_type = 'PRIMARY KEY'").fetchall()}
+    assert keyed >= set(store.KEYED_TABLES)
+    new.execute("INSERT OR REPLACE INTO files VALUES ('sum1', 'csv-wide', '3.0.0', 'Y', '2026-01-01', '', 1, now())")
+    assert new.execute("SELECT hospital_name FROM files").fetchall() == [("Y",)]
+    assert new.execute("SELECT output FROM llm_cache").fetchone() == ("out",)

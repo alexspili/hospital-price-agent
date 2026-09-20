@@ -1,28 +1,34 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { ApiError, config, demoIndex, recordedRun, startRun, streamRun } from './api'
-import type { Clarification, Config, DemoIndex, RunEvent, RunRequest } from './api'
+import { ApiError, allLines, catalogue, config, demoIndex, recordedRun, startRun, streamRun } from './api'
+import type { Clarification, Config, DemoIndex, RunEvent, RunRequest, Service } from './api'
 import { Results } from './Results'
 import { Trace } from './TracePane'
-import { idle, replay, starting } from './trace'
+import { idle, lost, replay, sourceLine, starting, withAllLines } from './trace'
 import type { RunState } from './trace'
 
 const PIN_KEY = 'hpa.pin' // this browser only; it goes nowhere but /api/runs
 
 export default function App() {
   const [run, setRun] = useState<RunState>(idle)
-  const [zip, setZip] = useState('77030')
-  const [service, setService] = useState('knee mri')
+  const [zip, setZip] = useState('')
+  const [service, setService] = useState('')
   const [live, setLive] = useState(false)
   const [pin, setPin] = useState(readPin)
   const [limits, setLimits] = useState<Config | null>(null)
   const [demo, setDemo] = useState<DemoIndex | null>(null)
   const [recorded, setRecorded] = useState(true) // false once a run of our own replaces it
   const [asking, setAsking] = useState<Clarification | null>(null)
+  const [everything, setEverything] = useState<Service[] | null>(null) // the 70, for the input and for a miss
+  const [submitting, setSubmitting] = useState(false)
   const [problem, setProblem] = useState<string | null>(null)
+  const [note, setNote] = useState<string | null>(null) // what Claude said when it settled the name
+  const ran = useRef<{ zip: string; serviceId: string | null }>({ zip: '', serviceId: null })
+  const requests = useRef(0) // a response is applied only if no newer request has been made
   const stop = useRef<(() => void) | null>(null)
 
   const apply = useCallback((event: RunEvent) => setRun((state) => replay([event], state)), [])
+  const gone = useCallback((message: string) => setRun((state) => lost(state, message)), [])
 
   // The page is never empty: it opens on the recorded Houston run, played through the
   // same reducer a live run uses.
@@ -34,11 +40,17 @@ export default function App() {
         if (cancelled) return
         setDemo(index)
         setLimits(allowed)
+        // A visitor who has already started their own run keeps it; the recording is
+        // only the opening view, never something that overwrites what they asked for.
+        if (requests.current > 0) return
         setZip(run.zip)
         setService(run.query)
         setRun(replay(run.events, starting(run.recorded_on)))
       })
       .catch((e: Error) => !cancelled && setProblem(e.message))
+    catalogue()
+      .then((all) => !cancelled && setEverything(all))
+      .catch(() => {}) // the input still takes free text
     return () => {
       cancelled = true
       stop.current?.()
@@ -46,10 +58,15 @@ export default function App() {
   }, [])
 
   async function start(body: RunRequest) {
+    if (submitting) return
+    const mine = ++requests.current
+    setSubmitting(true)
     setProblem(null)
     setAsking(null)
+    setNote(null)
     try {
       const started = await startRun({ ...body, live, pin: live ? pin : undefined })
+      if (mine !== requests.current) return // a newer request has been made; this answer is stale
       if (started.status === 'needs_clarification') {
         setAsking(started) // the resolver could not settle it; nothing was scanned
         return
@@ -57,14 +74,43 @@ export default function App() {
       if (live) savePin(pin)
       stop.current?.()
       setRecorded(false)
-      setRun(starting())
-      stop.current = streamRun(started.run_id, apply)
+      setNote(started.note ?? null)
+      ran.current = { zip: body.zip, serviceId: started.service.id }
+      // The server says whether this run goes to the web when it accepts it, so the
+      // banner is right from the first line, not only after the last.
+      setRun(starting(null, started.live))
+      stop.current = streamRun(started.run_id, apply, gone)
     } catch (e) {
-      setProblem(e instanceof ApiError ? e.message : (e as Error).message)
+      if (mine === requests.current) setProblem(e instanceof ApiError ? e.message : (e as Error).message)
+    } finally {
+      if (mine === requests.current) setSubmitting(false)
     }
   }
 
-  const running = run.status === 'running' && !recorded
+  // Answering a question: the input then reads what will actually be searched for.
+  function pick(c: Service) {
+    setService(c.name)
+    void start({ zip: zip.trim(), service_id: c.id! })
+  }
+
+  // Every matching line for one hospital, from what is stored. Only a run of our own has
+  // a service id to ask with; the recorded run shows what it recorded.
+  async function showAll() {
+    const { zip, serviceId } = ran.current
+    const mine = requests.current
+    if (!serviceId) return
+    try {
+      const got = await allLines(zip, serviceId)
+      if (mine !== requests.current) return // the visitor has moved on to another run
+      if (got.status === 'ok') setRun((state) => withAllLines(state, got.hospitals))
+    } catch (e) {
+      if (mine === requests.current) setProblem(e instanceof ApiError ? e.message : (e as Error).message)
+    }
+  }
+
+  const running = (run.status === 'running' && !recorded) || submitting
+  const variant = asking?.verdict.startsWith('unsupported variant') ?? false
+  const prescanned = demo?.zips ?? []
 
   return (
     <div className="page">
@@ -94,6 +140,11 @@ export default function App() {
                 {s.name} ({s.codes})
               </option>
             ))}
+            {everything?.map((s) => (
+              <option key={s.id} value={s.name}>
+                {s.codes}
+              </option>
+            ))}
           </datalist>
           <label className="check">
             <input type="checkbox" checked={live} onChange={(e) => setLive(e.target.checked)} />
@@ -106,47 +157,87 @@ export default function App() {
             </label>
           )}
           <button type="submit" disabled={running}>
-            {running ? 'running…' : live ? 'Scan live' : 'Show prices'}
+            {submitting ? 'asking…' : running ? 'running…' : live ? 'Scan live' : 'Show prices'}
           </button>
         </form>
 
+        {prescanned.length > 0 && (
+          <p className="hint">
+            Already scanned, answered without a PIN or the network:{' '}
+            {prescanned.map((z, i) => (
+              <span key={z}>
+                {i > 0 && ' · '}
+                <button type="button" className="chip" onClick={() => setZip(z)}>
+                  {z}
+                </button>
+              </span>
+            ))}
+            . Any other ZIP lists its nearest hospitals but has no files until someone runs it live.
+          </p>
+        )}
+
         <p className="banner">
-          {state(recorded, demo?.recorded_on, run)}{' '}
-          {live
-            ? 'A live scan goes out to the web, and takes minutes for a file that is not already cached.'
-            : 'Tick “run live” to go and fetch the files now.'}
-          {limits?.runs_per_hour ? ` Live scans are limited to ${limits.runs_per_hour} an hour.` : ''}
+          {sourceLine(recorded, demo?.recorded_on, run)} {liveNote(live, limits)}
         </p>
-        {problem && <p className="problem">{problem}</p>}
+        {problem && (
+          <p className="problem" role="alert">
+            {problem}
+          </p>
+        )}
         {asking && (
-          <div className="asking">
+          <div className="asking" role="status">
             <p>
               <strong>{asking.verdict}</strong>: {asking.question}
+              {asking.asked_claude && <span className="detail"> (Claude was asked, and could not settle it either)</span>}
             </p>
-            <p className="candidates">
-              {asking.candidates.map((c) => (
-                <button key={c.id} type="button" onClick={() => void start({ zip: zip.trim(), service_id: c.id! })}>
-                  {c.name} <span className="codes">{c.codes}</span>
-                </button>
-              ))}
-            </p>
+            {asking.candidates.length > 0 ? (
+              <p className="candidates">
+                {asking.candidates.map((c) => (
+                  <button key={c.id} type="button" onClick={() => pick(c)}>
+                    {variant ? `search for ${c.name} instead` : c.name} <span className="codes">{c.codes}</span>
+                  </button>
+                ))}
+              </p>
+            ) : everything === null ? (
+              <p className="detail">loading the list of services…</p>
+            ) : (
+              <>
+                <p className="detail">The list only has these 70 services. Pick one, or try other words.</p>
+                <p className="candidates all">
+                  {everything.map((c) => (
+                    <button key={c.id} type="button" onClick={() => pick(c)}>
+                      {c.name} <span className="codes">{c.codes}</span>
+                    </button>
+                  ))}
+                </p>
+              </>
+            )}
           </div>
         )}
       </header>
 
       <main className="split">
         <Trace run={run} />
-        <Results run={run} />
+        <Results run={run} note={note} onShowAll={!recorded && ran.current.serviceId ? showAll : undefined} />
       </main>
     </div>
   )
 }
 
-/** Where the numbers on screen came from — said plainly, because it changes what they mean. */
-function state(recorded: boolean, recordedOn: string | undefined, run: RunState): string {
-  if (recorded) return `A recorded run from ${recordedOn ?? 'earlier'}: no network, no database.`
-  if (run.live === false) return 'Answered from files scanned earlier — nothing was fetched just now.'
-  return 'Scanned live from each hospital’s own file.'
+/** What a live scan needs and does, said before anyone ticks the box. */
+function liveNote(live: boolean, limits: Config | null): string {
+  const parts: string[] = []
+  if (live) {
+    parts.push('A live scan goes out to the web, and takes minutes for a file that is not already cached.')
+  } else {
+    parts.push('Tick “run live” to go and fetch the files now.')
+  }
+  const needs: string[] = []
+  if (limits?.live_needs_pin) needs.push('the shared PIN')
+  if (limits?.max_downloads) needs.push(`reads at most ${limits.max_downloads} new files per run`)
+  if (limits?.runs_per_hour) needs.push(`${limits.runs_per_hour} live runs an hour per address`)
+  if (needs.length) parts.push(`Live scans need ${needs.join(', ')}.`)
+  return parts.join(' ')
 }
 
 function readPin(): string {
