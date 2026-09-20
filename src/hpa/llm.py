@@ -20,6 +20,12 @@ MODEL = "claude-opus-5"
 PROMPT_VERSION = "1"
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
 
+# USD per million tokens, first-party Claude API rates. Cache reads are a tenth of input
+# and cache writes a quarter more; a cached *answer* costs nothing at all, because it
+# never leaves DuckDB (see `_cached`).
+PRICES = {"claude-opus-5": (5.00, 25.00)}
+CACHE_READ_SHARE, CACHE_WRITE_SHARE = 0.1, 1.25
+
 WEBSITE_SCHEMA = {
     "type": "object",
     "properties": {
@@ -66,14 +72,43 @@ def make_client():
     return anthropic.Anthropic()
 
 
+class SpendCapReached(RuntimeError):
+    """Today's model budget is gone. The deterministic pipeline carries on without Claude."""
+
+
+def cost_usd(model: str, usage) -> float:
+    """What one call cost, from the usage the API reports. Unknown model: zero, and the
+    call is still recorded, so an unpriced model shows up as calls rather than vanishing."""
+    in_rate, out_rate = PRICES.get(model, (0.0, 0.0))
+    read = getattr(usage, "cache_read_input_tokens", 0) or 0
+    write = getattr(usage, "cache_creation_input_tokens", 0) or 0
+    return (
+        (usage.input_tokens or 0) * in_rate
+        + read * in_rate * CACHE_READ_SHARE
+        + write * in_rate * CACHE_WRITE_SHARE
+        + (usage.output_tokens or 0) * out_rate
+    ) / 1_000_000
+
+
+def spend_today(con) -> float:
+    """What has been spent on the model since midnight, from the recorded usage."""
+    if con is None:
+        return 0.0
+    row = con.execute("SELECT coalesce(sum(usd), 0) FROM llm_spend WHERE called_at >= current_date").fetchone()
+    return float(row[0])
+
+
 @dataclass
 class Claude:
     """Thin wrapper so tests can pass a fake `client` and an in-memory cache."""
 
     client: object
     con: object | None = None  # DuckDB connection with an llm_cache table, or None
+    daily_cap_usd: float | None = None  # hosted demo: stop calling once today's budget is gone
+    fn: str = ""  # which of the three calls is running, for the spend ledger
 
     def _cached(self, fn: str, payload: dict, run):
+        self.fn = fn
         key = hashlib.sha256(json.dumps([MODEL, PROMPT_VERSION, fn, payload], sort_keys=True).encode()).hexdigest()
         if self.con is not None:
             row = self.con.execute("SELECT output FROM llm_cache WHERE key = ?", [key]).fetchone()
@@ -88,6 +123,10 @@ class Claude:
         return out, False
 
     def _json_call(self, prompt: str, schema: dict, tools: list | None = None) -> dict:
+        if self.daily_cap_usd is not None:
+            spent = spend_today(self.con)
+            if spent >= self.daily_cap_usd:
+                raise SpendCapReached(f"daily model budget spent (${spent:.2f} of ${self.daily_cap_usd:.2f})")
         resp = self.client.beta.messages.create(
             model=MODEL,
             max_tokens=4000,
@@ -97,10 +136,26 @@ class Claude:
             tools=tools or [],
             messages=[{"role": "user", "content": prompt}],
         )
+        self._record(resp)
         if resp.stop_reason == "refusal":
             raise RuntimeError("model declined the request")
         text = next(b.text for b in resp.content if b.type == "text")
         return json.loads(text)
+
+    def _record(self, resp) -> None:
+        """Every call that reached the API goes in the ledger, refusal or not: a refusal
+        that was not billed still costs nothing, and the zero is the honest entry."""
+        usage = getattr(resp, "usage", None)
+        if self.con is None or usage is None:
+            return
+        model = getattr(resp, "model", MODEL)
+        self.con.execute(
+            "INSERT INTO llm_spend VALUES (now(), ?, ?, ?, ?, ?, ?, ?)",
+            [model, self.fn, usage.input_tokens or 0, usage.output_tokens or 0,
+             getattr(usage, "cache_read_input_tokens", 0) or 0,
+             getattr(usage, "cache_creation_input_tokens", 0) or 0,
+             cost_usd(model, usage)],
+        )
 
     def find_hospital_website(self, h: Hospital) -> tuple[str | None, str]:
         payload = {"ccn": h.ccn, "name": h.name, "address": h.address, "city": h.city, "state": h.state, "zip": h.zip}

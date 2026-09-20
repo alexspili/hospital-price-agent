@@ -117,7 +117,8 @@ def hospital_prices(con, service: catalog.Service, h: Hospital, disc: dict | Non
 
 # --- the service a query means -----------------------------------------------------------
 
-def resolve_service(query: str, *, service_id: str | None = None, con=None, use_llm: bool = True):
+def resolve_service(query: str, *, service_id: str | None = None, con=None, use_llm: bool = True,
+                    daily_cap_usd: float | None = None):
     """(service, resolution, note). `note` is what Claude said, or None when Claude was
     not asked. Claude may only choose among the resolver's candidates (SPEC)."""
     services = catalog.load()
@@ -130,7 +131,10 @@ def resolve_service(query: str, *, service_id: str | None = None, con=None, use_
     if r.verdict == catalog.SELECTED:
         return r.service, r, None
     if use_llm and r.candidates and llm.have_api_key():
-        service, why = llm.Claude(llm.make_client(), con).confirm_service(query, r)
+        try:
+            service, why = llm.Claude(llm.make_client(), con, daily_cap_usd=daily_cap_usd).confirm_service(query, r)
+        except llm.SpendCapReached:
+            return None, r, None  # the resolver's own verdict and candidates still stand
         return service, r, why
     return None, r, None
 
@@ -154,13 +158,38 @@ def prices_payload(con, query: str, zips, ccn, limit, *, service_id=None, shown_
 
 # --- a live run -------------------------------------------------------------------------
 
+class DownloadBudget:
+    """How many price files one run may fetch. A hospital whose file is already extracted
+    costs nothing and is never charged to the budget; the rest are served first-come, and
+    the ones that miss out say so instead of being silently dropped."""
+
+    def __init__(self, limit: int | None):
+        self.limit = limit
+        self.used = 0
+        self._lock = threading.Lock()
+
+    def take(self) -> bool:
+        if self.limit is None:
+            return True
+        with self._lock:
+            if self.used >= self.limit:
+                return False
+            self.used += 1
+            return True
+
+
 def run_search(con, zip_code: str, service: catalog.Service, emit: Emit, *, query: str | None = None,
                limit: int = 5, fresh: bool = False, force: bool = False, workers: int = 5,
-               use_llm: bool = True, shown_lines: int | None = SHOWN_LINES) -> list[dict]:
+               use_llm: bool = True, shown_lines: int | None = SHOWN_LINES, live: bool = True,
+               max_downloads: int | None = None, daily_cap_usd: float | None = None,
+               keep_downloads: bool = True) -> list[dict]:
     """Nearest hospitals -> located file -> scanned rows -> prices, hospitals in parallel.
 
     Every step reports through `emit`, and each hospital's result is emitted as soon as it
     is ready, so the wait is the slowest file rather than the sum of them.
+
+    With `live=False` nothing touches the network: the run answers from what was scanned
+    before, which is how the hosted demo's pre-scanned ZIPs come back instantly.
     """
     hospitals = find_hospitals(con, zip_code, limit)
     emit("trace", text=f"nearest {len(hospitals)} hospitals to the centre of {zip_code}")
@@ -170,18 +199,22 @@ def run_search(con, zip_code: str, service: catalog.Service, emit: Emit, *, quer
     reviewed = "reviewed" if service.reviewed else "unreviewed"
     emit("trace", text=f'"{query or service.name}" -> {service.name} ({service.code_list})  [mapping {reviewed}]')
 
+    if not live:
+        emit("trace", text="reading what is already stored: no downloads, no model calls")
+
     claude = None
-    if use_llm and llm.have_api_key():
+    if live and use_llm and llm.have_api_key():
         # A DuckDB connection is not thread-safe; a cursor is a separate connection the
         # worker threads can use while other threads write.
-        claude = llm.Claude(llm.make_client(), con.cursor())
+        claude = llm.Claude(llm.make_client(), con.cursor(), daily_cap_usd=daily_cap_usd)
     claude_lock = threading.Lock()  # one Claude call at a time keeps the trace readable
+    budget = DownloadBudget(max_downloads if live else 0)
 
     results: dict[str, dict] = {}
     with httpx.Client() as client, ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {
             pool.submit(_one_hospital, con.cursor(), client, h, service, emit, claude, claude_lock,
-                        fresh, force, shown_lines): h
+                        fresh, force, shown_lines, live, budget, keep_downloads): h
             for h in hospitals
         }
         for f in as_completed(futures):
@@ -197,7 +230,8 @@ def run_search(con, zip_code: str, service: catalog.Service, emit: Emit, *, quer
 
 
 def _one_hospital(con, client, h: Hospital, service, emit: Emit, claude, claude_lock,
-                  fresh: bool, force: bool, shown_lines) -> dict:
+                  fresh: bool, force: bool, shown_lines, live: bool = True,
+                  budget: "DownloadBudget | None" = None, keep_downloads: bool = True) -> dict:
     who = discovery.short_name(h)
 
     def step(line: str) -> None:  # discovery prefixes the hospital itself
@@ -209,15 +243,25 @@ def _one_hospital(con, client, h: Hospital, service, emit: Emit, claude, claude_
     def progress(phase: str, done: int, total: int | None) -> None:
         emit("progress", ccn=h.ccn, name=who, phase=phase, done=done, total=total)
 
-    disc = None if fresh else store.cached_discovery(con, h.ccn)
+    disc = None if (fresh and live) else store.cached_discovery(con, h.ccn)
     if disc:
         trace(f"cached result from {disc['discovered_at']:%Y-%m-%d}: "
               + (f"{disc['shape']} file at {disc['domain']}" if disc["ok"] else disc["reason"]))
+    elif not live:
+        trace("no file located in this copy — tick “run live” to go and find it")
+        return hospital_prices(con, service, h, None, shown_lines=shown_lines,
+                               status=NO_FILE, detail="not looked for in this copy")
     else:
+        # A Claude fallback that hits the daily budget is not a failure: the deterministic
+        # search carries on and the trace says the model was not consulted.
         def serialised(fn):
             def call(*args):
                 with claude_lock:
-                    return fn(*args)
+                    try:
+                        return fn(*args)
+                    except llm.SpendCapReached as e:
+                        step(f"{who}: {e}; continuing without Claude")
+                        return None, str(e)
             return call
 
         tie_breaker = serialised(claude.pick_entry) if claude else None
@@ -230,8 +274,19 @@ def _one_hospital(con, client, h: Hospital, service, emit: Emit, claude, claude_
         trace(f"no machine-readable file located — skipped ({disc['reason'] if disc else 'unknown'})")
         return hospital_prices(con, service, h, disc, shown_lines=shown_lines)
 
+    extracted = scan.latest_extraction(con, disc["mrf_url"]) is not None
+    if not live:
+        if not extracted:
+            trace("file located but not scanned in this copy — tick “run live” to read it")
+        return hospital_prices(con, service, h, disc, shown_lines=shown_lines)
+    if not extracted and budget and not budget.take():
+        trace(f"download cap reached for this run ({budget.limit} files) — skipped")
+        return hospital_prices(con, service, h, disc, shown_lines=shown_lines,
+                               status=NOT_SCANNED, detail=f"this run's download cap of {budget.limit} files was reached")
+
     with url_lock(disc["mrf_url"]):
-        r = scan.scan(con, client, h.ccn, disc["mrf_url"], trace, force=force, progress=progress)
+        r = scan.scan(con, client, h.ccn, disc["mrf_url"], trace, force=force, progress=progress,
+                      keep_download=keep_downloads)
     if not r.ok:
         return hospital_prices(con, service, h, disc, shown_lines=shown_lines, status=SCAN_FAILED, detail=r.reason)
     return hospital_prices(con, service, h, disc, shown_lines=shown_lines)

@@ -242,7 +242,7 @@ def extract(con, path: Path, checksum: str, size: int, trace: Trace, progress: P
 # --- orchestration ------------------------------------------------------------------------
 
 def scan(con, client: httpx.Client, ccn: str, url: str, trace: Trace, force: bool = False,
-         progress: Progress | None = None) -> ScanResult:
+         progress: Progress | None = None, keep_download: bool = True) -> ScanResult:
     started = time.monotonic()
     result = ScanResult(ccn, url, ok=False)
     prev = latest_extraction(con, url)
@@ -310,4 +310,8 @@ def scan(con, client: httpx.Client, ccn: str, url: str, trace: Trace, force: boo
     result.ok = True
     result.seconds = time.monotonic() - started
     trace(f"{result.charges:,} charges, {result.items:,} items in {secs:.0f}s (peak {result.peak_rss_mb:.0f} MB)")
+    if not keep_download:
+        # The rows are in DuckDB; on a small host the multi-GB original is not worth the
+        # disk. A later scan re-downloads it instead of reusing what is on disk.
+        path.unlink(missing_ok=True)
     return result

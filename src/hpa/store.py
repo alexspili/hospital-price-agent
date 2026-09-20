@@ -51,6 +51,10 @@ CREATE TABLE IF NOT EXISTS charges (
     modifiers VARCHAR, gross DECIMAL(18, 6), discounted_cash DECIMAL(18, 6), minimum DECIMAL(18, 6),
     maximum DECIMAL(18, 6), notes VARCHAR, source_ref VARCHAR, off_template_note VARCHAR
 );
+CREATE TABLE IF NOT EXISTS llm_spend (
+    called_at TIMESTAMP, model VARCHAR, fn VARCHAR, input_tokens BIGINT, output_tokens BIGINT,
+    cache_read_tokens BIGINT, cache_write_tokens BIGINT, usd DOUBLE
+);
 CREATE TABLE IF NOT EXISTS llm_cache (
     key VARCHAR PRIMARY KEY, model VARCHAR, prompt_version VARCHAR, input VARCHAR,
     output VARCHAR, created_at TIMESTAMP

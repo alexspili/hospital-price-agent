@@ -6,12 +6,15 @@ compare.py exactly as they would in a live run.
 """
 
 import json
+import time
+from contextlib import contextmanager
 from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
 
 from hpa import discovery, mrf, pipeline, server, store
+from hpa import settings as settings_module
 from hpa.geo import load_zcta
 from hpa.hospitals import load_hospitals
 
@@ -61,7 +64,7 @@ def store_extraction(con, url: str, ccn: str, cash: float | None, billing_class:
                 [ext, billing_class, cash])
 
 
-def fake_scan(con, client, ccn, url, trace, force=False, progress=None):
+def fake_scan(con, client, ccn, url, trace, force=False, progress=None, keep_download=True):
     from hpa.scan import ScanResult
 
     trace("downloading 1 MB (50%)")
@@ -74,15 +77,43 @@ def fake_scan(con, client, ccn, url, trace, force=False, progress=None):
     return ScanResult(ccn, url, ok=True, checksum=f"sum{ccn}", extraction_id=f"ext{ccn}", charges=1, items=1)
 
 
-@pytest.fixture
-def api(con, monkeypatch):
+@contextmanager
+def serving(con, monkeypatch, **limits):
     monkeypatch.setattr(pipeline.discovery, "locate_price_file", fake_locate)
     monkeypatch.setattr(pipeline.scan, "scan", fake_scan)
     monkeypatch.setattr(pipeline.llm, "have_api_key", lambda: False)  # no Claude in tests
-    app = server.create_app(con, ":memory:")
+    app = server.create_app(con, ":memory:", settings_module.Settings(**limits))
     with TestClient(app) as tc:
         tc.app = app
+        try:
+            yield tc
+        finally:
+            drain(tc)
+
+
+def drain(tc: TestClient, timeout: float = 10.0) -> None:
+    """Let every started run finish before the test ends.
+
+    A run is a background thread: if the test walks away while one is going, monkeypatch
+    puts the real `locate_price_file` back underneath it and the thread goes to the actual
+    network — which is how an offline suite ends up hanging on a socket.
+    """
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        if all(run.status != "running" for run in tc.app.state.runs.values()):
+            return
+        time.sleep(0.02)
+    raise AssertionError("a run was still going when the test ended")
+
+
+@pytest.fixture
+def api(con, monkeypatch):
+    with serving(con, monkeypatch) as tc:
         yield tc
+
+
+def live_run(tc: TestClient, zip_code: str = "77030", service: str = "knee mri", **extra):
+    return tc.post("/api/runs", json={"zip": zip_code, "service": service, "live": True, **extra})
 
 
 def events_of(tc: TestClient, run_id: str, after: int = 0) -> list[dict]:
@@ -97,10 +128,10 @@ def events_of(tc: TestClient, run_id: str, after: int = 0) -> list[dict]:
 
 
 def test_a_run_streams_its_trace_and_ends_with_the_result(api):
-    r = api.post("/api/runs", json={"zip": "77030", "service": "knee mri"})
+    r = live_run(api)
     assert r.status_code == 202
     body = r.json()
-    assert body["status"] == "started" and body["service"]["codes"] == "CPT 73721"
+    assert body["status"] == "started" and body["service"]["codes"] == "CPT 73721" and body["live"]
 
     events = events_of(api, body["run_id"])
     kinds = [e["kind"] for e in events]
@@ -128,20 +159,20 @@ def test_a_run_streams_its_trace_and_ends_with_the_result(api):
 
 
 def test_a_missing_billing_class_is_unknown_not_a_guess(api, con, monkeypatch):
-    def unlabelled(con_, client, ccn, url, trace, force=False, progress=None):
+    def unlabelled(con_, client, ccn, url, trace, force=False, progress=None, keep_download=True):
         from hpa.scan import ScanResult
 
         store_extraction(con_, url, ccn, cash=2735.80, billing_class=None)
         return ScanResult(ccn, url, ok=True, extraction_id=f"ext{ccn}", charges=1, items=1)
 
     monkeypatch.setattr(pipeline.scan, "scan", unlabelled)
-    run_id = api.post("/api/runs", json={"zip": "77030", "service": "knee mri"}).json()["run_id"]
+    run_id = live_run(api).json()["run_id"]
     result = next(e for e in events_of(api, run_id) if e["kind"] == "result")
     assert {h["verdict"] for h in result["hospitals"]} == {"unknown: no billing class stated", pipeline.NO_FILE}
 
 
 def test_reconnecting_replays_only_what_was_missed(api):
-    run_id = api.post("/api/runs", json={"zip": "77030", "service": "knee mri"}).json()["run_id"]
+    run_id = live_run(api).json()["run_id"]
     everything = events_of(api, run_id)
     again = events_of(api, run_id, after=3)
     assert [e["seq"] for e in again] == [e["seq"] for e in everything[3:]]
@@ -168,13 +199,16 @@ def test_answering_with_a_candidate_starts_the_run(api):
 
 
 def test_a_third_run_is_told_the_server_is_busy(api):
-    for _ in range(server.MAX_ACTIVE_RUNS):
-        api.post("/api/runs", json={"zip": "77030", "service": "knee mri"})
-    for run in api.app.state.runs.values():
-        run.status = "running"  # pin them: the fakes finish in milliseconds
+    # Runs held open by hand: a real one with fakes behind it finishes in milliseconds,
+    # which would make this a race rather than a test of the gate.
+    for i in range(server.MAX_ACTIVE_RUNS):
+        held = server.Run(id=f"held{i}", zip="77030", query="knee mri", service={}, loop=api.app.state.loop)
+        api.app.state.runs[held.id] = held
     r = api.post("/api/runs", json={"zip": "77030", "service": "knee mri"})
     assert r.status_code == 429 and r.headers["retry-after"] == "60"
     assert "busy" in r.json()["detail"] and "try again" in r.json()["detail"]
+    for held in list(api.app.state.runs.values()):
+        held.status = "done"  # nothing is executing them; let the drain finish
 
 
 def test_an_unknown_zip_is_rejected_before_any_work(api):
@@ -217,3 +251,80 @@ def test_the_recorded_run_is_served_in_the_same_shape(api):
 def test_health_says_who_holds_the_database(api):
     body = api.get("/api/health").json()
     assert body["status"] == "ok" and body["db"] == ":memory:" and body["runs_active"] == 0
+
+
+# --- what the hosted demo is allowed to do (SPEC "Hosted demo constraints") --------------
+
+def boom(*a, **k):  # any call means the network was touched when it should not have been
+    raise AssertionError("a cache-first run must not scan")
+
+
+def test_the_default_run_reads_only_what_is_stored(api, con, monkeypatch):
+    store_extraction(con, URL.format(ccn="450289"), "450289", cash=1500.0)
+    con.execute("INSERT INTO hospital_files VALUES ('450289', 'HARRIS', now(), true, 'cms-hpt', 'example.test', NULL, NULL, NULL, ?, 'csv-wide', 1000, NULL, NULL, NULL, '', '[]', 1.0)",
+                [URL.format(ccn="450289")])
+    monkeypatch.setattr(pipeline.scan, "scan", boom)
+    monkeypatch.setattr(pipeline.discovery, "locate_price_file", boom)
+
+    body = api.post("/api/runs", json={"zip": "77030", "service": "knee mri"}).json()
+    assert body["live"] is False
+    events = events_of(api, body["run_id"])
+    result = next(e for e in events if e["kind"] == "result")
+
+    harris = next(h for h in result["hospitals"] if h["ccn"] == "450289")
+    assert harris["verdict"] == "comparable" and harris["headline"]["cash"] == 1500.0
+    others = [h for h in result["hospitals"] if h["ccn"] != "450289"]
+    assert all(h["verdict"] == pipeline.NO_FILE and h["headline"] is None for h in others)
+    assert any("no downloads, no model calls" in e.get("text", "") for e in events)
+    assert any("run live" in e.get("text", "") for e in events)
+
+
+def test_a_live_run_needs_the_pin_when_one_is_set(con, monkeypatch):
+    with serving(con, monkeypatch, live_pin="hunter2") as api:
+        assert api.get("/api/config").json()["live_needs_pin"] is True
+        # The pre-scanned answer is open to everyone.
+        assert api.post("/api/runs", json={"zip": "77030", "service": "knee mri"}).status_code == 202
+
+        refused = live_run(api)
+        assert refused.status_code == 403 and "PIN" in refused.json()["detail"]
+        assert live_run(api, pin="wrong").status_code == 403
+        assert live_run(api, pin="hunter2").status_code == 202
+
+
+def test_live_runs_are_rate_limited_per_address(con, monkeypatch):
+    with serving(con, monkeypatch, runs_per_hour=1) as api:
+        assert live_run(api).status_code == 202
+        refused = live_run(api)
+        assert refused.status_code == 429 and int(refused.headers["retry-after"]) > 0
+        assert "limited to 1 an hour" in refused.json()["detail"]
+        # A cache-first run costs nothing and is never rate limited.
+        assert api.post("/api/runs", json={"zip": "77030", "service": "knee mri"}).status_code == 202
+
+
+def test_a_run_downloads_no_more_files_than_its_cap(con, monkeypatch):
+    with serving(con, monkeypatch, max_downloads=2) as api:
+        result = next(e for e in events_of(api, live_run(api).json()["run_id"]) if e["kind"] == "result")
+        scanned = [h for h in result["hospitals"] if h["verdict"] == "comparable"]
+        capped = [h for h in result["hospitals"] if "download cap" in h["detail"]]
+        assert len(scanned) == 2
+        assert len(capped) == 2 and all(h["headline"] is None for h in capped)  # the fifth has no file at all
+
+
+def test_the_rate_limiter_forgets_an_address_after_the_window():
+    limiter = server.RateLimit(per_hour=2, window=60)
+    assert limiter.take("1.2.3.4", now=0) is None
+    assert limiter.take("1.2.3.4", now=1) is None
+    assert limiter.take("1.2.3.4", now=2) == 58
+    assert limiter.take("5.6.7.8", now=2) is None  # a different address is unaffected
+    assert limiter.take("1.2.3.4", now=61) is None
+
+
+def test_the_client_ip_comes_from_the_proxy_only_when_trusted(api):
+    from hpa.settings import Settings
+
+    class FakeRequest:
+        headers = {"x-forwarded-for": "203.0.113.9, 10.0.0.1"}
+        client = type("C", (), {"host": "10.0.0.1"})()
+
+    assert server._client_ip(FakeRequest(), Settings(trust_proxy=True)) == "203.0.113.9"
+    assert server._client_ip(FakeRequest(), Settings(trust_proxy=False)) == "10.0.0.1"
