@@ -4,8 +4,11 @@ The demo is one container holding one DuckDB file on a mounted disk, with Caddy 
 of it for HTTPS. The pre-scanned Houston ZIPs answer instantly from that file; a live scan
 is opt-in, needs the shared PIN, and is bounded by the caps below.
 
-Target: a small ARM VM on AWS (Lightsail 2 GB, or EC2 `t4g.small`) with a 20 GB disk and
-a domain you control. About $13 a month, less if your account still has free tier.
+Target: a small ARM VM on AWS and a domain you control. Two routes below — Lightsail,
+whose plans include their own disk, or EC2 with a volume attached. Roughly $10-15 a month
+either way; check the current price in the console rather than trusting this line.
+
+You do not need web hosting. The instance is the host; the domain needs one A record.
 
 ## Before you start
 
@@ -23,14 +26,27 @@ a domain you control. About $13 a month, less if your account still has free tie
 
 ## 1. The machine
 
-Lightsail: create an instance, Linux/Unix, OS-only Debian 12, ARM, the 2 GB plan; attach a
-20 GB block storage disk. EC2: `t4g.small`, Debian 13 ARM, a 20 GB gp3 volume, security
-group open on 22, 80 and 443.
+**Lightsail (simpler).** Create an instance: Linux/Unix, OS-only **Debian**, **ARM**, the
+**2 GB** plan. Its plan includes an SSD, so there is no separate volume to attach or
+format. Then attach a **static IP** (free while it is attached to a running instance) —
+the automatic IP changes on stop/start and would break DNS. Ports 80 and 443 are open by
+default in Lightsail's firewall; check that they are.
+
+**EC2 (more control).** A `t4g.small` with Debian ARM, a 20 GB gp3 volume, an Elastic IP,
+and a security group open on 22, 80 and 443.
 
 Two gigabytes of memory is the point: extracting the largest Houston file peaks around
 470 MB, and the 1 GB plans leave no room for the OS underneath that.
 
-## 2. The disk
+## 2. Where the database lives
+
+On Lightsail the instance disk is enough:
+
+```bash
+sudo mkdir -p /mnt/hpa && sudo chown -R $USER /mnt/hpa
+```
+
+On EC2, format and mount the separate volume there instead:
 
 ```bash
 lsblk                                   # find the attached device, e.g. /dev/nvme1n1
@@ -40,7 +56,7 @@ echo '/dev/nvme1n1 /mnt/hpa ext4 defaults,nofail 0 2' | sudo tee -a /etc/fstab
 sudo mount -a && sudo chown -R $USER /mnt/hpa
 ```
 
-The database lives here rather than in the container, so `docker compose up --build` never
+Either way the database sits outside the container, so `docker compose up --build` never
 costs you the scanned data.
 
 ## 3. Docker
@@ -53,14 +69,21 @@ sudo usermod -aG docker $USER && newgrp docker
 
 ## 4. DNS
 
-Point an A record at the instance's static IP:
+One A record at the registrar, pointing the subdomain at the instance's static IP. At
+Porkbun that is Domain Management -> DNS -> Add record:
 
-```
-demo.yourdomain.com.   A   <the static IP>
-```
+| Type | Host | Answer | TTL |
+|---|---|---|---|
+| A | `prices` | the static IP | 600 |
+
+Nothing else: no web hosting, no nameserver change, no certificate to buy.
 
 Caddy asks Let's Encrypt for the certificate on first boot, which only works once this
-record resolves. Check it with `dig +short demo.yourdomain.com` before continuing.
+record resolves — check before continuing, and give it a few minutes if it does not:
+
+```bash
+dig +short prices.alexspi.com          # should print the static IP
+```
 
 ## 5. The code, the data and the settings
 
@@ -69,11 +92,16 @@ git clone https://github.com/alexspili/hospital-price-agent.git ~/hpa && cd ~/hp
 cp deploy/env.example .env && $EDITOR .env      # domain, PIN, caps, API key
 ```
 
-From your own machine, copy the database onto the disk:
+From your own machine, copy the database onto the disk (214 MB, a few minutes):
 
 ```bash
-scp data/demo.duckdb admin@<ip>:/mnt/hpa/hpa.duckdb
+hpa export-demo --out data/demo.duckdb
+scp data/demo.duckdb admin@<static-ip>:/mnt/hpa/hpa.duckdb
 ```
+
+The API key is optional. Without it the deterministic pipeline still runs; the three
+fallbacks (website search, index tie-break, service confirmation) are simply skipped, and
+the answers already bought travel in the copy's model cache.
 
 ## 6. Up
 
@@ -85,8 +113,8 @@ docker compose logs -f hpa          # "live scans: PIN required, 4/hour per addr
 Then check it from outside:
 
 ```bash
-curl -s https://demo.yourdomain.com/api/health
-curl -s https://demo.yourdomain.com/api/config      # live_needs_pin: true
+curl -s https://prices.alexspi.com/api/health
+curl -s https://prices.alexspi.com/api/config      # live_needs_pin: true
 ```
 
 Open the page: it lands on the recorded run, and a search of a pre-scanned ZIP answers
