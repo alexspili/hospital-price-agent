@@ -6,6 +6,10 @@ tracks down their price transparency files on the live web, streams through file
 run to several gigabytes, and puts the cash prices side by side with a link to the exact
 source row for every number, showing each step as it happens.
 
+**Live: [prices.alexspi.com](https://prices.alexspi.com)** — the recorded Houston run loads
+on arrival, and any of the pre-scanned ZIPs (77030, 77380, 77339) answers from the
+database with no network at all. Scanning live is opt-in and needs a PIN; ask me for one.
+
 **Status: built in public, one milestone at a time.** What works today is below; the
 roadmap further down is kept current.
 
@@ -138,9 +142,10 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
 - [x] **6. Web UI.** FastAPI + server-sent events; split pane, trace left, results right.
       The server owns the DuckDB file while it runs, so `hpa prices` asks it through the
       API and the commands that write say who holds the file, rather than failing on a lock
-- [ ] **7. Hosted demo** on pre-scanned Houston ZIPs, with live scans on request. Built and
-      ready to deploy ([docs/deploy.md](docs/deploy.md)): cache-first runs, a shared PIN for
-      live scans, per-IP rate limit, per-run download cap and a daily model budget
+- [x] **7. Hosted demo** at [prices.alexspi.com](https://prices.alexspi.com): pre-scanned
+      Houston ZIPs answer with no network, live scans are opt-in behind a shared PIN, and the
+      per-IP rate limit, per-run download cap and daily model budget bound what a stranger can
+      spend. One container and Caddy on a small AWS VM; the runbook is [docs/deploy.md](docs/deploy.md)
 
 ## The numbers (`hpa eval`, 2026-09-19, 15 hospitals nearest 77030 / 77380 / 77339)
 

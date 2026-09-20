@@ -8,17 +8,15 @@ milestone status. README.md is the public face; keep its numbers generated, not 
 Milestones 1–6 are done and pushed: hospital lookup, live price-file discovery, streaming
 extraction, comparability verdicts, offline demo, eval harness, the first human mapping
 review (5 of 70 services), and the web UI (`hpa serve` + `frontend/`). 146 Python tests
-and 11 Vitest tests, all offline. Milestone 7 is live at https://prices.alexspi.com
-(Lightsail 2 GB Debian, us-east-2, instance `hpa-prices-2`, static IP 3.129.225.38, DNS at
-Porkbun). Deploying = ssh admin@the IP with ~/.ssh/hpa-prices.pem, `cd ~/hpa && git pull &&
-sudo docker compose up -d --build`. The database lives at /mnt/hpa/hpa.duckdb, refreshed
-with `hpa export-demo` and scp. Settings are in ~/hpa/.env (PIN, caps); no API key there
-yet. All seven milestones are done.
+and 11 Vitest tests, all offline. Milestone 7 is built but not yet live: cache-first runs,
+PIN-gated live scans, rate limit, download cap and daily model budget, `hpa export-demo`,
+Dockerfile + compose + Caddy, runbook in `docs/deploy.md`. What remains is the deploy
+itself: an AWS VM with a disk, Alex's own domain, and the PIN he shares with recruiters.
 
 ## Layout
 
 - `src/hpa/` — `hospitals.py` (lookup), `discovery.py` (find the file), `llm.py` (the only
-  Claude calls: website search, entry tie-break, service confirmation), `mrf.py` (streaming
+  Codex calls: website search, entry tie-break, service confirmation), `mrf.py` (streaming
   parsers), `scan.py` (download + extract), `compare.py` (verdicts), `catalog.py` (the 70
   services), `pipeline.py` (a whole run; the CLI, the demo and the server share it),
   `server.py` (FastAPI + SSE), `client.py` (how the CLI finds a running server),
@@ -35,7 +33,7 @@ yet. All seven milestones are done.
 
 ```
 hpa setup                      # reference data + geocoding, ~1 minute; rebuilds safely
-hpa locate 77030 77380 77339   # discovery, cached 30 days; Claude fallbacks need .env
+hpa locate 77030 77380 77339   # discovery, cached 30 days; Codex fallbacks need .env
 hpa scan 77030 77380 77339     # download + extract; files reused when validators match
 hpa prices "knee mri" 77030    # verdicts; --all for every line
 hpa eval | hpa demo | hpa catalog QUERY
@@ -53,7 +51,7 @@ cd frontend && npm test        # the trace reducer; npm run dev proxies /api to 
   `cli.open_db`, never `store.connect`, in a new command.
 - Never invent a price; every number keeps its source ref. Verdicts say "unknown" rather
   than compare across missing context. A reviewed billing class is marked "(per review)".
-- Claude is called only at the three fuzzy steps, may only choose among candidates the
+- Codex is called only at the three fuzzy steps, may only choose among candidates the
   code produced, and every call is cached in `llm_cache` by model + prompt version + input.
 - `ANTHROPIC_API_KEY` lives in `.env` (gitignored). Never write a key into `.env.example`.
 - Bump `mrf.PARSER_VERSION` when the parser's output changes; extractions are keyed by it.

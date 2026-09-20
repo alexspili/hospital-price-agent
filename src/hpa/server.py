@@ -23,7 +23,7 @@ from fastapi.responses import PlainTextResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from hpa import catalog, client, demo, pipeline, settings as settings_module, store
+from hpa import catalog, client, demo, llm, pipeline, settings as settings_module, store
 from hpa.geo import KM_PER_MILE
 from hpa.hospitals import UnknownZip, find_hospitals
 
@@ -281,6 +281,11 @@ def _execute(app: FastAPI, run: Run, service, limit: int) -> None:
         run.emit("error", message=run.error)
     finally:
         run.emit("end")
+        # To the process log, not the trace: the operator needs the running total, a
+        # visitor does not. Nothing else can read the ledger while this process holds
+        # the database (SPEC "Process model").
+        if run.live and s.daily_cap_usd:
+            print(f"[spend] today ${llm.spend_today(app.state.con):.2f} of ${s.daily_cap_usd:.2f}", flush=True)
 
 
 def demo_run(data: dict, zip_code: str, query: str) -> dict:

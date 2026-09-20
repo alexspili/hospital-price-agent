@@ -143,14 +143,24 @@ docker compose up -d --build                # deploy a new commit (git pull firs
 docker compose down                         # stop; the database stays on /mnt/hpa
 ```
 
-What the model has cost, straight from the ledger the server writes:
+What the model has cost: the server prints the running total after every live run, so it
+is in the process log. Nothing else can read the ledger while the server is up — it holds
+the database, and DuckDB gives the file to one process at a time (SPEC "Process model"):
 
 ```bash
-docker compose exec hpa python -c "
+docker compose logs hpa | grep '\[spend\]' | tail -5
+```
+
+To query the ledger itself, stop the server first, or copy the file off and open the copy:
+
+```bash
+docker compose stop hpa
+docker compose run --rm hpa python -c "
 from hpa import store, llm
 con = store.connect('/data/hpa.duckdb', read_only=True)
 print(f'today: \${llm.spend_today(con):.2f}')
 print(con.execute('SELECT fn, count(*), round(sum(usd), 4) FROM llm_spend GROUP BY 1').fetchall())"
+docker compose start hpa
 ```
 
 Back it up by copying the file off; nothing else on the disk matters:

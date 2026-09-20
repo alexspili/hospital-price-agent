@@ -260,11 +260,14 @@ compare: Methodist vs Baylor: unknown (Baylor row has no billing class)
    pipeline itself moved to `hpa/pipeline.py`, which the CLI, the recorded demo and the
    server share. While the server runs, `hpa prices` reads through its API and writing
    commands say who holds the file.
-7. Deploy. Built 2026-09-19, not yet live: a run is cache-first unless it asks to be
+7. Deploy (done 2026-09-20, live at https://prices.alexspi.com): a run is cache-first unless it asks to be
    live, live scans need a shared PIN, and the per-IP rate limit, per-run download cap and
    daily model budget are read from the environment (`hpa/settings.py`). `hpa export-demo`
    writes the compact database the host runs on; Dockerfile, compose file with Caddy and
-   the runbook are in `docs/deploy.md`. Target: a small ARM VM on AWS with a mounted disk.
+   the runbook are in `docs/deploy.md`. Running on a Lightsail 2 GB Debian instance in
+   us-east-2, one container plus Caddy, the 214 MB exported database on /mnt/hpa, DNS at
+   Porkbun. No API key on the host yet: the three fallbacks are skipped there and the
+   answers already bought travel in the copy's model cache.
 
 ## Hosted demo constraints
 
