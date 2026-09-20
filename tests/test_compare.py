@@ -82,3 +82,46 @@ def test_review_supplies_billing_class_without_overriding_the_file():
     assert out[2].billing_class is None
     assert apply_review(lines, False, "Harris Health") == lines
     assert apply_review(lines, review, "Someone Else") == lines
+
+
+# --- a verdict on every pair, not only on every hospital (SPEC step 6) -------------------
+
+from hpa import compare  # noqa: E402 - the pair helpers, alongside the names imported above
+
+def priced(name, setting="outpatient", billing_class="facility", modifiers=None):
+    return {"name": name, "headline": {"setting": setting, "billing_class": billing_class, "modifiers": modifiers}}
+
+
+def test_matching_context_is_comparable():
+    p = compare.pair(priced("Methodist"), priced("Baylor"))
+    assert p.verdict == compare.COMPARABLE and p.detail == "outpatient, facility, no modifiers"
+
+
+def test_a_missing_context_is_unknown_never_a_match():
+    p = compare.pair(priced("Methodist"), priced("Harris", billing_class=None))
+    assert p.verdict == compare.UNKNOWN_PAIR and "Harris's row has no billing class" in p.detail
+    # Two missing values are not a match either.
+    both = compare.pair(priced("A", billing_class=None), priced("B", billing_class=None))
+    assert both.verdict == compare.UNKNOWN_PAIR
+
+
+def test_different_context_says_why_it_cannot_be_compared():
+    p = compare.pair(priced("Methodist"), priced("HCA", setting="inpatient", billing_class="professional"))
+    assert p.verdict == compare.NOT_COMPARABLE
+    assert "outpatient vs inpatient" in p.detail and "facility vs professional charge" in p.detail
+
+
+def test_a_charge_that_applies_to_both_settings_sits_beside_either():
+    p = compare.pair(priced("Methodist", setting="both"), priced("Baylor", setting="outpatient"))
+    assert p.verdict == compare.COMPARABLE
+
+
+def test_a_hospital_with_no_price_is_unknown_not_excluded():
+    p = compare.pair(priced("Methodist"), {"name": "Orthopedic", "headline": None})
+    assert p.verdict == compare.UNKNOWN_PAIR and "no priced line" in p.detail
+
+
+def test_every_pair_appears_once():
+    names = [priced(n) for n in ("A", "B", "C", "D")]
+    got = [(p.a, p.b) for p in compare.pairs(names)]
+    assert got == [("A", "B"), ("A", "C"), ("A", "D"), ("B", "C"), ("B", "D"), ("C", "D")]

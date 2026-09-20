@@ -5,7 +5,7 @@
 // newer than what has been seen is ignored. Progress for a hospital replaces that
 // hospital's counter rather than appending a line: a moving counter, not a log of one.
 
-import type { HospitalResult, RunEvent, Service } from './api'
+import type { HospitalResult, Pair, RunEvent, Service } from './api'
 
 export type TraceLine = { seq: number; ccn?: string; text: string }
 export type Counter = { name: string; phase: 'download' | 'extract'; done: number; total: number | null }
@@ -16,6 +16,7 @@ export type RunState = {
   lines: TraceLine[]
   counters: Record<string, Counter>
   hospitals: HospitalResult[]
+  comparisons: Pair[]
   service: Service | null
   error: string | null
   recordedOn: string | null
@@ -30,6 +31,7 @@ export const idle: RunState = {
   lines: [],
   counters: {},
   hospitals: [],
+  comparisons: [],
   service: null,
   error: null,
   recordedOn: null,
@@ -57,8 +59,8 @@ export function reduce(state: RunState, event: RunEvent): RunState {
     }
     case 'result':
       // The run's own order is nearest first, whatever order the files finished in.
-      return { ...next, hospitals: event.hospitals, service: event.service, counters: {},
-               live: event.live ?? state.live, status: 'done' }
+      return { ...next, hospitals: event.hospitals, comparisons: event.comparisons ?? [],
+               service: event.service, counters: {}, live: event.live ?? state.live, status: 'done' }
     case 'error':
       return { ...next, status: 'failed', error: event.message, counters: {} }
     case 'end':

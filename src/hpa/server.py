@@ -23,7 +23,7 @@ from fastapi.responses import PlainTextResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from hpa import catalog, client, demo, llm, pipeline, settings as settings_module, store
+from hpa import catalog, client, compare, demo, llm, pipeline, settings as settings_module, store
 from hpa.geo import KM_PER_MILE
 from hpa.hospitals import UnknownZip, find_hospitals
 
@@ -283,7 +283,8 @@ def _execute(app: FastAPI, run: Run, service, limit: int, corrections: tuple = (
             max_downloads=s.max_downloads, daily_cap_usd=s.daily_cap_usd, keep_downloads=s.keep_downloads,
             corrections=corrections,
         )
-        run.result = {"zip": run.zip, "service": run.service, "live": run.live, "hospitals": hospitals}
+        run.result = {"zip": run.zip, "service": run.service, "live": run.live, "hospitals": hospitals,
+                      "comparisons": [vars(p) for p in compare.pairs(hospitals)]}
         run.status = "done"
         run.emit("result", **run.result)
     except Exception as e:

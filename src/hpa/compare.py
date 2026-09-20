@@ -11,6 +11,9 @@ from dataclasses import dataclass, field
 
 # Charge lines carrying payer rates only (min/max) but no gross or cash price.
 COMPARABLE = "comparable"
+# Verdicts on a pair of hospitals, as distinct from a verdict on one hospital's lines.
+NOT_COMPARABLE = "not comparable"
+UNKNOWN_PAIR = "unknown"
 UNKNOWN_CLASS = "unknown: no billing class stated"
 MODIFIERS_ONLY = "modifier-specific lines only"
 NEGOTIATED_ONLY = "negotiated rates only, no cash or gross price"
@@ -57,6 +60,62 @@ class Summary:
     @property
     def plain_lines(self) -> list[Line]:
         return [l for l in self.lines if l.modifiers is None and l.billing_class in (None, "facility", "both")]
+
+
+@dataclass(frozen=True)
+class Pair:
+    """Whether two hospitals' headline prices can honestly be put side by side."""
+
+    a: str
+    b: str
+    verdict: str  # comparable | not comparable | unknown
+    detail: str
+
+    def __str__(self) -> str:
+        return f"compare: {self.a} vs {self.b}: {self.verdict}" + (f" ({self.detail})" if self.detail else "")
+
+
+# "both" means the charge applies to inpatient and outpatient alike, so it sits happily
+# beside either. Anything else must match exactly.
+def _same_setting(a: str | None, b: str | None) -> bool:
+    return a == b or "both" in (a, b)
+
+
+def pair(a: dict, b: dict) -> Pair:
+    """Compare two hospital results (as `pipeline.hospital_prices` returns them).
+
+    Two missing values are never treated as a match (SPEC): a context either side does not
+    state makes the verdict `unknown`, never `comparable`.
+    """
+    names = (a["name"], b["name"])
+    for one in (a, b):
+        if not one.get("headline"):
+            return Pair(*names, UNKNOWN_PAIR, f"{one['name']} has no priced line for this service")
+    la, lb = a["headline"], b["headline"]
+
+    unstated = [f"{one['name']}'s row has no {field.replace('_', ' ')}"
+                for one, line in ((a, la), (b, lb))
+                for field in ("setting", "billing_class") if line.get(field) is None]
+    if unstated:
+        return Pair(*names, UNKNOWN_PAIR, "; ".join(unstated))
+
+    differences = []
+    if not _same_setting(la.get("setting"), lb.get("setting")):
+        differences.append(f"{la['setting']} vs {lb['setting']}")
+    if la.get("billing_class") != lb.get("billing_class"):
+        differences.append(f"{la['billing_class']} vs {lb['billing_class']} charge")
+    if (la.get("modifiers") or None) != (lb.get("modifiers") or None):
+        differences.append(f"modifiers {la.get('modifiers') or 'none'} vs {lb.get('modifiers') or 'none'}")
+    if differences:
+        return Pair(*names, NOT_COMPARABLE, "; ".join(differences))
+
+    shared = [la.get("setting"), la.get("billing_class"), f"mod {la['modifiers']}" if la.get("modifiers") else "no modifiers"]
+    return Pair(*names, COMPARABLE, ", ".join(p for p in shared if p))
+
+
+def pairs(hospitals: list[dict]) -> list[Pair]:
+    """Every pair, in the order the hospitals were given (nearest first)."""
+    return [pair(a, b) for i, a in enumerate(hospitals) for b in hospitals[i + 1:]]
 
 
 def apply_review(lines: list[Line], review: dict | bool, hospital: str) -> list[Line]:

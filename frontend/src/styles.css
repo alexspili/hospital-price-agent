@@ -105,3 +105,11 @@ table.lines { width: 100%; border-collapse: collapse; margin-top: 6px; font-size
 table.lines td { padding: 3px 8px 3px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; vertical-align: top; }
 .also, .more { color: var(--muted); }
 .empty { color: var(--muted); }
+
+/* how two hospitals' prices relate, as opposed to how one hospital's rows read */
+.comparisons { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; }
+.comparisons p { margin: 4px 0; font-size: 12.5px; }
+.comparisons p.ok { color: var(--ok); }
+.comparisons p.unsure { color: var(--unsure); }
+.comparisons p.thin { color: var(--thin); }
+.comparisons .detail { color: var(--muted); }

@@ -56,6 +56,9 @@ def line_dict(l: compare.Line) -> dict:
         "description": l.description, "context": l.context,
         "cash": _money(l.discounted_cash), "gross": _money(l.gross),
         "min": _money(l.minimum), "max": _money(l.maximum),
+        # The context, structured as well as printed, because comparing two hospitals
+        # needs the fields and not the sentence.
+        "setting": l.setting, "billing_class": l.billing_class, "modifiers": l.modifiers,
         "ref": l.source_ref, "note": l.off_template_note,
     }
 
@@ -155,9 +158,10 @@ def prices_payload(con, query: str, zips, ccn, limit, *, service_id=None, shown_
     if service is None:
         out.update(status="needs_clarification", candidates=[service_dict(c) for c in r.candidates])
         return out
-    pairs = targets.located(con, zips, ccn, limit)
-    out.update(status="ok", service=service_dict(service),
-               hospitals=[hospital_prices(con, service, h, c, shown_lines=shown_lines) for h, c in pairs])
+    located = targets.located(con, zips, ccn, limit)
+    hospitals = [hospital_prices(con, service, h, c, shown_lines=shown_lines) for h, c in located]
+    out.update(status="ok", service=service_dict(service), hospitals=hospitals,
+               comparisons=[vars(p) for p in compare.pairs(hospitals)])
     return out
 
 
@@ -233,7 +237,13 @@ def run_search(con, zip_code: str, service: catalog.Service, emit: Emit, *, quer
                 r = hospital_prices(con, service, h, None, status=SCAN_FAILED, detail=f"{type(e).__name__}: {e}")
             results[h.ccn] = r
             emit("hospital", hospital=r)
-    return [results[h.ccn] for h in hospitals]  # nearest first, whatever order they finished in
+
+    ordered = [results[h.ccn] for h in hospitals]  # nearest first, whatever order they finished in
+    # A verdict on every pair, not just on every hospital (SPEC step 6): two prices are
+    # only side by side if the rows behind them share their context.
+    for p in compare.pairs(ordered):
+        emit("trace", text=str(p))
+    return ordered
 
 
 def _one_hospital(con, client, h: Hospital, service, emit: Emit, claude, claude_lock,

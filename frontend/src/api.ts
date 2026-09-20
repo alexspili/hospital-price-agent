@@ -12,6 +12,9 @@ export type Line = {
   gross: number | null
   min: number | null
   max: number | null
+  setting: string | null
+  billing_class: string | null
+  modifiers: string | null
   ref: string
   note: string | null
 }
@@ -32,11 +35,14 @@ export type HospitalResult = {
 
 export type Service = { id: string | null; name: string; codes: string; reviewed: boolean }
 
+// Whether two hospitals' headline prices can honestly sit side by side.
+export type Pair = { a: string; b: string; verdict: string; detail: string }
+
 export type RunEvent =
   | { seq: number; kind: 'trace'; ccn?: string; text: string }
   | { seq: number; kind: 'progress'; ccn: string; name: string; phase: 'download' | 'extract'; done: number; total: number | null }
   | { seq: number; kind: 'hospital'; hospital: HospitalResult }
-  | { seq: number; kind: 'result'; zip: string; service: Service; live?: boolean; hospitals: HospitalResult[] }
+  | { seq: number; kind: 'result'; zip: string; service: Service; live?: boolean; hospitals: HospitalResult[]; comparisons?: Pair[] }
   | { seq: number; kind: 'error'; message: string }
   | { seq: number; kind: 'end' }
 

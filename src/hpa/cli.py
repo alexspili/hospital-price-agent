@@ -299,6 +299,11 @@ def print_prices(payload: dict, show_all: bool) -> int:
     print(f"{s['name']} ({s['codes']})  [{'reviewed' if s['reviewed'] else 'unreviewed'}]")
     for h in payload["hospitals"]:
         print_hospital(h, show_all)
+    comparisons = payload.get("comparisons") or []
+    if comparisons:
+        print()
+        for c in comparisons:
+            print(f"compare: {c['a']} vs {c['b']}: {c['verdict']}" + (f" ({c['detail']})" if c["detail"] else ""))
     return 0
 
 

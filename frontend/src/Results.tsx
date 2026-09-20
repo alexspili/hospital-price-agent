@@ -1,4 +1,4 @@
-import type { HospitalResult, Line } from './api'
+import type { HospitalResult, Line, Pair } from './api'
 import { miles, money } from './trace'
 import type { RunState } from './trace'
 
@@ -24,7 +24,29 @@ export function Results({ run }: { run: RunState }) {
       {run.hospitals.map((h) => (
         <Hospital key={h.ccn} hospital={h} />
       ))}
+      <Comparisons pairs={run.comparisons} />
     </section>
+  )
+}
+
+// A verdict per hospital says whether its own rows make sense. This says whether two
+// hospitals' prices can be put side by side — which is a different question, and the one
+// a reader is actually asking when they look at two numbers.
+function Comparisons({ pairs }: { pairs: Pair[] }) {
+  if (pairs.length === 0) return null
+  const comparable = pairs.filter((p) => p.verdict === 'comparable').length
+  return (
+    <details className="comparisons">
+      <summary>
+        side by side: {comparable} of {pairs.length} pairs comparable
+      </summary>
+      {pairs.map((p) => (
+        <p key={`${p.a}|${p.b}`} className={p.verdict === 'comparable' ? 'ok' : p.verdict === 'unknown' ? 'unsure' : 'thin'}>
+          {p.a} vs {p.b}: <strong>{p.verdict}</strong>
+          {p.detail && <span className="detail"> ({p.detail})</span>}
+        </p>
+      ))}
+    </details>
   )
 }
 
