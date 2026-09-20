@@ -272,6 +272,9 @@ Milestone 7 only. Do not build these earlier.
 - Per-IP rate limit, a hard daily API spend cap, and the per-run download cap.
 - Queue depth limit with an honest "busy, try again" message.
 - Keep a recorded run checked in as a fallback for demos on bad Wi-Fi.
+- No interim static demo on GitHub Pages (decided 2026-09-19). Pages could serve the
+  recorded run today, but the public URL should arrive once, with live scanning working,
+  rather than as a version that cannot do the thing the project claims.
 
 ## README requirements
 
