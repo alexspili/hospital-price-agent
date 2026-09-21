@@ -423,3 +423,19 @@ def test_a_live_request_is_turned_away_before_it_can_consult_claude(api, monkeyp
     monkeypatch.setattr(pipeline, "resolve_service", boom)
     assert live_run(api, service="mri").status_code == 429
     drain(api)
+
+
+def test_the_recorded_run_explains_its_codes_too(api):
+    index = api.get("/api/demo").json()
+    body = api.get("/api/demo", params={"zip": index["zips"][0], "service": index["services"][0]["query"]}).json()
+    lines = [l for h in body["result"]["hospitals"] for l in h["lines"]]
+    assert lines and all(l.get("explained") for l in lines)
+    assert any(any(v.startswith("Revenue code") for v in l["explained"].values()) for l in lines)
+    # A recording made before codes were explained is explained on the way out.
+    old = {**server.demo_run.__globals__["json"].loads(server.demo.DEMO_FILE.read_text())}
+    for e in old["services"].values():
+        for h in e["hospitals"]:
+            for l in h["lines"]:
+                l.pop("explained", None)
+    r = server.demo_run(old, index["zips"][0], index["services"][0]["query"])["result"]
+    assert all(l.get("explained") for h in r["hospitals"] for l in h["lines"])

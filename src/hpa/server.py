@@ -24,7 +24,7 @@ from fastapi.responses import PlainTextResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from hpa import catalog, client, compare, demo, llm, pipeline, settings as settings_module, store
+from hpa import catalog, client, codes, compare, demo, llm, pipeline, settings as settings_module, store
 from hpa.geo import KM_PER_MILE
 from hpa.hospitals import UnknownZip, find_hospitals
 
@@ -373,8 +373,12 @@ def demo_run(data: dict, zip_code: str, query: str) -> dict:
         for step in h.get("steps", []):
             add("trace", ccn=h["ccn"], text=f"{h['name']}: {step}")
         rec = recorded.get(h["name"], {})
-        # Older recordings carried `lines` as a count; newer ones carry the lines.
-        lines = rec.get("lines") if isinstance(rec.get("lines"), list) else []
+        # Older recordings carried `lines` as a count; newer ones carry the lines. A
+        # recording made before codes were explained gets the explanations added here,
+        # from the same reference module a live run uses.
+        lines = [_explained(l) for l in rec.get("lines")] if isinstance(rec.get("lines"), list) else []
+        if rec.get("headline"):
+            rec = {**rec, "headline": _explained(rec["headline"])}
         count = rec.get("line_count", rec.get("lines") if isinstance(rec.get("lines"), int) else 0)
         # Whose prices these are travels with the recording: a children's or psychiatric
         # hospital on the landing page must say so, exactly as it would in a live run.
@@ -396,6 +400,12 @@ def demo_run(data: dict, zip_code: str, query: str) -> dict:
     add("end")
     return {"status": "recorded", "recorded_on": data["recorded_on"], "zip": zip_code, "query": query,
             "service": service, "events": events, "result": result}
+
+
+def _explained(line: dict) -> dict:
+    if line.get("explained") is not None:
+        return line
+    return {**line, "explained": codes.explain_all([f"{line['code_type']} {line['code']}", *line.get("other_codes", [])])}
 
 
 def serve(db, host: str = "127.0.0.1", port: int = 8000, url: str | None = None) -> int:

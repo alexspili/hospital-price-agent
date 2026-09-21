@@ -249,77 +249,88 @@
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "row 28173"
+      "ref": "row 28173",
+      "description": "TC MRI, EXTREMITY ANY JOINT, LOWER EXTREMITY W/O CONTR"
      },
      {
       "hospital": "Baylor St Lukes Medical Center",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9144/charge 1"
+      "ref": "item 9144/charge 1",
+      "description": "HC MR LOWER EXTREM JNT WO CONT"
      },
      {
       "hospital": "Houston Methodist Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 13569/charge 1"
+      "ref": "item 13569/charge 1",
+      "description": "HC MRI LOWER EXT JOINT W/O CONTRA"
      },
      {
       "hospital": "Harris Health",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 33175"
+      "ref": "row 33175",
+      "description": "MRI LOWER EXTREMITY JOINT W/O CONTRAST"
      },
      {
       "hospital": "Houston Methodist The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 13552/charge 1"
+      "ref": "item 13552/charge 1",
+      "description": "HC MRI LOWER EXT JOINT W/O CONTRA"
      },
      {
       "hospital": "CHI St Lukes Lakeside Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9186/charge 1"
+      "ref": "item 9186/charge 1",
+      "description": "HC MR LOWER EXTREM JNT WO CONT"
      },
      {
       "hospital": "St Luke's The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9186/charge 1"
+      "ref": "item 9186/charge 1",
+      "description": "HC MR LOWER EXTREM JNT WO CONT"
      },
      {
       "hospital": "Woodland Springs",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Elite Hospital Kingwood",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 1570"
+      "ref": "row 1570",
+      "description": "Magnetic resonance (eg proton) imaging any joint of lower extremity; without contrast material"
      },
      {
       "hospital": "Kingwood Pines Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "HCA Houston Healthcare Kingwood",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      }
     ]
    },
@@ -353,7 +364,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "row 28173",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "CDM 4221830": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 610": "Revenue code 0610: MRI (general)"
+      }
      },
      "lines": [
       {
@@ -373,7 +389,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 335547",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 4221830": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 610": "Revenue code 0610: MRI (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -392,7 +413,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 28173",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 4221830": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 610": "Revenue code 0610: MRI (general)"
+       }
       }
      ]
     },
@@ -423,7 +449,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 9144/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0610": "Revenue code 0610: MRI (general)"
+      }
      },
      "lines": [
       {
@@ -442,7 +472,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 9143/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0610": "Revenue code 0610: MRI (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -460,7 +494,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 9144/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0610": "Revenue code 0610: MRI (general)"
+       }
       }
      ]
     },
@@ -492,7 +530,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 13569/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "HCPCS 73721": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+       "CDM 61000020": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 0614": "Revenue code 0614: MRI: other"
+      }
      },
      "lines": [
       {
@@ -512,7 +555,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 13569/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 73721": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+        "CDM 61000020": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 0614": "Revenue code 0614: MRI: other"
+       }
       },
       {
        "code_type": "HCPCS",
@@ -528,7 +576,10 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 15496/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 73721": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT"
+       }
       }
      ]
     },
@@ -574,7 +625,12 @@
       "billing_class": null,
       "modifiers": null,
       "ref": "row 33175",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "CDM 32912117": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 610": "Revenue code 0610: MRI (general)"
+      }
      },
      "lines": [
       {
@@ -594,7 +650,12 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 33175",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 32912117": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 610": "Revenue code 0610: MRI (general)"
+       }
       }
      ]
     },
@@ -640,7 +701,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 13552/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "HCPCS 73721": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+       "CDM 61000020": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 0614": "Revenue code 0614: MRI: other"
+      }
      },
      "lines": [
       {
@@ -660,7 +726,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 13552/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 73721": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+        "CDM 61000020": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 0614": "Revenue code 0614: MRI: other"
+       }
       },
       {
        "code_type": "HCPCS",
@@ -676,7 +747,10 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 15381/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 73721": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT"
+       }
       }
      ]
     },
@@ -707,7 +781,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 9186/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0610": "Revenue code 0610: MRI (general)"
+      }
      },
      "lines": [
       {
@@ -726,7 +804,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 9185/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0610": "Revenue code 0610: MRI (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -744,7 +826,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 9186/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0610": "Revenue code 0610: MRI (general)"
+       }
       }
      ]
     },
@@ -775,7 +861,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 9186/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0610": "Revenue code 0610: MRI (general)"
+      }
      },
      "lines": [
       {
@@ -794,7 +884,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 9185/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0610": "Revenue code 0610: MRI (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -812,7 +906,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 9186/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0610": "Revenue code 0610: MRI (general)"
+       }
       }
      ]
     },
@@ -855,7 +953,10 @@
       "billing_class": null,
       "modifiers": null,
       "ref": "row 1570",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+      }
      },
      "lines": [
       {
@@ -872,7 +973,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 1570",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       }
      ]
     },
@@ -919,7 +1023,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 101622/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 321": "Revenue code 0321: radiology, diagnostic"
+       }
       },
       {
        "code_type": "CPT",
@@ -937,7 +1045,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 103502/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 920": "Revenue code 0920: other diagnostic services (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -955,7 +1067,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 103570/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 350": "Revenue code 0350: CT scan (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -973,7 +1089,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 110021/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 612": "Revenue code 0612: MRI: spinal cord (including spine)"
+       }
       },
       {
        "code_type": "CPT",
@@ -991,7 +1111,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 116006/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 340": "Revenue code 0340: nuclear medicine (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -1009,7 +1133,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 116729/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 351": "Revenue code 0351: CT scan"
+       }
       },
       {
        "code_type": "CPT",
@@ -1027,7 +1155,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 120769/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 929": "Revenue code 0929: other diagnostic services (other)"
+       }
       },
       {
        "code_type": "CPT",
@@ -1045,7 +1177,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 125484/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 73721": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 404": "Revenue code 0404: positron emission tomography (PET)"
+       }
       }
      ]
     },
@@ -1092,77 +1228,88 @@
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Baylor St Lukes Medical Center",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Houston Methodist Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 12398/charge 1"
+      "ref": "item 12398/charge 1",
+      "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD"
      },
      {
       "hospital": "Harris Health",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 32341"
+      "ref": "row 32341",
+      "description": "ECHG GI PROC COLONOSCOPY, FLEX ; DX"
      },
      {
       "hospital": "Houston Methodist The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 12425/charge 1"
+      "ref": "item 12425/charge 1",
+      "description": "HC COLON DIAGNOSTIC W/BRUSH OR WASH WHEN PFRMD"
      },
      {
       "hospital": "CHI St Lukes Lakeside Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "St Luke's The Woodlands Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Woodland Springs",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Elite Hospital Kingwood",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Kingwood Pines Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "HCA Houston Healthcare Kingwood",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      }
     ]
    },
@@ -1209,7 +1356,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 5870/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       }
      ]
     },
@@ -1241,7 +1391,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 12398/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "HCPCS 45378": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+       "CDM 36100443": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 0361": "Revenue code 0361: operating room services: minor surgery"
+      }
      },
      "lines": [
       {
@@ -1261,7 +1416,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 12398/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 45378": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+        "CDM 36100443": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 0361": "Revenue code 0361: operating room services: minor surgery"
+       }
       },
       {
        "code_type": "HCPCS",
@@ -1277,7 +1437,10 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 21586/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 45378": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT"
+       }
       }
      ]
     },
@@ -1323,7 +1486,12 @@
       "billing_class": null,
       "modifiers": null,
       "ref": "row 32341",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "CDM 12645378": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 750": "Revenue code 0750: gastro-intestinal services, general"
+      }
      },
      "lines": [
       {
@@ -1343,7 +1511,12 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 32341",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 12645378": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 750": "Revenue code 0750: gastro-intestinal services, general"
+       }
       },
       {
        "code_type": "CPT",
@@ -1359,7 +1532,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 14264",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       },
       {
        "code_type": "CPT",
@@ -1375,7 +1551,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 22154",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       },
       {
        "code_type": "CPT",
@@ -1391,7 +1570,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 27709",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       },
       {
        "code_type": "CPT",
@@ -1407,7 +1589,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 6045",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       },
       {
        "code_type": "CPT",
@@ -1423,7 +1608,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 9990",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       }
      ]
     },
@@ -1469,7 +1657,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 12425/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "HCPCS 45378": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+       "CDM 36100443": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 0361": "Revenue code 0361: operating room services: minor surgery"
+      }
      },
      "lines": [
       {
@@ -1489,7 +1682,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 12425/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 45378": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+        "CDM 36100443": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 0361": "Revenue code 0361: operating room services: minor surgery"
+       }
       },
       {
        "code_type": "HCPCS",
@@ -1505,7 +1703,10 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 21356/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 45378": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT"
+       }
       }
      ]
     },
@@ -1536,7 +1737,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 5908/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       }
      ]
     },
@@ -1567,7 +1771,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 5908/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       }
      ]
     },
@@ -1642,7 +1849,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 103612/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 369": "Revenue code 0369: operating room services (other)"
+       }
       },
       {
        "code_type": "CPT",
@@ -1660,7 +1871,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 114999/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 362": "Revenue code 0362: operating room services: organ transplant, other than kidney"
+       }
       },
       {
        "code_type": "CPT",
@@ -1678,7 +1893,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 115626/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 360": "Revenue code 0360: operating room services (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -1696,7 +1915,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 122978/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 367": "Revenue code 0367: operating room services: kidney transplant"
+       }
       },
       {
        "code_type": "CPT",
@@ -1714,7 +1937,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 153105/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 490": "Revenue code 0490: ambulatory surgical care (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -1732,7 +1959,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 157318/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 369": "Revenue code 0369: operating room services (other)"
+       }
       },
       {
        "code_type": "CPT",
@@ -1750,7 +1981,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 167209/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 481": "Revenue code 0481: cardiac catheterization lab"
+       }
       },
       {
        "code_type": "CPT",
@@ -1768,7 +2003,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 175576/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 45378": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 750": "Revenue code 0750: gastro-intestinal services, general"
+       }
       }
      ]
     },
@@ -1815,77 +2054,88 @@
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "row 26951"
+      "ref": "row 26951",
+      "description": "TC CT, BRAIN WITHOUT CONTRAST"
      },
      {
       "hospital": "Baylor St Lukes Medical Center",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 8783/charge 1"
+      "ref": "item 8783/charge 1",
+      "description": "HC CT BRAIN"
      },
      {
       "hospital": "Houston Methodist Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 11945/charge 1"
+      "ref": "item 11945/charge 1",
+      "description": "HC CT HEAD/BRAIN SCAN WO CONTRA"
      },
      {
       "hospital": "Harris Health",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 34428"
+      "ref": "row 34428",
+      "description": "CT HEAD W/O CONTRAST (MOD CT \ufffd MCARE ONLY)"
      },
      {
       "hospital": "Houston Methodist The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 11959/charge 1"
+      "ref": "item 11959/charge 1",
+      "description": "HC CT HEAD/BRAIN SCAN WO CONTRA"
      },
      {
       "hospital": "CHI St Lukes Lakeside Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 8825/charge 1"
+      "ref": "item 8825/charge 1",
+      "description": "HC CT BRAIN"
      },
      {
       "hospital": "St Luke's The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 8825/charge 1"
+      "ref": "item 8825/charge 1",
+      "description": "HC CT BRAIN"
      },
      {
       "hospital": "Woodland Springs",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Elite Hospital Kingwood",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 508"
+      "ref": "row 508",
+      "description": "Computed tomography head or brain; without contrast material"
      },
      {
       "hospital": "Kingwood Pines Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "HCA Houston Healthcare Kingwood",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      }
     ]
    },
@@ -1919,7 +2169,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "row 26951",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "CDM 4240000": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 351": "Revenue code 0351: CT scan"
+      }
      },
      "lines": [
       {
@@ -1939,7 +2194,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 333039",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 4240000": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 351": "Revenue code 0351: CT scan"
+       }
       },
       {
        "code_type": "CPT",
@@ -1958,7 +2218,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 26951",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 4240000": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 351": "Revenue code 0351: CT scan"
+       }
       }
      ]
     },
@@ -1989,7 +2254,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 8783/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0350": "Revenue code 0350: CT scan (general)"
+      }
      },
      "lines": [
       {
@@ -2008,7 +2277,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 8782/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0350": "Revenue code 0350: CT scan (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -2026,7 +2299,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 8783/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0350": "Revenue code 0350: CT scan (general)"
+       }
       }
      ]
     },
@@ -2058,7 +2335,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 11945/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "HCPCS 70450": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+       "CDM 35100002": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 0351": "Revenue code 0351: CT scan"
+      }
      },
      "lines": [
       {
@@ -2078,7 +2360,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 11945/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 70450": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+        "CDM 35100002": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 0351": "Revenue code 0351: CT scan"
+       }
       },
       {
        "code_type": "HCPCS",
@@ -2094,7 +2381,10 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 14510/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 70450": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT"
+       }
       }
      ]
     },
@@ -2140,7 +2430,12 @@
       "billing_class": null,
       "modifiers": null,
       "ref": "row 34428",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "CDM 33300001": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 351": "Revenue code 0351: CT scan"
+      }
      },
      "lines": [
       {
@@ -2160,7 +2455,12 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 34428",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 33300001": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 351": "Revenue code 0351: CT scan"
+       }
       },
       {
        "code_type": "CPT",
@@ -2179,7 +2479,12 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 34635",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 33329351": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 351": "Revenue code 0351: CT scan"
+       }
       }
      ]
     },
@@ -2225,7 +2530,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 11959/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "HCPCS 70450": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+       "CDM 35100002": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 0351": "Revenue code 0351: CT scan"
+      }
      },
      "lines": [
       {
@@ -2245,7 +2555,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 11959/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 70450": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+        "CDM 35100002": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 0351": "Revenue code 0351: CT scan"
+       }
       },
       {
        "code_type": "HCPCS",
@@ -2261,7 +2576,10 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 14357/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 70450": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT"
+       }
       }
      ]
     },
@@ -2292,7 +2610,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 8825/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0350": "Revenue code 0350: CT scan (general)"
+      }
      },
      "lines": [
       {
@@ -2311,7 +2633,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 8824/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0350": "Revenue code 0350: CT scan (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -2329,7 +2655,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 8825/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0350": "Revenue code 0350: CT scan (general)"
+       }
       }
      ]
     },
@@ -2360,7 +2690,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 8825/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0350": "Revenue code 0350: CT scan (general)"
+      }
      },
      "lines": [
       {
@@ -2379,7 +2713,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 8824/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0350": "Revenue code 0350: CT scan (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -2397,7 +2735,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 8825/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0350": "Revenue code 0350: CT scan (general)"
+       }
       }
      ]
     },
@@ -2440,7 +2782,10 @@
       "billing_class": null,
       "modifiers": null,
       "ref": "row 508",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+      }
      },
      "lines": [
       {
@@ -2457,7 +2802,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 508",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       }
      ]
     },
@@ -2504,7 +2852,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 107302/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 619": "Revenue code 0619: MRI (other)"
+       }
       },
       {
        "code_type": "CPT",
@@ -2522,7 +2874,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 118927/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 322": "Revenue code 0322: radiology, diagnostic"
+       }
       },
       {
        "code_type": "CPT",
@@ -2540,7 +2896,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 129112/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 610": "Revenue code 0610: MRI (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -2558,7 +2918,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 130139/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 401": "Revenue code 0401: diagnostic mammography"
+       }
       },
       {
        "code_type": "CPT",
@@ -2576,7 +2940,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 135001/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 403": "Revenue code 0403: screening mammography"
+       }
       },
       {
        "code_type": "CPT",
@@ -2594,7 +2962,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 149762/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 732": "Revenue code 0732: EKG / ECG"
+       }
       },
       {
        "code_type": "CPT",
@@ -2612,7 +2984,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 155389/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 349": "Revenue code 0349: nuclear medicine (other)"
+       }
       },
       {
        "code_type": "CPT",
@@ -2630,7 +3006,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 157363/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 70450": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 614": "Revenue code 0614: MRI: other"
+       }
       }
      ]
     },
@@ -2677,77 +3057,88 @@
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Baylor St Lukes Medical Center",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 10588/charge 1"
+      "ref": "item 10588/charge 1",
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
      },
      {
       "hospital": "Houston Methodist Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 10713/charge 1"
+      "ref": "item 10713/charge 1",
+      "description": "HC COMPLETE BLOOD COUNT CBC"
      },
      {
       "hospital": "Harris Health",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 36051"
+      "ref": "row 36051",
+      "description": "CBC/PLATELET"
      },
      {
       "hospital": "Houston Methodist The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 10719/charge 1"
+      "ref": "item 10719/charge 1",
+      "description": "HC COMPLETE BLOOD COUNT CBC"
      },
      {
       "hospital": "CHI St Lukes Lakeside Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 10630/charge 1"
+      "ref": "item 10630/charge 1",
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
      },
      {
       "hospital": "St Luke's The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 10630/charge 1"
+      "ref": "item 10630/charge 1",
+      "description": "HC LAB CBC (W/PLT&HEMOGRAM)"
      },
      {
       "hospital": "Woodland Springs",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Elite Hospital Kingwood",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 229"
+      "ref": "row 229",
+      "description": "Blood count; complete (CBC) automated (Hgb Hct RBC WBC and platelet count)"
      },
      {
       "hospital": "Kingwood Pines Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "HCA Houston Healthcare Kingwood",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "item 308567/charge 1"
+      "ref": "item 308567/charge 1",
+      "description": "CBC AUTOMATED"
      }
     ]
    },
@@ -2783,7 +3174,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 345067",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 3410400": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 305": "Revenue code 0305: laboratory"
+       }
       },
       {
        "code_type": "CPT",
@@ -2802,7 +3198,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 345069",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 3410500": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 300": "Revenue code 0300: laboratory (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -2821,7 +3222,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 345661",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 2730010": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 305": "Revenue code 0305: laboratory"
+       }
       },
       {
        "code_type": "CPT",
@@ -2840,7 +3246,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 347119",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 3320010": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 300": "Revenue code 0300: laboratory (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -2859,7 +3270,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 31807",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 3410400": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 305": "Revenue code 0305: laboratory"
+       }
       },
       {
        "code_type": "CPT",
@@ -2878,7 +3294,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 31808",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 3410500": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 300": "Revenue code 0300: laboratory (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -2897,7 +3318,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 31857",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 2730010": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 305": "Revenue code 0305: laboratory"
+       }
       },
       {
        "code_type": "CPT",
@@ -2916,7 +3342,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "row 32530",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 3320010": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 300": "Revenue code 0300: laboratory (general)"
+       }
       }
      ]
     },
@@ -2947,7 +3378,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 10588/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0300": "Revenue code 0300: laboratory (general)"
+      }
      },
      "lines": [
       {
@@ -2966,7 +3401,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 10587/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0300": "Revenue code 0300: laboratory (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -2984,7 +3423,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 10588/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0300": "Revenue code 0300: laboratory (general)"
+       }
       }
      ]
     },
@@ -3016,7 +3459,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 10713/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "HCPCS 85027": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+       "CDM 30500007": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 0305": "Revenue code 0305: laboratory"
+      }
      },
      "lines": [
       {
@@ -3036,7 +3484,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 10713/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 85027": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+        "CDM 30500007": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 0305": "Revenue code 0305: laboratory"
+       }
       },
       {
        "code_type": "HCPCS",
@@ -3052,7 +3505,10 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 23714/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 85027": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT"
+       }
       }
      ]
     },
@@ -3098,7 +3554,12 @@
       "billing_class": null,
       "modifiers": null,
       "ref": "row 36051",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "CDM 34439958": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 300": "Revenue code 0300: laboratory (general)"
+      }
      },
      "lines": [
       {
@@ -3118,7 +3579,12 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 36051",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 34439958": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 300": "Revenue code 0300: laboratory (general)"
+       }
       }
      ]
     },
@@ -3164,7 +3630,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 10719/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "HCPCS 85027": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+       "CDM 30500007": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 0305": "Revenue code 0305: laboratory"
+      }
      },
      "lines": [
       {
@@ -3184,7 +3655,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 10719/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 85027": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+        "CDM 30500007": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 0305": "Revenue code 0305: laboratory"
+       }
       },
       {
        "code_type": "HCPCS",
@@ -3200,7 +3676,10 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 24182/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 85027": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT"
+       }
       }
      ]
     },
@@ -3231,7 +3710,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 10630/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0300": "Revenue code 0300: laboratory (general)"
+      }
      },
      "lines": [
       {
@@ -3250,7 +3733,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 10629/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0300": "Revenue code 0300: laboratory (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -3268,7 +3755,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 10630/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0300": "Revenue code 0300: laboratory (general)"
+       }
       }
      ]
     },
@@ -3299,7 +3790,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 10630/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0300": "Revenue code 0300: laboratory (general)"
+      }
      },
      "lines": [
       {
@@ -3318,7 +3813,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 10629/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0300": "Revenue code 0300: laboratory (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -3336,7 +3835,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 10630/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0300": "Revenue code 0300: laboratory (general)"
+       }
       }
      ]
     },
@@ -3379,7 +3882,10 @@
       "billing_class": null,
       "modifiers": null,
       "ref": "row 229",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+      }
      },
      "lines": [
       {
@@ -3396,7 +3902,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 229",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       }
      ]
     },
@@ -3441,7 +3950,11 @@
       "billing_class": null,
       "modifiers": null,
       "ref": "item 308567/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "CDM 117210": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file"
+      }
      },
      "lines": [
       {
@@ -3460,7 +3973,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 12662/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 324": "Revenue code 0324: radiology, diagnostic"
+       }
       },
       {
        "code_type": "CPT",
@@ -3478,7 +3995,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 126684/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 303": "Revenue code 0303: laboratory"
+       }
       },
       {
        "code_type": "CPT",
@@ -3496,7 +4017,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 1293/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 925": "Revenue code 0925: other diagnostic services"
+       }
       },
       {
        "code_type": "CPT",
@@ -3514,7 +4039,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 132638/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 341": "Revenue code 0341: nuclear medicine"
+       }
       },
       {
        "code_type": "CPT",
@@ -3532,7 +4061,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 149274/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 319": "Revenue code 0319: laboratory, pathology (other)"
+       }
       },
       {
        "code_type": "CPT",
@@ -3550,7 +4083,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 15245/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 342": "Revenue code 0342: nuclear medicine"
+       }
       },
       {
        "code_type": "CPT",
@@ -3568,7 +4105,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 161467/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 306": "Revenue code 0306: laboratory"
+       }
       },
       {
        "code_type": "CPT",
@@ -3586,7 +4127,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 165339/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 85027": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 302": "Revenue code 0302: laboratory"
+       }
       }
      ]
     },
@@ -3633,77 +4178,88 @@
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Baylor St Lukes Medical Center",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9582/charge 1"
+      "ref": "item 9582/charge 1",
+      "description": "HC MAMMO SCRN BIL & CAD"
      },
      {
       "hospital": "Houston Methodist Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 13151/charge 1"
+      "ref": "item 13151/charge 1",
+      "description": "HC MAMMOGRAM SCREENING INCL CAD BIL"
      },
      {
       "hospital": "Harris Health",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 32991"
+      "ref": "row 32991",
+      "description": "SCREENING MAMMOGRAPHY BILATERAL INCL CAD WHEN PEFORMED"
      },
      {
       "hospital": "Houston Methodist The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 13155/charge 1"
+      "ref": "item 13155/charge 1",
+      "description": "HC MAMMOGRAM SCREENING INCL CAD BIL"
      },
      {
       "hospital": "CHI St Lukes Lakeside Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9624/charge 1"
+      "ref": "item 9624/charge 1",
+      "description": "HC MAMMO SCRN BIL & CAD"
      },
      {
       "hospital": "St Luke's The Woodlands Hospital",
       "headline_is_this_service": "yes",
       "billing_class": "facility",
       "note": null,
-      "ref": "item 9624/charge 1"
+      "ref": "item 9624/charge 1",
+      "description": "HC MAMMO SCRN BIL & CAD"
      },
      {
       "hospital": "Woodland Springs",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "Elite Hospital Kingwood",
       "headline_is_this_service": "yes",
       "billing_class": null,
       "note": null,
-      "ref": "row 2080"
+      "ref": "row 2080",
+      "description": "Screening mammography bilateral (2-view study of each breast) including computer-aided detection (CAD) when performed"
      },
      {
       "hospital": "Kingwood Pines Hospital",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      },
      {
       "hospital": "HCA Houston Healthcare Kingwood",
       "headline_is_this_service": null,
       "billing_class": null,
       "note": null,
-      "ref": ""
+      "ref": "",
+      "description": null
      }
     ]
    },
@@ -3750,7 +4306,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 9582/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0403": "Revenue code 0403: screening mammography"
+      }
      },
      "lines": [
       {
@@ -3769,7 +4329,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 9581/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0403": "Revenue code 0403: screening mammography"
+       }
       },
       {
        "code_type": "CPT",
@@ -3787,7 +4351,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 9582/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0403": "Revenue code 0403: screening mammography"
+       }
       }
      ]
     },
@@ -3819,7 +4387,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 13151/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "HCPCS 77067": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+       "CDM 40300002": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 0403": "Revenue code 0403: screening mammography"
+      }
      },
      "lines": [
       {
@@ -3839,7 +4412,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 13151/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 77067": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+        "CDM 40300002": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 0403": "Revenue code 0403: screening mammography"
+       }
       },
       {
        "code_type": "HCPCS",
@@ -3855,7 +4433,10 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 15937/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 77067": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT"
+       }
       }
      ]
     },
@@ -3901,7 +4482,12 @@
       "billing_class": null,
       "modifiers": null,
       "ref": "row 32991",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "CDM 32803890": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 403": "Revenue code 0403: screening mammography"
+      }
      },
      "lines": [
       {
@@ -3921,7 +4507,12 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 32991",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 32803890": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 403": "Revenue code 0403: screening mammography"
+       }
       }
      ]
     },
@@ -3967,7 +4558,12 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 13155/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "HCPCS 77067": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+       "CDM 40300002": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+       "RC 0403": "Revenue code 0403: screening mammography"
+      }
      },
      "lines": [
       {
@@ -3987,7 +4583,12 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 13155/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 77067": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT",
+        "CDM 40300002": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file",
+        "RC 0403": "Revenue code 0403: screening mammography"
+       }
       },
       {
        "code_type": "HCPCS",
@@ -4003,7 +4604,10 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 16068/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "HCPCS 77067": "HCPCS: the CMS procedure code; a five-digit numeric one is the same code as the CPT"
+       }
       }
      ]
     },
@@ -4034,7 +4638,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 9624/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0403": "Revenue code 0403: screening mammography"
+      }
      },
      "lines": [
       {
@@ -4053,7 +4661,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 9623/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0403": "Revenue code 0403: screening mammography"
+       }
       },
       {
        "code_type": "CPT",
@@ -4071,7 +4683,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 9624/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0403": "Revenue code 0403: screening mammography"
+       }
       }
      ]
     },
@@ -4102,7 +4718,11 @@
       "billing_class": "facility",
       "modifiers": null,
       "ref": "item 9624/charge 1",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+       "RC 0403": "Revenue code 0403: screening mammography"
+      }
      },
      "lines": [
       {
@@ -4121,7 +4741,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 9623/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0403": "Revenue code 0403: screening mammography"
+       }
       },
       {
        "code_type": "CPT",
@@ -4139,7 +4763,11 @@
        "billing_class": "facility",
        "modifiers": null,
        "ref": "item 9624/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 0403": "Revenue code 0403: screening mammography"
+       }
       }
      ]
     },
@@ -4182,7 +4810,10 @@
       "billing_class": null,
       "modifiers": null,
       "ref": "row 2080",
-      "note": null
+      "note": null,
+      "explained": {
+       "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+      }
      },
      "lines": [
       {
@@ -4199,7 +4830,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "row 2080",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       }
      ]
     },
@@ -4244,7 +4878,10 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 129983/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for"
+       }
       },
       {
        "code_type": "CPT",
@@ -4262,7 +4899,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 174767/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 324": "Revenue code 0324: radiology, diagnostic"
+       }
       },
       {
        "code_type": "CPT",
@@ -4280,7 +4921,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 210539/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 320": "Revenue code 0320: radiology, diagnostic (general)"
+       }
       },
       {
        "code_type": "CPT",
@@ -4298,7 +4943,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 224486/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 323": "Revenue code 0323: radiology, diagnostic"
+       }
       },
       {
        "code_type": "CPT",
@@ -4316,7 +4965,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 226749/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 403": "Revenue code 0403: screening mammography"
+       }
       },
       {
        "code_type": "CPT",
@@ -4334,7 +4987,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 279972/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 321": "Revenue code 0321: radiology, diagnostic"
+       }
       },
       {
        "code_type": "CPT",
@@ -4352,7 +5009,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 295928/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "RC 322": "Revenue code 0322: radiology, diagnostic"
+       }
       },
       {
        "code_type": "CPT",
@@ -4370,7 +5031,11 @@
        "billing_class": null,
        "modifiers": null,
        "ref": "item 314944/charge 1",
-       "note": null
+       "note": null,
+       "explained": {
+        "CPT 77067": "CPT: the AMA procedure code for the service; the code the catalog searches for",
+        "CDM 425035": "Chargemaster number: the hospital's own line number for this item, meaningful only inside this file"
+       }
       }
      ]
     },
