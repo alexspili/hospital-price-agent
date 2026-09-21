@@ -136,7 +136,7 @@ export default function App() {
         <h1>Hospital Price Agent</h1>
         <p className="sub">
           Cash prices for one of CMS's 70 shoppable services at the five hospitals nearest a ZIP code, read from
-          each hospital's own machine-readable file. Every number keeps its source.
+          each hospital's own machine-readable file.
         </p>
         <form
           onSubmit={(e) => {
