@@ -111,9 +111,10 @@ def pair(a: dict, b: dict) -> Pair:
 
     differences = []
     # One catalog entry can carry two codes (PSA: 84153 and 84154). Two hospitals' lines
-    # are the same service only when they carry the same code.
+    # are the same service only when they carry the same code. CPT codes are HCPCS
+    # level I, and files label the same code either way, so the label is not a difference.
     ca, cb = (la.get("code_type"), la.get("code")), (lb.get("code_type"), lb.get("code"))
-    if ca != cb and all(ca) and all(cb):
+    if all(ca) and all(cb) and not _same_code(ca, cb):
         differences.append(f"different codes ({ca[0]} {ca[1]} vs {cb[0]} {cb[1]})")
     if not _same_setting(la.get("setting"), lb.get("setting")):
         differences.append(f"{la['setting']} vs {lb['setting']}")
@@ -126,6 +127,11 @@ def pair(a: dict, b: dict) -> Pair:
 
     shared = [la.get("setting"), la.get("billing_class"), f"mod {la['modifiers']}" if la.get("modifiers") else "no modifiers"]
     return Pair(*names, COMPARABLE, ", ".join(p for p in shared if p))
+
+
+def _same_code(a: tuple[str, str], b: tuple[str, str]) -> bool:
+    family = {"CPT": "HCPCS", "HCPCS": "HCPCS"}
+    return a[1] == b[1] and family.get(a[0], a[0]) == family.get(b[0], b[0])
 
 
 def pairs(hospitals: list[dict]) -> list[Pair]:

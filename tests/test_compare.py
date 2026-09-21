@@ -149,6 +149,11 @@ def test_two_codes_of_one_entry_are_not_the_same_service():
     assert p.verdict == compare.NOT_COMPARABLE and "84153 vs CPT 84154" in p.detail
     b["headline"]["code"] = "84153"
     assert compare.pair(a, b).verdict == compare.COMPARABLE
+    # The same code under the two labels files use for it is the same code.
+    b["headline"]["code_type"] = "HCPCS"
+    assert compare.pair(a, b).verdict == compare.COMPARABLE
+    b["headline"].update(code_type="MS-DRG", code="84153")
+    assert compare.pair(a, b).verdict == compare.NOT_COMPARABLE
 
 
 def test_a_review_is_bound_to_the_line_it_looked_at():
