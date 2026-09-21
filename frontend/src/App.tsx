@@ -25,10 +25,23 @@ export default function App() {
   const [note, setNote] = useState<string | null>(null) // what Claude said when it settled the name
   const ran = useRef<{ zip: string; serviceId: string | null }>({ zip: '', serviceId: null })
   const requests = useRef(0) // a response is applied only if no newer request has been made
+  const lastBody = useRef<RunRequest | null>(null) // what was asked, so a lost run can be asked again
+  const lastLive = useRef(false)
+  const retried = useRef(false) // a lost cache-first run is retried once, silently
+  const startRef = useRef<(body: RunRequest, auto?: boolean) => Promise<void>>(async () => {})
   const stop = useRef<(() => void) | null>(null)
 
   const apply = useCallback((event: RunEvent) => setRun((state) => replay([event], state)), [])
-  const gone = useCallback((message: string) => setRun((state) => lost(state, message)), [])
+  // The server no longer has the run (it restarted). A cache-first run costs nothing and
+  // is simply asked again; a live one counts against the visitor's hourly limit, so it
+  // waits for them to say so.
+  const gone = useCallback((message: string) => {
+    setRun((state) => lost(state, message))
+    if (!lastLive.current && !retried.current && lastBody.current) {
+      retried.current = true
+      void startRef.current(lastBody.current, true)
+    }
+  }, [])
 
   // The page is never empty: it opens on the recorded Houston run, played through the
   // same reducer a live run uses.
@@ -57,8 +70,9 @@ export default function App() {
     }
   }, [])
 
-  async function start(body: RunRequest) {
+  async function start(body: RunRequest, auto = false) {
     if (submitting) return
+    if (!auto) retried.current = false
     const mine = ++requests.current
     setSubmitting(true)
     setProblem(null)
@@ -76,6 +90,8 @@ export default function App() {
       setRecorded(false)
       setNote(started.note ?? null)
       ran.current = { zip: body.zip, serviceId: started.service.id }
+      lastBody.current = body
+      lastLive.current = started.live
       // The server says whether this run goes to the web when it accepts it, so the
       // banner is right from the first line, not only after the last.
       setRun(starting(null, started.live))
@@ -86,6 +102,8 @@ export default function App() {
       if (mine === requests.current) setSubmitting(false)
     }
   }
+
+  startRef.current = start
 
   // Answering a question: the input then reads what will actually be searched for.
   function pick(c: Service) {
@@ -187,6 +205,11 @@ export default function App() {
         {run.status === 'failed' && run.error && !recorded && (
           <p className="problem" role="alert">
             {run.error}
+            {lastBody.current && (
+              <button type="button" className="chip" onClick={() => void start(lastBody.current!)}>
+                Run again
+              </button>
+            )}
           </p>
         )}
         {asking && (

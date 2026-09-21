@@ -9,7 +9,7 @@ services:
       # refuses to start without it rather than opening live scans to everyone.
       HPA_LIVE_PIN: ${HPA_LIVE_PIN}
       HPA_REQUIRE_PIN: "1"
-      HPA_RUNS_PER_HOUR: ${HPA_RUNS_PER_HOUR:-4}
+      HPA_RUNS_PER_HOUR: ${HPA_RUNS_PER_HOUR:-10}
       HPA_MAX_DOWNLOADS: ${HPA_MAX_DOWNLOADS:-3}
       HPA_DAILY_CAP_USD: ${HPA_DAILY_CAP_USD:-2}
       HPA_KEEP_DOWNLOADS: "0"   # the rows are in DuckDB; the multi-GB original is not kept

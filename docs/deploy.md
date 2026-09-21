@@ -107,7 +107,7 @@ the answers already bought travel in the copy's model cache.
 
 ```bash
 docker compose up -d --build
-docker compose logs -f hpa          # "live scans: password required, 4/hour per address, ..."
+docker compose logs -f hpa          # "live scans: password required, 10/hour per address, ..."
 ```
 
 Then check it from outside:
