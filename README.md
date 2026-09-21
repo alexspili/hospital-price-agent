@@ -19,10 +19,10 @@ below; the roadmap further down records what each milestone delivered.
 happens, the results on the right as each hospital finishes. It opens on the recorded
 Houston run, so it is never empty; **Run live** scans for real.
 
-![The page at prices.alexspi.com: the recorded Houston run, then a live scan for a colonoscopy — the trace filling in on the left, priced hospitals with their source rows on the right, and the side-by-side comparability verdicts at the end](docs/demo.gif)
+![The page at prices.alexspi.com: the recorded Houston run, then a live scan for a head CT — the trace filling in on the left, priced hospitals with their source rows on the right, and the side-by-side comparability verdicts at the end](docs/demo.gif)
 
-*Recorded against the live site: the page opens on the recorded run, then a live scan reads
-each hospital's own file and ends with a verdict on every pair.*
+*Recorded against the live site: the page opens on the recorded run, then a live scan for
+a head CT reads each hospital's own file and ends with a verdict on every pair.*
 
 ## What works today
 
