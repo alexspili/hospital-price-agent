@@ -286,7 +286,7 @@ def test_a_live_run_needs_the_pin_when_one_is_set(con, monkeypatch):
         assert api.post("/api/runs", json={"zip": "77030", "service": "knee mri"}).status_code == 202
 
         refused = live_run(api)
-        assert refused.status_code == 403 and "PIN" in refused.json()["detail"]
+        assert refused.status_code == 403 and "password" in refused.json()["detail"]
         assert live_run(api, pin="wrong").status_code == 403
         assert live_run(api, pin="hunter2").status_code == 202
 
@@ -402,3 +402,10 @@ def test_finished_runs_are_forgotten_after_the_replay_window(api):
     run = api.app.state.runs[body["run_id"]]
     server._forget_finished(api.app, now=run.finished_at + server.RUN_RETENTION + 1)
     assert api.get(f"/api/runs/{body['run_id']}").status_code == 404
+
+
+def test_the_password_is_a_word_so_its_case_does_not_matter():
+    assert server._password_ok("Hospital", "hospital")
+    assert server._password_ok(" hospital ", "Hospital")
+    assert not server._password_ok("hospitals", "hospital")
+    assert not server._password_ok(None, "hospital")

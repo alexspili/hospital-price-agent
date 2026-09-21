@@ -8,7 +8,7 @@ of the source line for every number, showing each step as it happens.
 
 **Live: [prices.alexspi.com](https://prices.alexspi.com)** — the recorded Houston run loads
 on arrival, and any of the pre-scanned ZIPs (77030, 77380, 77339) answers from the
-database with no network at all. Scanning live is opt-in and needs a PIN; ask me for one.
+database with no network at all. Scanning live is opt-in and needs a password; ask me for it.
 
 **Status: built in public, one milestone at a time.** What works today is below; the
 roadmap further down is kept current.
@@ -146,7 +146,7 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
       The server owns the DuckDB file while it runs, so `hpa prices` asks it through the
       API and the commands that write say who holds the file, rather than failing on a lock
 - [x] **7. Hosted demo** at [prices.alexspi.com](https://prices.alexspi.com): pre-scanned
-      Houston ZIPs answer with no network, live scans are opt-in behind a shared PIN, and the
+      Houston ZIPs answer with no network, live scans are opt-in behind a shared password, and the
       per-IP rate limit, per-run download cap and daily model budget bound what a stranger can
       spend. One container and Caddy on a small AWS VM; the runbook is [docs/deploy.md](docs/deploy.md)
 
@@ -201,7 +201,7 @@ npm test                     # the trace reducer
 
 For a public deployment there is a container, Caddy for HTTPS and a runbook in
 [docs/deploy.md](docs/deploy.md); `hpa export-demo` writes the compact database it runs
-on, and the limits it turns on (PIN, rate limit, download cap, daily model budget) are all
+on, and the limits it turns on (password, rate limit, download cap, daily model budget) are all
 off unless the environment sets them.
 
 While `hpa serve` is running it owns `data/hpa.duckdb`: `hpa prices` quietly asks the

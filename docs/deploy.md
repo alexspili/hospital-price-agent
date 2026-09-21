@@ -2,7 +2,7 @@
 
 The demo is one container holding one DuckDB file on a mounted disk, with Caddy in front
 of it for HTTPS. The pre-scanned Houston ZIPs answer instantly from that file; a live scan
-is opt-in, needs the shared PIN, and is bounded by the caps below.
+is opt-in, needs the shared password, and is bounded by the caps below.
 
 Target: a small ARM VM on AWS and a domain you control. Two routes below — Lightsail,
 whose plans include their own disk, or EC2 with a volume attached. Roughly $10-15 a month
@@ -22,7 +22,7 @@ You do not need web hosting. The instance is the host; the domain needs one A re
   It carries the reference tables whole (so any ZIP still resolves to its nearest five),
   the discovery results and extracted rows for the pre-scanned hospitals, and the model
   cache, so the host never pays again for an answer you already have.
-- A PIN you are willing to share with the people you want to let scan live.
+- A password you are willing to share with the people you want to let scan live (one word; case does not matter).
 
 ## 1. The machine
 
@@ -89,7 +89,7 @@ dig +short prices.alexspi.com          # should print the static IP
 
 ```bash
 git clone https://github.com/alexspili/hospital-price-agent.git ~/hpa && cd ~/hpa
-cp deploy/env.example .env && $EDITOR .env      # domain, PIN, caps, API key
+cp deploy/env.example .env && $EDITOR .env      # domain, password, caps, API key
 ```
 
 From your own machine, copy the database onto the disk (214 MB, a few minutes):
@@ -107,7 +107,7 @@ the answers already bought travel in the copy's model cache.
 
 ```bash
 docker compose up -d --build
-docker compose logs -f hpa          # "live scans: PIN required, 4/hour per address, ..."
+docker compose logs -f hpa          # "live scans: password required, 4/hour per address, ..."
 ```
 
 Then check it from outside:
@@ -118,19 +118,19 @@ curl -s https://prices.alexspi.com/api/config      # live_needs_pin: true
 ```
 
 Open the page: it lands on the recorded run, and a search of a pre-scanned ZIP answers
-from the file with no network. Tick **run live**, enter the PIN, and watch the trace.
+from the file with no network. Tick **run live**, enter the password, and watch the trace.
 
 ## What is enforced, and where
 
 | Limit | Set by | What happens |
 |---|---|---|
-| Live scans need the PIN | `HPA_LIVE_PIN` | 403 with a plain message; pre-scanned answers are unaffected |
+| Live scans need the password | `HPA_LIVE_PIN` | 403 with a plain message; pre-scanned answers are unaffected |
 | Live runs per IP per hour | `HPA_RUNS_PER_HOUR` | 429 with `Retry-After`; counted in memory, forgotten on restart |
 | Files downloaded per run | `HPA_MAX_DOWNLOADS` | Hospitals past the cap are reported as capped, not dropped |
 | Model spend per day | `HPA_DAILY_CAP_USD` | Claude stops being called; the deterministic pipeline carries on |
 | Two runs at a time | built in | The third gets "busy, try again" |
 | Disk | `HPA_KEEP_DOWNLOADS=0` | The raw price file is deleted after extraction, whether it succeeded or not; a partial download is removed on failure |
-| A PIN is mandatory | `HPA_REQUIRE_PIN=1` (set in `docker-compose.yml`) | The server refuses to start with an empty `HPA_LIVE_PIN`, rather than serving live scans to anyone |
+| A password is mandatory | `HPA_REQUIRE_PIN=1` (set in `docker-compose.yml`) | The server refuses to start with an empty `HPA_LIVE_PIN`, rather than serving live scans to anyone |
 
 `HPA_TRUST_PROXY=1` tells the server the client address is Caddy's `X-Forwarded-For`
 rather than the socket, which is what makes the per-IP limit mean anything behind a proxy.
@@ -177,7 +177,7 @@ docker compose start hpa
 Nothing else on the disk needs backing up: `/mnt/hpa/mrf/` holds price files a scan may
 reuse, and `HPA_KEEP_DOWNLOADS=0` keeps it empty.
 
-To rotate the PIN, change it in `.env` and `docker compose up -d` — no rebuild needed.
+To change the password, edit `HPA_LIVE_PIN` in `.env` and `docker compose up -d` — no rebuild needed.
 
 ## When something is wrong
 

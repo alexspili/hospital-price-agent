@@ -5,7 +5,7 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      # Live scans need this PIN; the pre-scanned ZIPs answer without one. A public host
+      # Live scans need this password; the pre-scanned ZIPs answer without one. A public host
       # refuses to start without it rather than opening live scans to everyone.
       HPA_LIVE_PIN: ${HPA_LIVE_PIN}
       HPA_REQUIRE_PIN: "1"

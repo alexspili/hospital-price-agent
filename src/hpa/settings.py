@@ -2,7 +2,7 @@
 
 Locally nothing is set and the server behaves as it always has: live runs for anyone who
 can reach it, no caps. The hosted demo sets these, which is where SPEC's "Hosted demo
-constraints" live: a shared PIN for live scans, a per-IP rate limit, a cap on how many
+constraints" live: a shared password for live scans, a per-IP rate limit, a cap on how many
 price files one run may download, and a daily budget for model calls.
 """
 
@@ -27,10 +27,11 @@ class Settings:
         return bool(self.live_pin)
 
     def check(self) -> None:
-        """Raise if this configuration must not be served: a host that requires a PIN
+        """Raise if this configuration must not be served: a host that requires a password
         and has none would otherwise open live scans, and the model budget, to anyone."""
         if self.require_pin and not self.live_pin:
-            raise ValueError("HPA_REQUIRE_PIN is set but HPA_LIVE_PIN is empty: refusing to serve live scans to anyone")
+            raise ValueError("HPA_REQUIRE_PIN is set but HPA_LIVE_PIN (the live-scan password) is empty: "
+                             "refusing to serve live scans to anyone")
 
 
 def _int(env, name: str) -> int | None:

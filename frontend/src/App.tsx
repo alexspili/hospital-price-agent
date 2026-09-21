@@ -152,8 +152,8 @@ export default function App() {
           </label>
           {live && limits?.live_needs_pin && (
             <label>
-              PIN
-              <input value={pin} onChange={(e) => setPin(e.target.value)} size={8} type="password" required />
+              Password
+              <input value={pin} onChange={(e) => setPin(e.target.value)} size={10} type="password" autoComplete="off" required />
             </label>
           )}
           <button type="submit" disabled={running}>
@@ -163,7 +163,7 @@ export default function App() {
 
         {prescanned.length > 0 && (
           <p className="hint">
-            Already scanned, answered without a PIN or the network:{' '}
+            Already scanned, answered without a password or the network:{' '}
             {prescanned.map((z, i) => (
               <span key={z}>
                 {i > 0 && ' · '}
@@ -233,7 +233,7 @@ function liveNote(live: boolean, limits: Config | null): string {
     parts.push('Tick “run live” to go and fetch the files now.')
   }
   const needs: string[] = []
-  if (limits?.live_needs_pin) needs.push('the shared PIN')
+  if (limits?.live_needs_pin) needs.push('the shared password (ask Alex for it)')
   if (limits?.max_downloads) needs.push(`reads at most ${limits.max_downloads} new files per run`)
   if (limits?.runs_per_hour) needs.push(`${limits.runs_per_hour} live runs an hour per address`)
   if (needs.length) parts.push(`Live scans need ${needs.join(', ')}.`)
@@ -252,6 +252,6 @@ function savePin(pin: string): void {
   try {
     sessionStorage.setItem(PIN_KEY, pin)
   } catch {
-    // nothing to do: the PIN stays in this page's memory for the session
+    // nothing to do: the password stays in this page's memory for the session
   }
 }

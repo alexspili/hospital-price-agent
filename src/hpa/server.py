@@ -96,7 +96,7 @@ class RunRequest(BaseModel):
     service_id: str | None = None  # an answer to a clarifying question
     limit: int = Field(default=5, ge=1, le=10)
     live: bool = False  # off by default: answer from what was already scanned
-    pin: str | None = None  # the shared PIN, when the deployment asks for one
+    pin: str | None = None  # the shared password, when the deployment asks for one
 
 
 def create_app(con, db: str | Path = "", settings: settings_module.Settings | None = None) -> FastAPI:
@@ -140,8 +140,8 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
         """Resolve the service first: a run never starts on a guess (SPEC). When the
         resolver and Claude cannot settle the query, the answer is the question."""
         s = app.state.settings
-        if req.live and s.live_needs_pin and not secrets.compare_digest(req.pin or "", s.live_pin):
-            raise HTTPException(403, "a live scan needs the PIN; the pre-scanned ZIPs need no PIN")
+        if req.live and s.live_needs_pin and not _password_ok(req.pin, s.live_pin):
+            raise HTTPException(403, "a live scan needs the password; the pre-scanned ZIPs need none")
         if req.live:
             wait = app.state.limiter.take(_client_ip(request, s))
             if wait is not None:
@@ -153,7 +153,7 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
         except UnknownZip as e:
             raise HTTPException(400, str(e))
         try:
-            # Claude is consulted only on a live run, which has already passed the PIN
+            # Claude is consulted only on a live run, which has already passed the password
             # and the rate limit. A cache-first run costs nothing and must stay that way:
             # otherwise a stranger could spend the daily budget by typing ambiguous
             # service names at a page that asks them for nothing.
@@ -273,6 +273,12 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
             return "The page is not built yet: cd frontend && npm install && npm run build\nThe API is up: /api/health\n"
 
     return app
+
+
+def _password_ok(given: str | None, expected: str) -> bool:
+    """The shared password is a word people say to each other, so its case does not
+    matter; the comparison is still constant-time."""
+    return secrets.compare_digest((given or "").strip().casefold().encode(), expected.strip().casefold().encode())
 
 
 def _run(app: FastAPI, run_id: str) -> Run:
@@ -396,12 +402,12 @@ def serve(db, host: str = "127.0.0.1", port: int = 8000, url: str | None = None)
     url = url or f"http://{host}:{port}"
     try:
         app = create_app(con, db)
-    except ValueError as e:  # the settings refuse to be served (a public host with no PIN)
+    except ValueError as e:  # the settings refuse to be served (a public host with no password)
         print(e, file=sys.stderr)
         con.close()
         return 1
     s = app.state.settings
-    print(f"live scans: {'PIN required' if s.live_needs_pin else 'open to anyone who can reach this server'}"
+    print(f"live scans: {'password required' if s.live_needs_pin else 'open to anyone who can reach this server'}"
           + (f", {s.runs_per_hour}/hour per address" if s.runs_per_hour else "")
           + (f", {s.max_downloads} downloads per run" if s.max_downloads else "")
           + (f", ${s.daily_cap_usd:.2f}/day model budget" if s.daily_cap_usd else ""))
