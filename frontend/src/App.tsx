@@ -133,7 +133,7 @@ export default function App() {
   return (
     <div className="page">
       <header>
-        <h1>hospital price agent</h1>
+        <h1>Hospital Price Agent</h1>
         <p className="sub">
           Cash prices for one of CMS's 70 shoppable services at the five hospitals nearest a ZIP code, read from
           each hospital's own machine-readable file. Every number keeps its source.

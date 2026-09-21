@@ -107,7 +107,7 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
         yield
         app.state.pool.shutdown(wait=False, cancel_futures=True)
 
-    app = FastAPI(title="hospital price agent", docs_url="/api/docs", openapi_url="/api/openapi.json",
+    app = FastAPI(title="Hospital Price Agent", docs_url="/api/docs", openapi_url="/api/openapi.json",
                   lifespan=lifespan)
     app.state.con = con
     app.state.db = str(db)
