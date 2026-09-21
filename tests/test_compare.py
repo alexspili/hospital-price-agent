@@ -165,3 +165,24 @@ def test_a_review_is_bound_to_the_line_it_looked_at():
     # The file was reordered: row 1 is now something else, and the review does not follow the ref.
     moved = [line(source_ref="row 1", description="CT HEAD", gross=1.0)]
     assert apply_review(moved, review, "Harris Health")[0].billing_class is None
+
+
+def test_a_drg_service_is_priced_as_a_stay_so_inpatient_is_the_line_that_counts():
+    from hpa.compare import OUTPATIENT_ONLY, expected_setting
+    assert expected_setting((("MS-DRG", "470"),)) == "inpatient"
+    assert expected_setting((("CPT", "73721"),)) == "outpatient"
+    stay = line(setting="inpatient", billing_class="facility", gross=60000.0, discounted_cash=30000.0)
+    clinic = line(setting="outpatient", billing_class="facility", gross=500.0, discounted_cash=250.0)
+    s = summarise([stay, clinic], setting="inpatient")
+    assert s.verdict == COMPARABLE and s.headline is stay
+    s = summarise([clinic], setting="inpatient")
+    assert s.verdict == OUTPATIENT_ONLY and "priced as inpatient" in s.detail
+    s = summarise([stay], setting="outpatient")
+    assert s.verdict == INPATIENT_ONLY and "priced as outpatient" in s.detail
+
+
+def test_agreeing_cash_with_differing_gross_says_so():
+    s = summarise([line(billing_class="facility", gross=2460.0, discounted_cash=1230.0, source_ref="row 1"),
+                   line(billing_class="facility", gross=2500.0, discounted_cash=1230.0, source_ref="row 2")])
+    assert s.verdict == COMPARABLE
+    assert "cash agrees; gross charges differ ($2,460.00, $2,500.00)" in s.detail

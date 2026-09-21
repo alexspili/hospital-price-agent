@@ -84,8 +84,9 @@ class SpendCapReached(RuntimeError):
 
 def _price_for(model: str) -> tuple[float, float]:
     """The list price for a model id. A dated snapshot of a known model ("claude-opus-5-2026…")
-    costs what the model costs; an id nobody priced is charged at the dearest known rate,
-    so a fallback can only overstate spend against the cap, never hide it."""
+    costs what the model costs; an id nobody priced is charged at the dearest known rate.
+    That is an estimate, not a ceiling: it keeps a fallback from recording as free, and
+    PRICES is where a new model gets its real rate."""
     if model in PRICES:
         return PRICES[model]
     for known, price in PRICES.items():

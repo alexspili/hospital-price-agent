@@ -155,7 +155,7 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
 | | |
 |---|---|
 | **Hospital → file** | 12 of 15 located (9 via `cms-hpt.txt`, 1 tie-break, 1 web search, 1 site page). The only public external index overlaps 2 of them; it agrees on 1 and is stale on the other. |
-| **Extraction fidelity** | 256 of 256 sampled charges, re-read from the raw files at their recorded row / JSON path, match the stored values. |
+| **Extraction fidelity** | 256 of 256 sampled charges, re-read from the raw files at their recorded row / JSON path, match the stored values. This re-reads through the same parser, so it checks that every stored number traces to its row, not that the parser reads the row correctly; the parser's own checks are the fixture tests cut from real files. |
 | **Comparison eligibility** | 66 service × hospital pairs: 24 comparable, 16 unknown (no billing class), 15 not found, 6 conflicting, 4 negotiated-only, 1 modifier-only. **36% comparable**, up from 18% before the human review supplied billing classes the files omit (shown as "facility (per review)"). |
 | **Unresolved** | 4: a published URL that returns 403, a renamed hospital, a hospital missing from its system's index, an off-template file. |
 

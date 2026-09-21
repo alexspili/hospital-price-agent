@@ -117,7 +117,7 @@ def hospital_prices(con, service: catalog.Service, h: Hospital, disc: dict | Non
     out["file_date"] = ext.get("last_updated_on")
     lines = charge_lines(con, ext["extraction_id"], [code for _, code in service.codes])
     lines = compare.apply_review(lines, service.reviewed, who)
-    s = compare.summarise(lines)
+    s = compare.summarise(lines, compare.expected_setting(service.codes))
     out.update(
         verdict=s.verdict, detail=s.detail, line_count=len(lines),
         headline=line_dict(s.headline) if s.headline else None,

@@ -127,7 +127,7 @@ from the file with no network. Tick **run live**, enter the password, and watch 
 | Live scans need the password | `HPA_LIVE_PIN` | 403 with a plain message; pre-scanned answers are unaffected |
 | Live runs per IP per hour | `HPA_RUNS_PER_HOUR` | 429 with `Retry-After`; counted in memory, forgotten on restart |
 | Files downloaded per run | `HPA_MAX_DOWNLOADS` | Hospitals past the cap are reported as capped, not dropped |
-| Model spend per day | `HPA_DAILY_CAP_USD` | Claude stops being called; the deterministic pipeline carries on |
+| Model spend per day | `HPA_DAILY_CAP_USD` | Claude stops being called; the deterministic pipeline carries on. A soft limit: it is checked before each call against what has been recorded, so concurrent runs can overshoot it by a call or two (a few cents) |
 | Two runs at a time | built in | The third gets "busy, try again" |
 | Disk | `HPA_KEEP_DOWNLOADS=0` | The raw price file is deleted after extraction, whether it succeeded or not; a partial download is removed on failure |
 | A password is mandatory | `HPA_REQUIRE_PIN=1` (set in `docker-compose.yml`) | The server refuses to start with an empty `HPA_LIVE_PIN`, rather than serving live scans to anyone |

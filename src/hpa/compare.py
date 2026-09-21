@@ -21,7 +21,15 @@ NEGOTIATED_ONLY = "negotiated rates only, no cash or gross price"
 PROFESSIONAL_ONLY = "professional charge only, no facility line"
 CONFLICTING = "conflicting"
 INPATIENT_ONLY = "inpatient line only"
+OUTPATIENT_ONLY = "outpatient line only"
 NOT_FOUND = "not found"
+
+
+def expected_setting(codes) -> str:
+    """Which setting a service's price is. Sixty-five of the 70 are outpatient services;
+    the five MS-DRG entries (joint replacement, spinal fusion, cardiac valve, uterine
+    procedures) are hospital stays, priced as inpatient."""
+    return "inpatient" if any(t == "MS-DRG" for t, _ in codes) else "outpatient"
 
 
 @dataclass(frozen=True)
@@ -160,7 +168,9 @@ def _norm(text: str | None) -> str:
     return " ".join((text or "").split()).lower()
 
 
-def summarise(lines: list[Line]) -> Summary:
+def summarise(lines: list[Line], setting: str = "outpatient") -> Summary:
+    """`setting` is the one the service is priced in (see `expected_setting`): a line in
+    the other setting is a different price and is reported as such, never mixed in."""
     if not lines:
         return Summary(NOT_FOUND, None, [])
     s = Summary("", None, list(lines))
@@ -180,10 +190,8 @@ def summarise(lines: list[Line]) -> Summary:
         mods = sorted({l.modifiers for l in with_mods})
         s.verdict, s.detail = MODIFIERS_ONLY, f"priced lines carry modifiers {', '.join(mods)}; no unmodified line to compare"
         return s
-    # The 70 shoppable services are outpatient services; an inpatient-only line is a
-    # different price (a hospital stay) and is reported as such, never mixed in.
-    outpatient = [l for l in plain if l.setting in ("outpatient", "both", None)]
-    pool = outpatient or plain
+    fitting = [l for l in plain if l.setting in (setting, "both", None)]
+    pool = fitting or plain
     cash = {l.discounted_cash for l in pool if l.discounted_cash is not None}
     gross = {l.gross for l in pool if l.gross is not None}
     if len(cash) > 1 or (not cash and len(gross) > 1):
@@ -202,9 +210,14 @@ def summarise(lines: list[Line]) -> Summary:
         s.detail = "the file does not say whether this is an inpatient or outpatient charge"
     else:
         s.verdict = COMPARABLE
-    if not outpatient:
-        s.verdict = INPATIENT_ONLY
-        s.detail = "only an inpatient line is priced; outpatient comparison not possible"
+    if not fitting:
+        other = "inpatient" if setting == "outpatient" else "outpatient"
+        s.verdict = INPATIENT_ONLY if other == "inpatient" else OUTPATIENT_ONLY
+        s.detail = f"only an {other} line is priced; this service is priced as {setting}, so no comparison"
+    elif len(gross) > 1:
+        # The cash prices agree, which is what is compared; the gross charges do not,
+        # and the one shown is not the only one.
+        s.detail = f"cash agrees; gross charges differ ({', '.join(f'${float(v):,.2f}' for v in sorted(gross))})"
     extra = len(lines) - 1
     if extra:
         s.detail = (s.detail + "; " if s.detail else "") + f"{extra} other line{'s' if extra != 1 else ''} for this code (modifiers, revenue centers or payer-only rates)"

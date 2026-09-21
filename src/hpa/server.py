@@ -147,6 +147,15 @@ def create_app(con, db: str | Path = "", settings: settings_module.Settings | No
             if wait is not None:
                 raise HTTPException(429, f"live runs are limited to {s.runs_per_hour} an hour from one address",
                                     headers={"Retry-After": str(wait)})
+        if req.live:
+            # A live request may consult Claude while resolving its service, and that
+            # happens before a run is admitted. Turning it away while the server is full
+            # keeps model calls bounded by the run limit rather than by request threads.
+            with app.state.runs_lock:
+                _forget_finished(app)
+                if sum(1 for other in app.state.runs.values() if other.status == "running") >= MAX_ACTIVE_RUNS:
+                    raise HTTPException(429, "busy: runs already in progress, try again in a minute",
+                                        headers={"Retry-After": "60"})
         con = db()
         try:
             find_hospitals(con, req.zip, 1)

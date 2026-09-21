@@ -409,3 +409,17 @@ def test_the_password_is_a_word_so_its_case_does_not_matter():
     assert server._password_ok(" hospital ", "Hospital")
     assert not server._password_ok("hospitals", "hospital")
     assert not server._password_ok(None, "hospital")
+
+
+def test_a_live_request_is_turned_away_before_it_can_consult_claude(api, monkeypatch):
+    """Service resolution happens before a run is admitted; a full server refuses the
+    live request first, so model calls stay bounded by the run limit."""
+    first, second = live_run(api).json(), live_run(api).json()
+    assert first["status"] == second["status"] == "started"
+
+    def boom(*a, **k):
+        raise AssertionError("resolved a service for a request the server should have refused")
+
+    monkeypatch.setattr(pipeline, "resolve_service", boom)
+    assert live_run(api, service="mri").status_code == 429
+    drain(api)
