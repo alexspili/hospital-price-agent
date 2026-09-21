@@ -168,7 +168,7 @@ export function streamRun(runId: string, onEvent: (event: RunEvent) => void, onL
   }
   source.onerror = () => {
     if (source.readyState === EventSource.CLOSED) {
-      onLost('lost the connection to this run and could not resume it (the server may have restarted); run it again')
+      onLost('This run was interrupted: the server no longer has it, most likely because it restarted. Nothing below is from this run. Press the button to run it again.')
     }
   }
   return () => source.close()

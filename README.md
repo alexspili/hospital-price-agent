@@ -10,8 +10,8 @@ of the source line for every number, showing each step as it happens.
 on arrival, and any of the pre-scanned ZIPs (77030, 77380, 77339) answers from the
 database with no network at all. Scanning live is opt-in and needs a password; ask me for it.
 
-**Status: built in public, one milestone at a time.** What works today is below; the
-roadmap further down is kept current.
+**Status: all seven milestones shipped, built in public one at a time.** What it does is
+below; the roadmap further down records what each milestone delivered.
 
 ## The page
 
@@ -150,14 +150,17 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
       per-IP rate limit, per-run download cap and daily model budget bound what a stranger can
       spend. One container and Caddy on a small AWS VM; the runbook is [docs/deploy.md](docs/deploy.md)
 
-## The numbers (`hpa eval`, 2026-09-19, 15 hospitals nearest 77030 / 77380 / 77339)
+## The numbers (`hpa eval`, 2026-09-20, 15 hospitals nearest 77030 / 77380 / 77339)
 
 | | |
 |---|---|
 | **Hospital → file** | 12 of 15 located (9 via `cms-hpt.txt`, 1 tie-break, 1 web search, 1 site page). The only public external index overlaps 2 of them; it agrees on 1 and is stale on the other. |
 | **Extraction fidelity** | 256 of 256 sampled charges, re-read from the raw files at their recorded row / JSON path, match the stored values. This re-reads through the same parser, so it checks that every stored number traces to its row, not that the parser reads the row correctly; the parser's own checks are the fixture tests cut from real files. |
-| **Comparison eligibility** | 66 service × hospital pairs: 24 comparable, 16 unknown (no billing class), 15 not found, 6 conflicting, 4 negotiated-only, 1 modifier-only. **36% comparable**, up from 18% before the human review supplied billing classes the files omit (shown as "facility (per review)"). |
-| **Unresolved** | 4: a published URL that returns 403, a renamed hospital, a hospital missing from its system's index, an off-template file. |
+| **Comparison eligibility** | 66 service × hospital pairs (6 services across the 11 extracted files): 24 comparable, 16 unknown (no billing class), 15 not found, 6 conflicting, 4 negotiated-only, 1 modifier-only. **36% comparable**, up from 18% before the human review supplied billing classes the files omit (shown as "facility (per review)"; the 18% is the 2026-09-19 run before the review, kept for the comparison). |
+| **Unresolved** | 4: the three hospitals with no file (a published URL that returns 403, a renamed hospital, a hospital missing from its system's index) and one located file that is off-template. |
+
+These numbers are checked against `eval/results.json` by a test, so the README cannot
+drift from the last `hpa eval` without the suite saying so.
 
 The comparable share is the honest headline: most hospitals do not state the billing class
 that would make a cash price safely comparable. A reviewer can supply it from the
@@ -208,7 +211,7 @@ While `hpa serve` is running it owns `data/hpa.duckdb`: `hpa prices` quietly ask
 server for the answer, and `hpa locate` / `hpa scan` tell you to stop the server or use
 the page. With no server running, every command opens the file as before.
 
-## Planned pipeline
+## The pipeline
 
 ```mermaid
 flowchart LR
@@ -222,12 +225,14 @@ flowchart LR
     D --> C[compare<br/>provenance + comparability verdict]
 ```
 
-Milestones 1–6 cover the whole diagram; `hpa prices` is the comparison in CLI form and
-`hpa serve` is the same thing as a page. The rest is designed in [SPEC.md](SPEC.md). The pipeline is ordinary, testable Python; Claude is used only where the input
-is fuzzy: confirming which catalog entry the user meant (or asking "with or without
-contrast?"), picking a hospital's official website, matching a hospital to its entry in a
-health system's `cms-hpt.txt`, and reading files that don't follow the CMS template.
-Everything else runs without an API key, which is what makes the accuracy numbers meaningful.
+Every box in the diagram is built: `hpa prices` is the comparison in CLI form and
+`hpa serve` is the same thing as a page; the decisions behind it are in
+[SPEC.md](SPEC.md). The pipeline is ordinary, testable Python; Claude is used only where
+the input is fuzzy: confirming which catalog entry the user meant (or asking "with or
+without contrast?"), picking a hospital's official website, and matching a hospital to its
+entry in a health system's `cms-hpt.txt`. An off-template file is reported as such, not
+read by a model. Everything else runs without an API key, which is what makes the
+accuracy numbers meaningful.
 
 Design rules, in force:
 - **Never invents a price.** A hospital that can't be resolved is listed as missing, with the reason.
@@ -280,19 +285,6 @@ what's bundled with it. The people who do use this data are self-insured employe
 benefits consultants and patient advocates, and they mostly work from the full payer-level
 files.
 
-## Where it's going: the trace
-
-The end state is a page where the left pane shows the work as it happens:
-
-```
-nearest 5 hospitals to the centre of 77380
-"knee MRI" -> MRI scan of leg joint (CPT 73721)  [mapping unreviewed]
-Houston Methodist The Woodlands: cms-hpt.txt found -> price file 2.1 GB, scanning
-St. Luke's The Woodlands: cms-hpt.txt missing, searching site
-Houston Methodist The Woodlands: 2 matching rows after 1.4M scanned
-St. Luke's The Woodlands: no machine-readable file located — skipped
-```
-
 ## Limitations
 
 - **Distances are from the centre of the ZIP you type**, to a street-interpolated point
@@ -302,11 +294,12 @@ St. Luke's The Woodlands: no machine-readable file located — skipped
 - The CMS Hospital General Information dataset **leaves out PPS-exempt cancer hospitals**
   (e.g. MD Anderson), so they won't appear until another source is added.
 - Psychiatric, children's and long-term hospitals are included in "nearest" because the
-  rule covers them; the catalog does not yet say which hospital types offer each service,
-  so a children's hospital can appear for an adult service.
+  rule covers them, so a children's hospital can appear for an adult service. Rather than
+  guess which types offer which service, every result is labelled with the hospital's CMS
+  type, and a price from a children's or psychiatric hospital says so.
 - Catalog codes are the 2020 primary codes CMS printed. Variants (knee MRI with contrast)
-  are recognised and refused rather than guessed, and hospitals may substitute codes, which
-  discovery will have to handle.
+  are recognised and refused rather than guessed. Hospitals may substitute codes (93005 for
+  93000, say); a substituted code is reported as "not found", not searched for.
 - Payer-specific negotiated rates are deliberately out of scope.
 - CPT code descriptions are AMA-copyrighted and are not included; the catalog uses CMS's
   plain-English service names.

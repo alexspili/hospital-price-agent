@@ -184,6 +184,11 @@ export default function App() {
             {problem}
           </p>
         )}
+        {run.status === 'failed' && run.error && !recorded && (
+          <p className="problem" role="alert">
+            {run.error}
+          </p>
+        )}
         {asking && (
           <div className="asking" role="status">
             <p>

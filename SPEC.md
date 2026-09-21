@@ -113,8 +113,8 @@ One entry per CMS service, in `src/hpa/data/shoppable_services.json`:
 | `qualifiers` | variants the CMS name leaves implicit: `{"contrast": "without"}`, `{"biopsy": "with"}` |
 | `aliases` | plain-English search terms, added by this project |
 | `notes` | how hospital files actually represent it (global vs facility code, add-on codes, OB packages → DRGs) |
-| `expected_billing_class`, `expected_setting` | what a comparable hospital row should say (added at milestone 3, from the discovery findings) |
-| `alternate_codes` | codes hospitals substitute (93005 for 93000) (milestone 3) |
+| `expected_billing_class`, `expected_setting` | **Not built.** The setting a service is priced in comes from its code type (`compare.expected_setting`: MS-DRG entries are inpatient, the rest outpatient), and the billing class a file omits is supplied per line by the human review, not per entry |
+| `alternate_codes` | **Not built.** No substituted code has been needed for the reviewed services; a substituted code is reported as "not found" |
 | `hospital_types` | **Not built, and deliberately so (2026-09-20).** The intent was to exclude, say, children's hospitals from adult searches. But Texas Children's publishes a real price for a knee MRI, and hiding it would be less honest than saying whose price it is: every result now carries the hospital's CMS type, and a type other than "Acute Care Hospitals" is labelled wherever the result appears. Excluding by type would also need per-service judgement on all 70 entries, which is review work, not code. Revisit if labelling proves not to be enough |
 | `reviewed` | mapping review evidence: reviewer, date, checksums (milestone 4) |
 
@@ -254,14 +254,17 @@ compare: Methodist vs Baylor: unknown (Baylor row has no billing class)
    77030, 77380 and 77339, with a "site page" layer for hosts that exist but serve no index.
    `docs/houston-compliance-findings.md` records what broke. `hpa eval-discovery` compares
    domains with a dated DoltHub snapshot under `eval/`; it overlaps only 2 of 15 hospitals
-   and is reported as such. `sources` table exists but is not yet filled by setup.
+   and is reported as such. The `sources` table records each reference dataset's URL,
+   release date, row count and checksum, and every count the tool prints traces to it.
 3. Extraction (done 2026-09-18): streaming readers for all three shapes plus zip, tall
    deduplication with conflicts kept, bulk load through temp CSVs (DuckDB's executemany is
    ~2 ms/row), one HEAD per scan for freshness, on-disk downloads reused after an
    interrupted extraction. 11 of 12 located files extracted (Townsen is an off-template
    chargemaster export); metrics in the README. `hpa prices` gives per-hospital verdicts:
    comparable / unknown (no billing class) / modifier-specific only / negotiated only /
-   inpatient only / conflicting / not found. Catalog `expected_*` fields still to fill.
+   inpatient only / conflicting / not found (professional-only and outpatient-only were
+   added after the second review). The catalog `expected_*` fields were not built; see
+   the field table.
 4. Houston example (done 2026-09-19): `demo/houston.json` records 15 hospitals × 5 services
    with verdicts and source refs; `hpa demo` replays it offline. `docs/mapping-review.md`
    (from `scripts/review_sheet.py`) is the sheet for the human mapping review; entries are
@@ -307,11 +310,13 @@ Milestone 7 only. Do not build these earlier.
 
 ## README requirements
 
-- Lead with what works today, in the present tense only for what exists; the target trace
-  and pipeline are labelled as planned
-- 30-second demo GIF once there is something to show
+- Lead with what works today, in the present tense only for what exists; nothing is
+  described as planned once it ships
+- A short demo GIF of the live site (12 seconds as recorded; it should be re-recorded when
+  the page changes visibly)
 - Architecture diagram
-- The four eval numbers and the reviewed-mappings count, generated, not typed
+- The four eval numbers and the reviewed-mappings count, checked against `eval/results.json`
+  by a test rather than typed freely
 - Measured engineering results from milestone 3
 - Honest limitations section
 - Positioning: cash-price exploration and data-quality analysis. Payer-level contract
