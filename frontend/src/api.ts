@@ -17,6 +17,7 @@ export type Line = {
   modifiers: string | null
   ref: string
   note: string | null
+  explained?: Record<string, string> // what each code on the line is, from hpa/codes.py
 }
 
 export type HospitalResult = {
@@ -36,7 +37,14 @@ export type HospitalResult = {
 
 // `notes` is the catalog's own caveat for the entry ("Without contrast. …"): what the
 // service name alone does not say, and what a visitor asking for a variant needs to see.
-export type Service = { id: string | null; name: string; codes: string; reviewed: boolean; notes?: string | null }
+export type Service = {
+  id: string | null
+  name: string
+  codes: string
+  reviewed: boolean
+  notes?: string | null
+  explained?: Record<string, string>
+}
 
 // Whether two hospitals' headline prices can honestly sit side by side.
 export type Pair = { a: string; b: string; verdict: string; detail: string }

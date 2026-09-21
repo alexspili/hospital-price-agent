@@ -12,7 +12,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import httpx
 
-from hpa import catalog, compare, discovery, llm, scan, store
+from hpa import catalog, codes, compare, discovery, llm, scan, store
 from hpa.geo import KM_PER_MILE
 from hpa.hospitals import Hospital, find_hospitals
 
@@ -48,7 +48,8 @@ def _money(v) -> float | None:
 
 
 def service_dict(s: catalog.Service) -> dict:
-    return {"id": s.id, "name": s.name, "codes": s.code_list, "reviewed": bool(s.reviewed), "notes": s.notes}
+    return {"id": s.id, "name": s.name, "codes": s.code_list, "reviewed": bool(s.reviewed), "notes": s.notes,
+            "explained": codes.explain_all(f"{t} {c}" for t, c in s.codes)}
 
 
 def line_dict(l: compare.Line) -> dict:
@@ -61,6 +62,8 @@ def line_dict(l: compare.Line) -> dict:
         # needs the fields and not the sentence.
         "setting": l.setting, "billing_class": l.billing_class, "modifiers": l.modifiers,
         "ref": l.source_ref, "note": l.off_template_note,
+        # What each code is, for the reader who hovers over it; reference data, not a verdict.
+        "explained": codes.explain_all([f"{l.code_type} {l.code}", *l.other_codes]),
     }
 
 

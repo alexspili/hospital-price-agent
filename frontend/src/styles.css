@@ -93,6 +93,8 @@ section > h2 {
 /* right: the results */
 .service { color: var(--ink); text-transform: none; letter-spacing: 0; font-size: 14px; }
 .service .codes, .code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); }
+/* a code that can say what it is: dotted, and a help cursor, so the hover is discoverable */
+abbr[title] { text-decoration: underline dotted; text-underline-offset: 2px; cursor: help; }
 .tag {
   margin-left: 8px; font-size: 11px; padding: 1px 6px; border-radius: 999px;
   border: 1px solid var(--line); color: var(--muted); background: var(--card);

@@ -2,6 +2,13 @@ import type { HospitalResult, Line, Pair } from './api'
 import { miles, money } from './trace'
 import type { RunState } from './trace'
 
+// A code with what it is on hover: the sentence comes from the server with the line, so
+// the page shows it and never has to know what a revenue code is.
+function Code({ token, explained }: { token: string; explained?: Record<string, string> }) {
+  const why = explained?.[token]
+  return why ? <abbr title={why}>{token}</abbr> : <>{token}</>
+}
+
 // The right pane: one card per hospital, in nearest-first order. A verdict is always
 // shown, including "unknown"; a price is only ever shown with the context and the source
 // row it came from.
@@ -13,7 +20,15 @@ export function Results({ run, note, onShowAll }: { run: RunState; note?: string
         results
         {service && (
           <span className="service">
-            {service.name} <span className="codes">{service.codes}</span>
+            {service.name}{' '}
+            <span className="codes">
+              {service.codes.split(', ').map((token, i) => (
+                <span key={token}>
+                  {i > 0 && ', '}
+                  <Code token={token} explained={service.explained} />
+                </span>
+              ))}
+            </span>
             <span
               className={service.reviewed ? 'tag reviewed' : 'tag'}
               title={
@@ -151,8 +166,17 @@ function Hospital({ hospital: h, onShowAll }: { hospital: HospitalResult; onShow
               {h.lines.map((l) => (
                 <tr key={l.ref}>
                   <td className="code">
-                    {l.code_type} {l.code}
-                    {l.other_codes.length > 0 && <span className="also"> + {l.other_codes.join(', ')}</span>}
+                    <Code token={`${l.code_type} ${l.code}`} explained={l.explained} />
+                    {l.other_codes.length > 0 && (
+                      <span className="also">
+                        {l.other_codes.map((token) => (
+                          <span key={token}>
+                            {' + '}
+                            <Code token={token} explained={l.explained} />
+                          </span>
+                        ))}
+                      </span>
+                    )}
                   </td>
                   <td className="desc">
                     {l.description}
