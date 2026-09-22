@@ -314,3 +314,85 @@ def test_a_pricing_link_to_a_sibling_host_is_followed_to_the_index():
     assert d.method == "web-search+site-link+cms-hpt"
     assert d.entry.location_name == "Newco Hospital North"
     assert any("pricing link points at healthcare.newco.org" in s for s in d.steps)
+
+
+# --- an NPI in the filename settles a tie, with guardrails ---------------------------------
+
+from hpa.discovery import npi_in, npi_tie_break, npi_valid, same_place  # noqa: E402
+
+
+def test_npi_check_digit():
+    assert npi_valid("1234567893")  # the standard example
+    assert npi_valid("1124137054")  # Ascension Seton Northwest
+    assert not npi_valid("1234567890") and not npi_valid("123456789") and not npi_valid("abcdefghij")
+
+
+def test_npi_in_a_filename_is_the_number_after_the_ein():
+    assert npi_in("https://x.org/tx-csv/741109643-1124137054_ascension-seton_standardcharges.csv") == "1124137054"
+    assert npi_in("https://x.org/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip") is None  # EIN only
+    assert npi_in("https://x.org/1234567890_x_standardcharges.csv") is None  # ten digits, wrong check digit
+    assert npi_in(None) is None
+
+
+def registry(answers: dict):
+    """A fake NPI registry: {npi: (address_1, city, zip)}; anything else is not found."""
+    def handler(request):
+        if request.url.host != "npiregistry.cms.hhs.gov":
+            return httpx.Response(404)
+        npi = request.url.params.get("number")
+        if npi not in answers:
+            return httpx.Response(200, json={"result_count": 0, "results": []})
+        a, city, z = answers[npi]
+        return httpx.Response(200, json={"result_count": 1, "results": [{
+            "basic": {"organization_name": "ASCENSION SETON"},
+            "addresses": [{"address_purpose": "MAILING", "address_1": "1345 PHILOMENA ST.", "city": "AUSTIN", "state": "TX", "postal_code": "787233185"},
+                          {"address_purpose": "LOCATION", "address_1": a, "city": city, "state": "TX", "postal_code": z}]}]})
+    return httpx.Client(transport=httpx.MockTransport(handler))
+
+
+NW = HptEntry("Ascension Seton Northwest (Ascension Seton)", None, "https://x.org/741109643-1124137054_ascension-seton_standardcharges.csv")
+SW = HptEntry("Ascension Seton Southwest (Ascension Seton)", None, "https://x.org/741109643-1750499273_ascension-seton_standardcharges.csv")
+REG = {"1124137054": ("11113 RESEARCH", "AUSTIN", "787595236"), "1750499273": ("7900 FM 1826", "AUSTIN", "787375000")}
+
+
+def test_npi_settles_a_tie_when_exactly_one_registered_address_is_the_hospitals():
+    h = hospital("ASCENSION SETON", address="11113 RESEARCH BOULEVARD", city="AUSTIN", zip="78759")
+    entry, why = npi_tie_break(registry(REG), h, [NW, SW])
+    assert entry is NW and "11113 RESEARCH" in why
+
+
+def test_npi_settles_nothing_when_it_cannot():
+    h = hospital("ASCENSION SETON", address="11113 RESEARCH BOULEVARD", city="AUSTIN", zip="78759")
+    # The registry knows no such number, or is down: no answer either way, never a guess.
+    assert npi_tie_break(registry({}), h, [NW, SW]) == (None, "no candidate's NPI is registered at the hospital's address")
+    down = httpx.Client(transport=httpx.MockTransport(lambda r: httpx.Response(503)))
+    assert npi_tie_break(down, h, [NW, SW])[1] == "the NPI registry did not answer"
+    # Two campuses sharing one file share one NPI: the same address for both settles nothing.
+    shared = HptEntry("Dell Children's North Campus (Ascension Seton)", None, NW.mrf_url)
+    assert npi_tie_break(registry(REG), h, [NW, shared])[0] is None
+    # No NPI in any filename: nothing is looked up.
+    ein_only = HptEntry("Harris Health Ben Taub Hospital", None, "https://x.org/741536936_Harris-Health-Ben-Taub-Hospital_StandardCharges.zip")
+    assert npi_tie_break(registry(REG), h, [ein_only]) == (None, "no NPI in the filenames")
+    # A different street number at the same city is not the same place.
+    elsewhere = hospital("ASCENSION SETON", address="1201 W 38TH ST", city="AUSTIN", zip="78705")
+    assert npi_tie_break(registry(REG), elsewhere, [NW, SW])[0] is None
+    assert same_place(elsewhere, {"address": "1201 W 38TH STREET", "city": "Austin", "zip": "78705"})
+
+
+def test_a_tie_on_the_index_goes_to_the_npi_before_the_model(monkeypatch):
+    """A system-level CMS name that fits two campuses, with no model tie-breaker at all."""
+    index = "\n".join(f"location-name: {e.location_name}\nmrf-url: {e.mrf_url}\n" for e in (NW, SW))
+    routes = {"healthcare.ascension.org/cms-hpt.txt": (200, "text/plain", index),
+              "x.org/741109643-1124137054_ascension-seton_standardcharges.csv": (200, "text/csv", "description,code|1\nx,1\n")}
+    base = transport(routes)
+    reg = registry(REG)
+
+    def handler(request):
+        return reg._transport.handler(request) if request.url.host == "npiregistry.cms.hhs.gov" else base.handler(request)
+
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    h = hospital("ASCENSION SETON", address="11113 RESEARCH BOULEVARD", city="AUSTIN", zip="78759")
+    d = locate_price_file(client, h)
+    assert d.ok and d.method == "cms-hpt+npi" and d.entry is not None
+    assert d.entry.location_name.startswith("Ascension Seton Northwest")
+    assert any(s.startswith("NPI settled it") for s in d.steps)

@@ -259,3 +259,10 @@ The files themselves are zips served with a `.csv` name; the probe reads the byt
 the name, and the parser handles them. Seton Northwest's is 257 MB and parses to 297,292
 charges in about two minutes at 403 MB peak. A failure recorded by an older discovery is
 now retried rather than cached for a week, so the hosted copy looks again on its own.
+
+Ascension's filenames carry the campus's NPI after the parent's EIN. A tie between
+candidates is now settled first by looking the NPI up in the public NPI registry and
+comparing the registered practice address with the CMS address (street number and city):
+exactly one candidate at the hospital's address wins, a shared NPI or a silent registry
+settles nothing, and only then is the model asked. Harris Health's filenames carry the EIN
+only, so its tie-break still goes to the model.

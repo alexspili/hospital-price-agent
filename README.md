@@ -82,8 +82,10 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
   abbreviations, takes a word-for-word name as settled, and refuses same-system near-misses
   → a HEAD/64-byte probe for size, date and real shape. Sites with no index get a scan for
   a linked standard-charges file, and a pricing link to a sibling host of the same
-  organisation is followed there. Claude is called only when the hospital's site can't be
-  guessed (web search) or two entries tie (it gets the address).
+  organisation is followed there. When two entries tie, an NPI in the filename is checked
+  against the public NPI registry's address first, free and deterministic; Claude is called
+  only when the hospital's site can't be guessed (web search) or a tie survives that (it
+  gets the address).
   **On the 15 hospitals nearest 77030, 77380 and 77339: 10 resolve with no model call at
   all, in 15 seconds; Claude's two fallbacks add two more (one tie-break by address, one
   web search).** The remaining three, and everything that broke along the way, are in

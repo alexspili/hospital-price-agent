@@ -290,6 +290,98 @@ def find_file_on_site(client: httpx.Client, domain: str) -> SiteResult:
     return SiteResult(domain, tuple(pages), tuple(files.items()), tuple(related))
 
 
+# --- an identifier in the filename ------------------------------------------------------
+
+# Some systems name a file with the campus's NPI after the parent's EIN
+# (741109643-1124137054_ascension-seton_standardcharges.csv). The NPI registry is public
+# and answers with the registered practice address, which is a fact the CMS dataset can be
+# checked against. Used only to settle a tie between candidates the name match produced,
+# and only when exactly one candidate's registered address is the hospital's.
+NPI_REGISTRY = "https://npiregistry.cms.hhs.gov/api/"
+NPI_IN_NAME = re.compile(r"(?<!\d)(\d{10})(?!\d)")
+
+
+def npi_valid(npi: str) -> bool:
+    """The NPI check digit: Luhn over the number with the card-issuer prefix 80840."""
+    if not re.fullmatch(r"\d{10}", npi):
+        return False
+    total = 0
+    for i, ch in enumerate(reversed("80840" + npi)):
+        n = int(ch)
+        if i % 2 == 1:
+            n = n * 2 - 9 if n * 2 > 9 else n * 2
+        total += n
+    return total % 10 == 0
+
+
+def npi_in(url: str | None) -> str | None:
+    """A valid NPI in the file's name, or None. After an EIN, the NPI comes second."""
+    name = urlsplit(url or "").path.rsplit("/", 1)[-1]
+    found = [n for n in NPI_IN_NAME.findall(name) if npi_valid(n)]
+    return found[-1] if found else None
+
+
+def npi_location(client: httpx.Client, npi: str) -> dict | None:
+    """The registered practice location for an NPI; {} when the registry has no such
+    number, None when it does not answer. Either way it settles nothing."""
+    try:
+        r = client.get(NPI_REGISTRY, params={"version": "2.1", "number": npi},
+                       headers={"User-Agent": USER_AGENT}, timeout=PROBE_TIMEOUT)
+        if r.status_code != 200:
+            return None
+        results = r.json().get("results") or []
+        if not results:
+            return {}  # the registry answered: nobody has this NPI
+        loc = next((a for a in results[0].get("addresses", []) if a.get("address_purpose") == "LOCATION"), None)
+        if not loc:
+            return {}
+        return {"name": (results[0].get("basic") or {}).get("organization_name"), "address": loc.get("address_1"),
+                "city": loc.get("city"), "state": loc.get("state"), "zip": (loc.get("postal_code") or "")[:5]}
+    except (httpx.HTTPError, ValueError):
+        return None
+
+
+def _street_number(address: str | None) -> str | None:
+    m = re.match(r"\s*(\d+)", address or "")
+    return m.group(1) if m else None
+
+
+def same_place(hospital: Hospital, loc: dict) -> bool:
+    """The same street number, in the same city or ZIP: enough to tell sister campuses
+    apart, and not something a stale registry entry would produce by accident."""
+    number = _street_number(hospital.address)
+    if not number or number != _street_number(loc.get("address")):
+        return False
+    return _clean_name(loc.get("city") or "") == _clean_name(hospital.city) or loc.get("zip") == (hospital.zip or "")[:5]
+
+
+def npi_tie_break(client: httpx.Client, hospital: Hospital, candidates: list[HptEntry]) -> tuple[HptEntry | None, str]:
+    """Deterministic and free. Exactly one candidate whose filename NPI is registered at
+    the hospital's address wins; anything else is no answer, and the model tie-break
+    remains. Two candidates sharing one NPI share one file and cannot be told apart here."""
+    npis = {e: npi_in(e.mrf_url) for e in candidates}
+    if not any(npis.values()):
+        return None, "no NPI in the filenames"
+    looked: dict[str, dict | None] = {}
+    matches: list[tuple[HptEntry, str, dict]] = []
+    for e, npi in npis.items():
+        if not npi:
+            continue
+        if npi not in looked:
+            looked[npi] = npi_location(client, npi)
+        loc = looked[npi]
+        if loc and same_place(hospital, loc):
+            matches.append((e, npi, loc))
+    if len(matches) == 1:
+        e, npi, loc = matches[0]
+        return e, f"NPI {npi} in its filename is registered at {loc['address']}, {loc['city']}, the hospital's own address"
+    if not matches:
+        if all(v is None for v in looked.values()):
+            return None, "the NPI registry did not answer"
+        return None, "no candidate's NPI is registered at the hospital's address"
+    return None, f"{len(matches)} candidates' NPIs are registered at the hospital's address"
+
+
 # --- matching --------------------------------------------------------------------------
 
 # CMS abbreviates where an index spells out: "DELL SETON MED CENTER AT THE UNIVERSITY OF TX".
@@ -614,13 +706,23 @@ def locate_price_file(
     elif m.verdict == "ambiguous":
         names = "; ".join(f"{e.location_name} ({s:.0f})" for e, s in m.candidates)
         step(f"{len(entries)} entries, ambiguous match: {names}")
-        if tie_breaker is not None:
-            entry, why = tie_breaker(hospital, [e for e, _ in m.candidates])
-            if entry:
-                d.method += "+tie-break"
-                step(f"tie-break picked {entry.location_name} ({why})")
-            else:
-                step(f"tie-break declined: {why}")
+        cands = [e for e, _ in m.candidates]
+        # An identifier in the filename settles it for free when it can; the model only
+        # gets the question when it cannot.
+        entry, why = npi_tie_break(client, hospital, cands)
+        if entry:
+            d.method += "+npi"
+            step(f"NPI settled it: {entry.location_name} ({why})")
+        else:
+            if why != "no NPI in the filenames":
+                step(f"NPI could not settle it ({why})")
+            if tie_breaker is not None:
+                entry, why = tie_breaker(hospital, cands)
+                if entry:
+                    d.method += "+tie-break"
+                    step(f"tie-break picked {entry.location_name} ({why})")
+                else:
+                    step(f"tie-break declined: {why}")
     elif m.verdict == "matched":
         step(f"{len(entries)} entries, matched {entry.location_name} ({m.score:.0f})")
     else:
