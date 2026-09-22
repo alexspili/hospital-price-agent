@@ -100,7 +100,7 @@ def test_http_error_is_a_reason(con, mrf_dir):
     client, _ = serving(b"", status=403)
     r = scan.scan(con, client, "450804", "https://x/f.json", lambda _: None)
     assert not r.ok and r.reason == "download failed: HTTP 403"
-    assert con.execute("SELECT status, reason FROM fetches").fetchone() == (403, "download failed: 403")
+    assert con.execute("SELECT status, reason FROM fetches").fetchone() == (403, "download failed: HTTP 403")
 
 
 def test_json_with_bom_round_trips_into_the_store(con, mrf_dir):
