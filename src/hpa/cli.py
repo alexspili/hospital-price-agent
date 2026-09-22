@@ -334,10 +334,13 @@ def print_prices(payload: dict, show_all: bool) -> int:
     for h in payload["hospitals"]:
         print_hospital(h, show_all)
     comparisons = payload.get("comparisons") or []
-    if comparisons:
+    unpriced = payload.get("unpriced") or []
+    if comparisons or unpriced:
         print()
-        for c in comparisons:
-            print(f"compare: {c['a']} vs {c['b']}: {c['verdict']}" + (f" ({c['detail']})" if c["detail"] else ""))
+    if unpriced:
+        print(f"no priced line for this service at {', '.join(unpriced)}; no pair with them can be compared")
+    for c in comparisons:
+        print(f"compare: {c['a']} vs {c['b']}: {c['verdict']}" + (f" ({c['detail']})" if c["detail"] else ""))
     return 0
 
 

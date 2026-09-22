@@ -108,7 +108,7 @@ abbr[title] { text-decoration: underline dotted; text-underline-offset: 2px; cur
 .hospital.unsure { border-left-color: var(--unsure); }
 .hospital h3 { margin: 0; font-size: 15px; display: flex; justify-content: space-between; gap: 12px; }
 .distance { color: var(--muted); font-weight: 400; font-size: 13px; }
-.verdict { margin: 4px 0 8px; font-size: 13px; }
+.verdict { margin: 4px 0 8px; font-size: 13px; overflow-wrap: anywhere; }
 .hospital.ok .verdict { color: var(--ok); }
 .hospital.unsure .verdict { color: var(--unsure); }
 .detail { color: var(--muted); }

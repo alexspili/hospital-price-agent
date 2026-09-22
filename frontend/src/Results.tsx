@@ -51,7 +51,7 @@ export function Results({ run, note, onShowAll }: { run: RunState; note?: string
       {run.hospitals.map((h) => (
         <Hospital key={h.ccn} hospital={h} onShowAll={onShowAll} />
       ))}
-      <Comparisons pairs={run.comparisons} />
+      <Comparisons pairs={run.comparisons} unpriced={run.unpriced} priced={run.hospitals.length - run.unpriced.length} />
     </section>
   )
 }
@@ -59,14 +59,25 @@ export function Results({ run, note, onShowAll }: { run: RunState; note?: string
 // A verdict per hospital says whether its own rows make sense. This says whether two
 // hospitals' prices can be put side by side — which is a different question, and the one
 // a reader is actually asking when they look at two numbers.
-function Comparisons({ pairs }: { pairs: Pair[] }) {
-  if (pairs.length === 0) return null
+function Comparisons({ pairs, unpriced, priced }: { pairs: Pair[]; unpriced: string[]; priced: number }) {
+  if (pairs.length === 0 && unpriced.length === 0) return null
   const comparable = pairs.filter((p) => p.verdict === 'comparable').length
   return (
     <details className="comparisons">
       <summary>
-        side by side: {comparable} of {pairs.length} pairs comparable
+        side by side:{' '}
+        {pairs.length > 0
+          ? `${comparable} of ${pairs.length} pairs comparable`
+          : priced === 1
+            ? 'only one hospital has a price'
+            : 'no hospital has a price'}
       </summary>
+      {unpriced.length > 0 && (
+        <p className="thin">
+          No priced line for this service at {unpriced.join(', ')}
+          {priced > 1 ? '; the pairs below are between the hospitals that have one.' : '.'}
+        </p>
+      )}
       {pairs.map((p) => (
         <p key={`${p.a}|${p.b}`} className={p.verdict === 'comparable' ? 'ok' : p.verdict === 'unknown' ? 'unsure' : 'thin'}>
           {p.a} vs {p.b}: <strong>{p.verdict}</strong>

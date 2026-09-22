@@ -191,3 +191,10 @@ def test_agreeing_cash_with_differing_gross_says_so():
                    line(billing_class="facility", gross=2500.0, discounted_cash=1230.0, source_ref="row 2")])
     assert s.verdict == COMPARABLE
     assert "cash agrees; gross charges differ ($2,460.00, $2,500.00)" in s.detail
+
+
+def test_unpriced_hospitals_are_named_once_and_kept_out_of_the_pairs():
+    hs = [priced("A"), {"name": "B", "headline": None}, priced("C"), {"name": "D", "headline": None}]
+    ps, unpriced = compare.priced_pairs(hs)
+    assert unpriced == ["B", "D"]
+    assert [(p.a, p.b) for p in ps] == [("A", "C")] and ps[0].verdict == compare.COMPARABLE

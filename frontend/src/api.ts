@@ -53,7 +53,7 @@ export type RunEvent =
   | { seq: number; kind: 'trace'; ccn?: string; text: string }
   | { seq: number; kind: 'progress'; ccn: string; name: string; phase: 'download' | 'extract'; done: number; total: number | null }
   | { seq: number; kind: 'hospital'; hospital: HospitalResult }
-  | { seq: number; kind: 'result'; zip: string; service: Service; live?: boolean; hospitals: HospitalResult[]; comparisons?: Pair[] }
+  | { seq: number; kind: 'result'; zip: string; service: Service; live?: boolean; hospitals: HospitalResult[]; comparisons?: Pair[]; unpriced?: string[] }
   | { seq: number; kind: 'error'; message: string }
   | { seq: number; kind: 'end' }
 
@@ -94,7 +94,7 @@ export type DemoIndex = {
 
 // /api/prices: the stored answer for a service, with every matching line when asked.
 export type Prices =
-  | { status: 'ok'; service: Service; hospitals: HospitalResult[]; comparisons?: Pair[] }
+  | { status: 'ok'; service: Service; hospitals: HospitalResult[]; comparisons?: Pair[]; unpriced?: string[] }
   | { status: 'needs_clarification'; candidates: Service[] }
 
 export class ApiError extends Error {

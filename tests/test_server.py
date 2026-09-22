@@ -359,10 +359,11 @@ def test_the_recorded_run_says_whose_prices_and_whether_they_compare(api):
     hospitals = body["result"]["hospitals"]
     assert all(h.get("hospital_type") for h in hospitals)
     assert any(h["hospital_type"] != "Acute Care Hospitals" for h in hospitals)  # Texas Children's, at 77030
-    n = len(hospitals)
+    priced = [h for h in hospitals if h["headline"]]
     pairs = body["result"]["comparisons"]
-    assert len(pairs) == n * (n - 1) // 2
+    assert len(pairs) == len(priced) * (len(priced) - 1) // 2  # only pairs with two prices get a verdict
     assert {p["verdict"] for p in pairs} <= {"comparable", "not comparable", "unknown"}
+    assert set(body["result"]["unpriced"]) == {h["name"] for h in hospitals if not h["headline"]}
     assert body["events"][-2]["comparisons"] == pairs  # the result event carries the same
 
 

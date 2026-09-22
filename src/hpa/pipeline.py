@@ -111,7 +111,7 @@ def hospital_prices(con, service: catalog.Service, h: Hospital, disc: dict | Non
         out.update(verdict=NOT_LOOKED, detail="run `hpa locate` first")
         return out
     if not disc["ok"]:
-        out["detail"] = disc.get("reason") or ""
+        out["detail"] = short_reason(disc.get("reason") or "")
         return out
     ext = scan.latest_extraction(con, disc["mrf_url"])
     if not ext:
@@ -127,6 +127,13 @@ def hospital_prices(con, service: catalog.Service, h: Hospital, disc: dict | Non
         lines=[line_dict(l) for l in (lines if shown_lines is None else lines[:shown_lines])],
     )
     return out
+
+
+def short_reason(reason: str) -> str:
+    """A card says why in a phrase; the trace has the domain-by-domain account."""
+    if reason.startswith("no cms-hpt.txt or linked file located"):
+        return "no index file or standard-charges link on any guessed domain (the trace lists them)"
+    return reason
 
 
 # --- the service a query means -----------------------------------------------------------
@@ -171,8 +178,9 @@ def prices_payload(con, query: str, zips, ccn, limit, *, service_id=None, shown_
         return out
     located = targets.located(con, zips, ccn, limit)
     hospitals = [hospital_prices(con, service, h, c, shown_lines=shown_lines) for h, c in located]
+    ps, unpriced = compare.priced_pairs(hospitals)
     out.update(status="ok", service=service_dict(service), hospitals=hospitals,
-               comparisons=[vars(p) for p in compare.pairs(hospitals)])
+               comparisons=[vars(p) for p in ps], unpriced=unpriced)
     return out
 
 
@@ -252,10 +260,24 @@ def run_search(con, zip_code: str, service: catalog.Service, emit: Emit, *, quer
 
     ordered = [results[h.ccn] for h in hospitals]  # nearest first, whatever order they finished in
     # A verdict on every pair, not just on every hospital (SPEC step 6): two prices are
-    # only side by side if the rows behind them share their context.
-    for p in compare.pairs(ordered):
-        emit("trace", text=str(p))
+    # only side by side if the rows behind them share their context. Hospitals with no
+    # price are named once, not once per pair.
+    for line in pair_lines(ordered):
+        emit("trace", text=line)
     return ordered
+
+
+def pair_lines(hospitals: list[dict]) -> list[str]:
+    """The end of a run's trace: who has no price, then a verdict on each pair that has two."""
+    ps, unpriced = compare.priced_pairs(hospitals)
+    lines = []
+    if unpriced:
+        lines.append(f"no priced line for this service at {', '.join(unpriced)}; no pair with them can be compared")
+    priced = len(hospitals) - len(unpriced)
+    if priced == 1:
+        lines.append("only one hospital has a price for this service; nothing to put side by side")
+    lines += [str(p) for p in ps]
+    return lines
 
 
 def _one_hospital(con, client, h: Hospital, service, emit: Emit, claude, claude_lock,

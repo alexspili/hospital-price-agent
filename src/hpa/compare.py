@@ -139,6 +139,17 @@ def pairs(hospitals: list[dict]) -> list[Pair]:
     return [pair(a, b) for i, a in enumerate(hospitals) for b in hospitals[i + 1:]]
 
 
+def priced_pairs(hospitals: list[dict]) -> tuple[list[Pair], list[str]]:
+    """The pairs worth a verdict, and the hospitals that cannot be in one.
+
+    A hospital with no priced line for the service makes every pair it is in "unknown"
+    for the same reason; saying so once, by name, reads better than saying it for each
+    pair. The pairs returned are between hospitals that both have a price."""
+    priced = [h for h in hospitals if h.get("headline")]
+    unpriced = [h["name"] for h in hospitals if not h.get("headline")]
+    return pairs(priced), unpriced
+
+
 def apply_review(lines: list[Line], review: dict | bool, hospital: str) -> list[Line]:
     """Fill in a billing class a reviewer confirmed for this hospital's line, marking it as
     coming from the review. The file's own value always wins.

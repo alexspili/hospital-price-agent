@@ -86,6 +86,13 @@ describe('the trace reducer', () => {
     expect(state.status).toBe('done')
   })
 
+  it('names the hospitals without a price once, beside the pairs that have two', () => {
+    const state = replay([{ seq: 1, kind: 'result', zip: '77030', service, hospitals: [], comparisons: [{ a: 'A', b: 'C', verdict: 'comparable', detail: '' }], unpriced: ['B'] }])
+    expect(state.unpriced).toEqual(['B'])
+    expect(state.comparisons).toHaveLength(1)
+    expect(replay([{ seq: 1, kind: 'result', zip: '77030', service, hospitals: [] }]).unpriced).toEqual([])
+  })
+
   it('remembers whether the run went to the web, because it changes what the prices mean', () => {
     const cached = replay([{ seq: 1, kind: 'result', zip: '77030', service, live: false, hospitals: [] }])
     expect(cached.live).toBe(false)

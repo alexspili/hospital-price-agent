@@ -16,7 +16,8 @@ export type RunState = {
   lines: TraceLine[]
   counters: Record<string, Counter>
   hospitals: HospitalResult[]
-  comparisons: Pair[]
+  comparisons: Pair[] // between hospitals that both have a price
+  unpriced: string[] // hospitals with no priced line, named once rather than once per pair
   service: Service | null
   error: string | null
   recordedOn: string | null
@@ -33,6 +34,7 @@ export const idle: RunState = {
   counters: {},
   hospitals: [],
   comparisons: [],
+  unpriced: [],
   service: null,
   error: null,
   recordedOn: null,
@@ -60,7 +62,7 @@ export function reduce(state: RunState, event: RunEvent): RunState {
     }
     case 'result':
       // The run's own order is nearest first, whatever order the files finished in.
-      return { ...next, hospitals: event.hospitals, comparisons: event.comparisons ?? [],
+      return { ...next, hospitals: event.hospitals, comparisons: event.comparisons ?? [], unpriced: event.unpriced ?? [],
                service: event.service, counters: {}, live: event.live ?? state.live, status: 'done' }
     case 'error':
       return { ...next, status: 'failed', error: event.message, counters: {} }

@@ -92,3 +92,17 @@ def test_a_missing_negotiated_range_is_one_dash_and_hidden_lines_are_counted(cap
     assert "negotiated —  [both, facility]" in out and "—–—" not in out
     assert "(file dated 2026-04-01; https://example.test/f.json)" in out  # no ellipsis on a short URL
     assert "… 2 more lines (--all)" in out
+
+
+def test_the_trace_ends_with_who_has_no_price_then_the_pairs_that_have_two(capsys):
+    from hpa import pipeline
+    hs = [{"name": "A", "headline": {"setting": "outpatient", "billing_class": "facility", "modifiers": None}},
+          {"name": "B", "headline": None},
+          {"name": "C", "headline": {"setting": "outpatient", "billing_class": "facility", "modifiers": None}}]
+    lines = pipeline.pair_lines(hs)
+    assert lines[0] == "no priced line for this service at B; no pair with them can be compared"
+    assert lines[1].startswith("compare: A vs C: comparable")
+    assert len(lines) == 2
+    assert pipeline.pair_lines(hs[:2])[1] == "only one hospital has a price for this service; nothing to put side by side"
+    assert pipeline.short_reason("no cms-hpt.txt or linked file located: a.com: ConnectError; b.org: 404").startswith("no index file or standard-charges link")
+    assert pipeline.short_reason("file URL failed: HTTP 403") == "file URL failed: HTTP 403"

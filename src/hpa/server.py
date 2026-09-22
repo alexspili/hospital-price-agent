@@ -333,8 +333,9 @@ def _execute(app: FastAPI, run: Run, service, limit: int, corrections: tuple = (
             max_downloads=s.max_downloads, daily_cap_usd=s.daily_cap_usd, keep_downloads=s.keep_downloads,
             corrections=corrections,
         )
+        ps, unpriced = compare.priced_pairs(hospitals)
         run.result = {"zip": run.zip, "service": run.service, "live": run.live, "hospitals": hospitals,
-                      "comparisons": [vars(p) for p in compare.pairs(hospitals)]}
+                      "comparisons": [vars(p) for p in ps], "unpriced": unpriced}
         run.status = "done"
         run.emit("result", **run.result)
     except Exception as e:
@@ -394,8 +395,9 @@ def demo_run(data: dict, zip_code: str, query: str) -> dict:
                "reviewed": bool(entry["reviewed"]), "notes": entry.get("notes")}
     # The same pairwise verdicts a live run ends with: the recording is what a visitor
     # sees first, and two prices side by side without one would be a silent match.
+    ps, unpriced = compare.priced_pairs(rows)
     result = {"zip": zip_code, "service": service, "hospitals": rows,
-              "comparisons": [vars(p) for p in compare.pairs(rows)]}
+              "comparisons": [vars(p) for p in ps], "unpriced": unpriced}
     add("result", **result)
     add("end")
     return {"status": "recorded", "recorded_on": data["recorded_on"], "zip": zip_code, "query": query,
