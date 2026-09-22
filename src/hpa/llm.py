@@ -8,6 +8,7 @@ Two calls, both cached in DuckDB by (model, prompt version, input):
 
 import hashlib
 import json
+from urllib.parse import urlsplit
 import os
 from dataclasses import dataclass
 
@@ -22,7 +23,7 @@ MODEL = "claude-opus-5"
 CONFIRM_COST_USD = 0.043
 # Per call, so changing one prompt does not throw away the answers already bought for the
 # other two (SPEC "Caching": cache keys include versions).
-PROMPT_VERSIONS = {"website": "1", "pick": "1", "confirm": "2"}
+PROMPT_VERSIONS = {"website": "2", "pick": "1", "confirm": "2"}
 PROMPT_VERSION = "1"  # kept for the llm_cache rows written before the split
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
 
@@ -36,11 +37,12 @@ WEBSITE_SCHEMA = {
     "type": "object",
     "properties": {
         "domain": {"type": ["string", "null"], "description": "bare domain of the official site, e.g. houstonmethodist.org, or null"},
+        "page_url": {"type": ["string", "null"], "description": "the URL of the hospital's own page on that site, if the search found one; a system may keep its hospitals on a subdomain such as healthcare.ascension.org"},
         "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
         "why": {"type": "string"},
         "sources": {"type": "array", "items": {"type": "string"}},
     },
-    "required": ["domain", "confidence", "why", "sources"],
+    "required": ["domain", "page_url", "confidence", "why", "sources"],
     "additionalProperties": False,
 }
 
@@ -181,12 +183,19 @@ class Claude:
         prompt = (
             "Find the official website of this hospital (the hospital's or its health system's own "
             "domain, not a directory, review site or news article). Use web search. Answer with the "
-            "bare domain only.\n\n" + json.dumps(payload, indent=1)
+            "bare domain, and with the URL of the hospital's own page on it when the search found "
+            "one: a health system often keeps its hospitals on a subdomain of its domain, and the "
+            "page's host matters.\n\n" + json.dumps(payload, indent=1)
         )
         tools = [{"type": "web_search_20260209", "name": "web_search", "max_uses": 3}]
         out, cached = self._cached("website", payload, lambda: self._json_call(prompt, WEBSITE_SCHEMA, tools))
         why = f"{out['confidence']} confidence, {out['why']}" + (" [cached]" if cached else "")
-        domain = (out.get("domain") or "").lower().removeprefix("https://").removeprefix("http://").strip("/ ")
+        domain = (out.get("domain") or "").lower().removeprefix("https://").removeprefix("http://").strip("/ ").split("/")[0]
+        # The page's host wins when it is a subdomain of the domain: that is where the
+        # hospital lives, and hosts_to_try in discovery falls back to the apex itself.
+        page_host = urlsplit(out.get("page_url") or "").netloc.lower()
+        if domain and page_host and page_host != domain and page_host.endswith("." + domain.removeprefix("www.")):
+            return page_host, why
         return (domain or None), why
 
     def confirm_service(self, query: str, resolution, catalogue: list | None = None) -> tuple[object | None, str]:

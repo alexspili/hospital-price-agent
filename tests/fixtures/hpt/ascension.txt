@@ -1,0 +1,66 @@
+location-name: Ascension St. Vincent Seton (St. Vincent Seton Specialty Hospital, Inc.)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/in-csv/351712001_st-vincent-seton-specialty-hospital-inc_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name: Ascension Seton Cedar Park Hospital
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/203904667_cedar-park-regional-medical-center_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name: Ascension Seton Edgar B. Davis (Ascension Seton)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/741109643-1356446686_ascension-seton_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name: Ascension Seton Hays (Ascension Seton)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/741109643-1619115383_ascension-seton_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name: Ascension Seton Highland Lakes (Ascension Seton)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/741109643-1003833013_ascension-seton_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name: Ascension Seton Medical Center Austin (Ascension Seton)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/741109643-1164526786_ascension-seton_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name:  Ascension Seton Northwest (Ascension Seton)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/741109643-1124137054_ascension-seton_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name: Ascension Seton Smithville (Ascension Seton)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/741109643-1154612638_ascension-seton_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name: Ascension Seton Southwest (Ascension Seton)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/741109643-1750499273_ascension-seton_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name: Ascension Seton Williamson (Ascension Seton)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/741109643-1578780870_ascension-seton_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name: Dell Children's Medical Center (Ascension Seton)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/741109643-1447355771_ascension-seton_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name: Dell Children's Medical Center North Campus (Ascension Seton)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/741109643-1447355771_ascension-seton_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+location-name: Dell Seton Medical Center at The University of Texas (Ascension Seton)
+source-page-url: https://healthcare.ascension.org/price-transparency
+mrf-url: https://healthcare.ascension.org/-/media/project/ascension/healthcare/price-transparency-files/tx-csv/741109643-1093810327_ascension-seton_standardcharges.csv
+contact-name: Justan Shinkle
+contact-email: justan.shinkle@ascension.org
+

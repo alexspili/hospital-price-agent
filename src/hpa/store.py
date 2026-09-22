@@ -76,10 +76,14 @@ ALTER TABLE sources ADD COLUMN IF NOT EXISTS release_date VARCHAR;
 ALTER TABLE sources ADD COLUMN IF NOT EXISTS rows BIGINT;
 ALTER TABLE sources ADD COLUMN IF NOT EXISTS sha256 VARCHAR;
 ALTER TABLE sources ADD COLUMN IF NOT EXISTS size_bytes BIGINT;
+ALTER TABLE hospital_files ADD COLUMN IF NOT EXISTS discovery_version VARCHAR;
 """
 
 SUCCESS_TTL = timedelta(days=30)
 FAILURE_TTL = timedelta(days=7)
+# Bumped when discovery learns a new way to find a file: a failure recorded by an older
+# discovery is retried rather than cached, a success is still a success.
+DISCOVERY_VERSION = "2"
 
 
 def connect(path: Path | str = DEFAULT_DB, read_only: bool = False) -> duckdb.DuckDBPyConnection:
@@ -118,9 +122,13 @@ def create_schema(con, catalog: str) -> None:
 
 
 def copy_table(con, name: str, source: str, where: str = "", params: list | None = None) -> None:
-    """Rows of `source` into the schema-shaped table `name`, keeping one row per key."""
+    """Rows of `source` into the schema-shaped table `name`, keeping one row per key. Columns
+    are matched by name, so a source built before a migration still copies."""
     verb = "INSERT OR IGNORE" if name.split(".")[-1] in KEYED_TABLES else "INSERT"
-    con.execute(f"{verb} INTO {name} SELECT * FROM {source}{(' WHERE ' + where) if where else ''}", params or [])
+    target_cols = [r[0] for r in con.execute(f"DESCRIBE {name}").fetchall()]
+    source_cols = {r[0] for r in con.execute(f"DESCRIBE {source}").fetchall()}
+    cols = ", ".join(c for c in target_cols if c in source_cols)
+    con.execute(f"{verb} INTO {name} ({cols}) SELECT {cols} FROM {source}{(' WHERE ' + where) if where else ''}", params or [])
 
 
 def restore_constraints(con) -> None:
@@ -184,12 +192,15 @@ def save_discovery(con, d) -> None:
     p = d.probe
     e = d.entry
     con.execute(
-        "INSERT INTO hospital_files VALUES (?, ?, now(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO hospital_files (ccn, name, discovered_at, ok, method, domain, index_url, location_name, "
+        "source_page_url, mrf_url, shape, size_bytes, last_modified, etag, content_type, reason, steps, seconds, "
+        "discovery_version) VALUES (?, ?, now(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
             d.ccn, d.name, d.ok, d.method, d.domain, d.index_url,
             e.location_name if e else None, e.source_page_url if e else None, e.mrf_url if e else None,
             p.shape if p else None, p.size_bytes if p else None, p.last_modified if p else None,
             p.etag if p else None, p.content_type if p else None, d.reason, json.dumps(d.steps), d.seconds,
+            DISCOVERY_VERSION,
         ],
     )
 
@@ -208,6 +219,8 @@ def cached_discovery(con, ccn: str, within_ttl: bool = True):
         return None
     cols = [c[0] for c in con.description]
     rec = dict(zip(cols, row))
+    if not rec["ok"] and rec.get("discovery_version") != DISCOVERY_VERSION:
+        return None  # discovery has learned something since; look again rather than repeat the failure
     age = datetime.now() - rec["discovered_at"]
     rec["stale"] = age > (SUCCESS_TTL if rec["ok"] else FAILURE_TTL)
     if rec["stale"] and within_ttl:

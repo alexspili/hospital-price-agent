@@ -20,7 +20,7 @@ def con():
     # One scanned hospital near 77030, and one scanned hospital far away that the demo
     # ZIPs do not reach: the far one must not travel.
     for ccn, url in (("450289", URL), ("670122", "https://example.test/far.csv")):
-        con.execute("INSERT INTO hospital_files VALUES (?, 'H', now(), true, 'cms-hpt', 'example.test', NULL, NULL, NULL, ?, 'csv-wide', 10, NULL, NULL, NULL, '', '[]', 1.0)", [ccn, url])
+        con.execute("INSERT INTO hospital_files VALUES (?, 'H', now(), true, 'cms-hpt', 'example.test', NULL, NULL, NULL, ?, 'csv-wide', 10, NULL, NULL, NULL, '', '[]', 1.0, NULL)", [ccn, url])
         con.execute("INSERT INTO fetches VALUES (?, now(), 200, ?, 'text/csv', NULL, NULL, 10, ?, 1.0, '')", [url, url, f"sum{ccn}"])
         con.execute("INSERT OR REPLACE INTO files VALUES (?, 'csv-wide', '3.0.0', 'H', '2026-09-01', '', 10, now())", [f"sum{ccn}"])
         con.execute("INSERT INTO extractions VALUES (?, ?, ?, now(), 1, 1, 1.0, 1.0, true, '')", [f"ext{ccn}", f"sum{ccn}", mrf.PARSER_VERSION])

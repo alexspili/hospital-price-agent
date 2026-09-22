@@ -46,7 +46,7 @@ def test_pick_entry_null_means_no_choice():
 
 
 def test_find_website_uses_web_search_and_normalises_domain():
-    fake = FakeClient({"domain": "https://www.harrishealth.org/", "confidence": "high", "why": "official site", "sources": ["https://www.harrishealth.org"]})
+    fake = FakeClient({"domain": "https://www.harrishealth.org/", "page_url": None, "confidence": "high", "why": "official site", "sources": ["https://www.harrishealth.org"]})
     domain, why = Claude(fake).find_hospital_website(hospital())
     assert domain == "www.harrishealth.org"
     assert why.startswith("high confidence")
@@ -111,3 +111,13 @@ def test_an_unpriced_model_id_is_never_free():
     assert known == llm.PRICES["claude-opus-5"][0]
     assert llm.cost_usd("claude-opus-5-20260601", usage) == known  # a dated snapshot of the same model
     assert llm.cost_usd("some-fallback-model", usage) >= known  # charged at the dearest known rate
+
+
+def test_find_website_prefers_the_host_the_hospital_page_is_on():
+    """Ascension keeps its hospitals on healthcare.ascension.org; the apex has no index."""
+    fake = FakeClient({"domain": "ascension.org", "page_url": "https://healthcare.ascension.org/locations/texas/txaus/austin-ascension-seton-medical-center-austin",
+                       "confidence": "high", "why": "the hospital's own page", "sources": []})
+    domain, _ = Claude(fake).find_hospital_website(hospital())
+    assert domain == "healthcare.ascension.org"
+    fake = FakeClient({"domain": "ascension.org", "page_url": "https://www.usnews.com/x", "confidence": "low", "why": "", "sources": []})
+    assert Claude(fake).find_hospital_website(hospital())[0] == "ascension.org"  # a page elsewhere is not the site

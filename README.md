@@ -75,12 +75,15 @@ unsupported variant: the CMS list has MRI scan of leg joint (CPT 73721) only wit
   as an uncertainty figure but is not a bound, since ZIPs aren't circles. 34 hospitals
   can't be placed at all and are excluded rather than guessed.
 - **Price-file discovery, live.** `hpa locate ZIP` takes the nearest hospitals and finds
-  each one's machine-readable standard-charges file: a small seed of Houston health-system
-  domains plus guesses from the name → `cms-hpt.txt` (tolerating banners, CRLF, legal
-  "d/b/a" names, freestanding-ER entries) → a fuzzy match to the right entry that refuses
-  same-system near-misses → a HEAD/64-byte probe for size, date and real shape. Sites with
-  no index get a scan for a linked standard-charges file. Claude is called only when the
-  hospital's site can't be guessed (web search) or two entries tie (it gets the address).
+  each one's machine-readable standard-charges file: a seed of Texas health-system domains
+  checked by hand (Ascension keeps its index on `healthcare.ascension.org`, which no name
+  would suggest) plus guesses from the name → `cms-hpt.txt` (tolerating banners, CRLF, legal
+  "d/b/a" names, freestanding-ER entries) → a match to the right entry that reads CMS's
+  abbreviations, takes a word-for-word name as settled, and refuses same-system near-misses
+  → a HEAD/64-byte probe for size, date and real shape. Sites with no index get a scan for
+  a linked standard-charges file, and a pricing link to a sibling host of the same
+  organisation is followed there. Claude is called only when the hospital's site can't be
+  guessed (web search) or two entries tie (it gets the address).
   **On the 15 hospitals nearest 77030, 77380 and 77339: 10 resolve with no model call at
   all, in 15 seconds; Claude's two fallbacks add two more (one tie-break by address, one
   web search).** The remaining three, and everything that broke along the way, are in

@@ -219,7 +219,7 @@ def test_an_unknown_zip_is_rejected_before_any_work(api):
 
 def test_prices_reads_what_is_stored_without_scanning(api, con):
     store_extraction(con, URL.format(ccn="450289"), "450289", cash=1500.0)
-    con.execute("INSERT INTO hospital_files VALUES ('450289', 'HARRIS', now(), true, 'cms-hpt', 'example.test', NULL, NULL, NULL, ?, 'csv-wide', 1000, NULL, NULL, NULL, '', '[]', 1.0)",
+    con.execute("INSERT INTO hospital_files VALUES ('450289', 'HARRIS', now(), true, 'cms-hpt', 'example.test', NULL, NULL, NULL, ?, 'csv-wide', 1000, NULL, NULL, NULL, '', '[]', 1.0, NULL)",
                 [URL.format(ccn="450289")])
     body = api.get("/api/prices", params={"service": "knee mri", "zip": "77030"}).json()
     assert body["status"] == "ok" and body["service"]["codes"] == "CPT 73721"
@@ -261,7 +261,7 @@ def boom(*a, **k):  # any call means the network was touched when it should not 
 
 def test_the_default_run_reads_only_what_is_stored(api, con, monkeypatch):
     store_extraction(con, URL.format(ccn="450289"), "450289", cash=1500.0)
-    con.execute("INSERT INTO hospital_files VALUES ('450289', 'HARRIS', now(), true, 'cms-hpt', 'example.test', NULL, NULL, NULL, ?, 'csv-wide', 1000, NULL, NULL, NULL, '', '[]', 1.0)",
+    con.execute("INSERT INTO hospital_files VALUES ('450289', 'HARRIS', now(), true, 'cms-hpt', 'example.test', NULL, NULL, NULL, ?, 'csv-wide', 1000, NULL, NULL, NULL, '', '[]', 1.0, NULL)",
                 [URL.format(ccn="450289")])
     monkeypatch.setattr(pipeline.scan, "scan", boom)
     monkeypatch.setattr(pipeline.discovery, "locate_price_file", boom)
@@ -375,7 +375,7 @@ def test_the_catalog_is_served_for_a_query_that_matched_nothing(api):
 
 def test_prices_by_service_id_returns_every_line(api, con):
     store_extraction(con, URL.format(ccn="450289"), "450289", cash=1500.0)
-    con.execute("INSERT INTO hospital_files VALUES ('450289', 'HARRIS', now(), true, 'cms-hpt', 'example.test', NULL, NULL, NULL, ?, 'csv-wide', 1000, NULL, NULL, NULL, '', '[]', 1.0)",
+    con.execute("INSERT INTO hospital_files VALUES ('450289', 'HARRIS', now(), true, 'cms-hpt', 'example.test', NULL, NULL, NULL, ?, 'csv-wide', 1000, NULL, NULL, NULL, '', '[]', 1.0, NULL)",
                 [URL.format(ccn="450289")])
     body = api.get("/api/prices", params={"service_id": "cpt-73721", "zip": "77030", "all": "true"}).json()
     assert body["status"] == "ok" and body["service"]["id"] == "cpt-73721"

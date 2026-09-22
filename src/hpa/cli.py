@@ -462,7 +462,7 @@ def cmd_eval(args: argparse.Namespace) -> int:
 
 
 def human_size(n: int | None) -> str:
-    if n is None:
+    if not n:
         return "size unknown"
     if n < 1_000_000:
         return f"{n / 1e3:,.0f} KB"

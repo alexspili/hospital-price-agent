@@ -24,7 +24,8 @@ def hospital(name, ccn="000000", address="1 MAIN ST", city="HOUSTON", zip="77030
 # --- parsing ---------------------------------------------------------------------------
 
 @pytest.mark.parametrize("fixture, count", [("hca", 36), ("methodist", 20), ("memorialhermann", 19),
-                                            ("commonspirit", 72), ("harrishealth", 2), ("texaschildrens", 4)])
+                                            ("commonspirit", 72), ("harrishealth", 2), ("texaschildrens", 4),
+                                            ("ascension", 13)])
 def test_parse_counts_match_the_real_files(fixture, count):
     entries = parse_hpt((HPT / f"{fixture}.txt").read_text())
     assert len(entries) == count
@@ -112,6 +113,11 @@ def test_unrelated_index_matches_nothing():
 def test_domain_candidates_seed_first_then_guesses():
     c = domain_candidates(hospital("HCA HOUSTON HEALTHCARE KINGWOOD"))
     assert c[0] == "hcahoustonhealthcare.com"
+    # A system whose index lives on a subdomain the name would never suggest.
+    assert domain_candidates(hospital("ASCENSION SETON NORTHWEST"))[0] == "healthcare.ascension.org"
+    assert domain_candidates(hospital("DELL SETON  MED CENTER AT THE UNIVERSITY OF TX"))[0] == "healthcare.ascension.org"
+    assert domain_candidates(hospital("BAYLOR SCOTT & WHITE MEDICAL CENTER - FRISCO"))[0] == "bswhealth.com"
+    assert domain_candidates(hospital("BAYLOR ST LUKES MEDICAL CENTER"))[0] == "commonspirit.org"  # not Baylor Scott & White
     assert "hcahoustonhealthcarekingwood.com" in c
     c = domain_candidates(hospital("KINGWOOD PINES HOSPITAL"))
     assert c[:2] == ["kingwoodpines.com", "kingwoodpines.org"]
@@ -267,3 +273,44 @@ def test_site_page_layer_finds_the_standard_charges_link():
     assert d.entry.mrf_url.endswith("364867804_TownsenMemorialHospital_StandardCharges.csv")
     assert d.index_url == "https://townsenmemorial.com/pricing-transparency"
     assert any("standard-charges link" in line for line in lines)
+
+
+# --- what the Austin search found missing (2026-09-22) ------------------------------------
+
+def test_ascension_campuses_match_their_entries():
+    entries = parse_hpt((HPT / "ascension.txt").read_text())
+    m = match_entry(hospital("ASCENSION SETON NORTHWEST"), entries)
+    assert m.verdict == "matched" and m.entry.location_name.startswith("Ascension Seton Northwest")
+    m = match_entry(hospital("ASCENSION SETON MEDICAL CENTER AUSTIN"), entries)
+    assert m.verdict == "matched" and "Medical Center Austin" in m.entry.location_name
+    # CMS abbreviates; the index spells out. Read as the same name.
+    m = match_entry(hospital("DELL SETON  MED CENTER AT THE UNIVERSITY OF TX"), entries)
+    assert m.verdict == "matched" and m.entry.location_name.startswith("Dell Seton Medical Center")
+    # Sister campuses one word apart are each their own exact match, never a tie.
+    m = match_entry(hospital("ASCENSION SETON SOUTHWEST"), entries)
+    assert m.verdict == "matched" and m.entry.location_name.startswith("Ascension Seton Southwest")
+
+
+def test_a_pricing_link_to_a_sibling_host_is_followed_to_the_index():
+    """The corporate site has no index but links to healthcare.<domain>/price-transparency,
+    which is where the index is. No seed, no web search."""
+    hpt = "location-name: Newco Hospital North\nmrf-url: https://healthcare.newco.org/files/1_newco_standardcharges.csv\n"
+    routes = {
+        "newcohospitalnorth.com/cms-hpt.txt": httpx.ConnectError("no such host"),
+        "www.newcohospitalnorth.com/cms-hpt.txt": httpx.ConnectError("no such host"),
+        "newcohospitalnorth.org/cms-hpt.txt": httpx.ConnectError("no such host"),
+        "www.newcohospitalnorth.org/cms-hpt.txt": httpx.ConnectError("no such host"),
+        "newco.org/cms-hpt.txt": (404, "text/html", "<html>nope</html>"),
+        "www.newco.org/cms-hpt.txt": (404, "text/html", "<html>nope</html>"),
+        "newco.org/": (200, "text/html", '<html><a href="https://healthcare.newco.org/price-transparency">Price transparency</a></html>'),
+        "healthcare.newco.org/cms-hpt.txt": (200, "text/plain", hpt),
+        "healthcare.newco.org/files/1_newco_standardcharges.csv": (200, "text/csv", "description,code|1\nx,1\n"),
+    }
+    client = httpx.Client(transport=transport(routes))
+    # newco.org is reached through the web search here, standing in for a corporate domain
+    # a name guess would not produce; the point is what happens after it answers 404.
+    d = locate_price_file(client, hospital("NEWCO HOSPITAL NORTH"), web_search=lambda h: ("newco.org", "high"))
+    assert d.ok, d.reason
+    assert d.method == "web-search+site-link+cms-hpt"
+    assert d.entry.location_name == "Newco Hospital North"
+    assert any("pricing link points at healthcare.newco.org" in s for s in d.steps)

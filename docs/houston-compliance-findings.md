@@ -220,3 +220,42 @@ type `HCPCS` (the CPT set is HCPCS Level I, so this is defensible, but a query f
 `CPT` alone would miss the whole file). Harris Health publishes prices to five decimal
 places ($5,011.64785); a first schema at two decimals rounded them, and the fidelity check
 caught it on the first run (254 of 256), which is what the check is for.
+
+## Addendum, 2026-09-22: the first search outside Houston
+
+A visitor searched an Austin ZIP. The three Ascension Seton hospitals came back "no price
+file located", with the trace showing every guessed domain failing and `ascension.org`
+answering 404. Ascension does publish an index, with 93 entries across its states, but at
+`https://healthcare.ascension.org/cms-hpt.txt`: a subdomain that neither the hospital's
+name nor the corporate domain suggests. Three things were missing, and each is now in place:
+
+- **The seed.** Ascension is the largest Catholic system in the country and its index host
+  is not guessable, so it is seeded, along with the other large Texas systems whose index
+  hosts answered on 2026-09-22 (Baylor Scott & White, Methodist Health System, St. David's,
+  Medical City, CHRISTUS, University Health, Parkland, Cook Children's, Children's Health,
+  UTMB, JPS, UMC El Paso, UT Southwestern).
+- **Following a pricing link to a sibling host.** `www.ascension.org` has no index but its
+  home page links to `healthcare.ascension.org/price-transparency`. Discovery now follows a
+  pricing link to another host of the same organisation and tries `cms-hpt.txt` there, so a
+  system laid out this way is found without the seed and without a model.
+- **The web-search fallback asked for the wrong thing.** It asked for the bare domain, so
+  Claude answered `ascension.org`. It now also asks for the URL of the hospital's own page
+  and tries that host first, then the apex.
+
+Two matcher gaps showed up on the same index. CMS abbreviates ("DELL SETON MED CENTER AT
+THE UNIVERSITY OF TX") where the index spells out; the matcher now reads the common
+abbreviations. And sister campuses one word apart (Seton Northwest, Seton Southwest) tied
+on a fuzzy score because each entry carries the system's name in parentheses; a
+parenthetical that several entries share is now dropped for matching, and a word-for-word
+name is a match outright. All three Seton hospitals resolve with no model call:
+
+```
+hpa locate --ccn 450867 --no-llm   # Ascension Seton Northwest
+hpa locate --ccn 450056 --no-llm   # Ascension Seton Medical Center Austin
+hpa locate --ccn 450124 --no-llm   # Dell Seton Medical Center at UT
+```
+
+The files themselves are zips served with a `.csv` name; the probe reads the bytes, not
+the name, and the parser handles them. Seton Northwest's is 257 MB and parses to 297,292
+charges in about two minutes at 403 MB peak. A failure recorded by an older discovery is
+now retried rather than cached for a week, so the hosted copy looks again on its own.
