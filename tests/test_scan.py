@@ -99,7 +99,7 @@ def test_off_template_file_is_recorded_as_failed_extraction(con, mrf_dir):
 def test_http_error_is_a_reason(con, mrf_dir):
     client, _ = serving(b"", status=403)
     r = scan.scan(con, client, "450804", "https://x/f.json", lambda _: None)
-    assert not r.ok and r.reason == "download failed: 403"
+    assert not r.ok and r.reason == "download failed: HTTP 403"
     assert con.execute("SELECT status, reason FROM fetches").fetchone() == (403, "download failed: 403")
 
 
@@ -213,3 +213,34 @@ def test_without_keep_download_nothing_stays_whichever_way_extraction_went(con, 
     client, _ = serving((FIX / "wide_elite.csv").read_bytes(), {"etag": '"e"'})
     r = scan.scan(con, client, "670285", "https://x/elite.csv", lambda _: None, keep_download=False)
     assert r.ok and list(mrf_dir.glob("*")) == []
+
+
+def test_a_dropped_connection_is_tried_again_and_a_refusal_is_not(con, mrf_dir, monkeypatch):
+    monkeypatch.setattr(scan, "RETRY_PAUSE", 0.0)
+    body = (FIX / "wide_elite.csv").read_bytes()
+    gets = []
+
+    def flaky(request):
+        if request.method == "HEAD":
+            return httpx.Response(200, headers={"content-type": "text/csv"})
+        gets.append(1)
+        if len(gets) == 1:
+            raise httpx.RemoteProtocolError("peer closed connection without sending complete message body")
+        return httpx.Response(200, headers={"content-type": "text/csv"}, content=body)
+
+    lines = []
+    r = scan.scan(con, httpx.Client(transport=httpx.MockTransport(flaky)), "670285", "https://x/elite.csv", lines.append)
+    assert r.ok and r.charges == 22 and len(gets) == 2
+    assert any("trying again, 2 of 3" in line for line in lines)
+    assert list(mrf_dir.glob("*.part")) == []
+
+    always = httpx.Client(transport=httpx.MockTransport(lambda req: (_ for _ in ()).throw(httpx.RemoteProtocolError("dropped"))))
+    lines = []
+    r = scan.scan(con, always, "670285", "https://x/elite2.csv", lines.append)
+    assert not r.ok and r.reason == "download failed: the server closed the connection before the file finished (RemoteProtocolError)"
+    assert sum("trying again" in line for line in lines) == 2
+
+    calls = []
+    refused_counting = httpx.Client(transport=httpx.MockTransport(lambda req: (calls.append(req.method), httpx.Response(403))[1]))
+    r = scan.scan(con, refused_counting, "670285", "https://x/elite3.csv", lambda _: None)
+    assert not r.ok and r.reason == "download failed: HTTP 403" and calls.count("GET") == 1

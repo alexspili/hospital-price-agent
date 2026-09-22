@@ -26,6 +26,10 @@ from hpa.store import DATA_DIR
 MRF_DIR = DATA_DIR / "mrf"
 BATCH = 5000
 MAX_AGE = timedelta(days=30)
+# A dropped connection mid-file is worth another go: the server accepted the request and
+# started sending. A 4xx/5xx is not. Some servers ignore Range, so a retry starts over.
+DOWNLOAD_ATTEMPTS = 3
+RETRY_PAUSE = 2.0
 Trace = Callable[[str], None]
 # progress(phase, done, total): "download" counts bytes, "extract" counts charges. The
 # page turns these into a moving counter; the CLI just prints the trace lines.
@@ -171,6 +175,35 @@ def download(client: httpx.Client, url: str, trace: Trace, progress: Progress | 
     final = MRF_DIR / f"{checksum}.{ext}"
     tmp.replace(final)
     return final, checksum, size, headers, time.monotonic() - started
+
+
+def download_with_retries(client: httpx.Client, url: str, trace: Trace, progress: Progress | None = None):
+    """`download`, tried again after a connection that broke off. A refusal (a status code)
+    is final the first time; a transport failure gets DOWNLOAD_ATTEMPTS in all."""
+    for attempt in range(1, DOWNLOAD_ATTEMPTS + 1):
+        try:
+            return download(client, url, trace, progress)
+        except httpx.TransportError as e:
+            if attempt == DOWNLOAD_ATTEMPTS:
+                raise
+            trace(f"download broke off ({type(e).__name__}); trying again, {attempt + 1} of {DOWNLOAD_ATTEMPTS}")
+            time.sleep(RETRY_PAUSE)
+    raise AssertionError("unreachable")
+
+
+def download_reason(e: httpx.HTTPError) -> str:
+    """Why a download failed, in words, with the error's name after them."""
+    status = getattr(getattr(e, "response", None), "status_code", None)
+    if status:
+        return f"HTTP {status}"
+    name = type(e).__name__
+    if isinstance(e, httpx.RemoteProtocolError):
+        return f"the server closed the connection before the file finished ({name})"
+    if isinstance(e, httpx.TimeoutException):
+        return f"the server stopped sending ({name})"
+    if isinstance(e, httpx.ConnectError):
+        return f"could not connect ({name})"
+    return name
 
 
 def mrf_ext(content_type: str | None, url: str, path: Path) -> str:
@@ -327,9 +360,9 @@ def scan(con, client: httpx.Client, ccn: str, url: str, trace: Trace, force: boo
         trace(result.reason)
         return result
     try:
-        path, checksum, size, headers, dl_seconds = download(client, url, trace, progress)
+        path, checksum, size, headers, dl_seconds = download_with_retries(client, url, trace, progress)
     except httpx.HTTPError as e:
-        reason = f"download failed: {getattr(e, 'response', None) and e.response.status_code or type(e).__name__}"
+        reason = f"download failed: {download_reason(e)}"
         con.execute("INSERT INTO fetches VALUES (?, now(), ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     [url, getattr(getattr(e, "response", None), "status_code", None), None, None, None, None, None, None,
                      time.monotonic() - started, reason])
